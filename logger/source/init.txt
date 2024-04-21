@@ -1,0 +1,6 @@
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+Text.SplitText.SplitWithDelimiter Text: Input_LogMessage CustomDelimiter: $''';;;''' IsRegEx: False Result=> Log_MessageList
+SET Log_SubflowName TO $'''Unknown'''
+IF Input_SubflowNamesList.Count <> 0 THEN
+    SET Log_SubflowName TO Input_SubflowNamesList[Input_SubflowNamesList.Count - 1]
+END
