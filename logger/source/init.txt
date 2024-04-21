@@ -1,5 +1,15 @@
 DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
 Text.SplitText.SplitWithDelimiter Text: Input_LogMessage CustomDelimiter: $''';;;''' IsRegEx: False Result=> Log_MessageList
+IF Log_MessageList.Count < 2 THEN
+    SET Log_Level TO $'''WARN'''
+    SET Log_Message TO $'''Found the list of expected message count to be less than 2. Cannot parse the message object correctly. Original message: %Log_Message%'''
+ELSE
+    SET Log_Level TO Log_MessageList[0]
+    SET Log_Message TO Log_MessageList[1]
+END
+Text.Replace Text: Log_Message TextToFind: $'''[\\r\\n]''' IsRegex: True IgnoreCase: False ReplaceWith: $'''%' '%''' ActivateEscapeSequences: False Result=> Log_Message
+Text.Replace Text: Log_Message TextToFind: $'''\\''' IsRegex: False IgnoreCase: False ReplaceWith: $'''/''' ActivateEscapeSequences: False Result=> Log_Message
+Text.Replace Text: Log_Message TextToFind: $'''\"''' IsRegex: False IgnoreCase: False ReplaceWith: $'''\'''' ActivateEscapeSequences: False Result=> Log_Message
 SET Log_SubflowName TO $'''Unknown'''
 IF Input_SubflowNamesList.Count <> 0 THEN
     SET Log_SubflowName TO Input_SubflowNamesList[Input_SubflowNamesList.Count - 1]

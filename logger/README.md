@@ -25,7 +25,9 @@ There are several inputs required by this flow, and a couple that are optional (
         1. The **Input_LogPath** input variable expects a file path (required).
         1. The **Input_LogAddress** input variable is ignored (optional).
     1. 'Database' - for writing it to a database table. 
-        1. The **Input_LogPath** input variable expects a table name (required).
+        1. The **Input_LogPath** input variable expects:
+            1. A table name when using standard INSERT statements (required).
+            1. A stored procedure name when using a stored procedure (required).
         1. The **Input_LogAddress** input variable expects a connection string (required).
     1. 'SharePoint List' - for writing it to a SharePoint list.  
         1. The **Input_LogPath** input variable expects a list name (required).
@@ -85,7 +87,9 @@ The flow produces several output variables that are returned to the parent flow 
     1. **init.txt** to the **Init** subflow
     1. **log-to-file.txt** to the **LogToFile** subflow (see **Notes** below)
     1. **log-to-csv.txt** to the **LogToCSV** subflow (see **Notes** below)
-    1. **log-to-database.txt** to the **LogToDatabase** subflow (see **Notes** below)
+    1. To the **LogToDatabase** subflow (see **Notes** below) paste either:
+        1. **log-to-database.txt** if you want to use standard INSERT statements
+        1. **log-to-database-sp.txt** if you want to use a Stored Procedure to insert the logs (recommended)
     1. **log-to-SharePoint.txt** to the **LogToSharePoint** subflow (see **Notes** below)
 1. Adjust the **Create item** action in the **LogToSharePoint** subflow to use the correct connection reference (see **Notes** below)
 1. Review the code for any syntax errors
