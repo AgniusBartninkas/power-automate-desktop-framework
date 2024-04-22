@@ -80,10 +80,10 @@ The flow produces several output variables that are returned to the parent flow 
         1. Input_SubflowNamesList (Data type - List; Mark as sensitive - False; Mark as optional - False)
     1. Output:
         1. Output_ErrorMessage (Data type: Text; Mark as sensitive - True)
+        1. Output_ErrorMessageList (Data type: List; Mark as sensitive - True)
 
             ![View of the parameters for the 'Output_ErrorMessageList' input variable in PAD](./assets/output-error-message-list-variable-parameters.png)
 
-        1. Output_ErrorMessageList (Data type: List; Mark as sensitive - True)
 1. Create new subflows (see **Notes** below): 
     1. **Init**
     1. **LogToFile** 
