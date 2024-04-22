@@ -48,6 +48,9 @@ The flow produces several output variables that are returned to the parent flow 
 1. Create a solution called **PADFramework**
 1. Create a SharePoint connection using the account that should make the logs in SharePoint lists (see **Notes** below)
 1. Create a connection reference for the SharePoint connection (see **Notes** below)
+1. Open SQL Server Management Studio (see **Notes** below)
+1. Create the table for logs using the **create-table.sql** script in `/database/` (see **Notes** below)
+1. If you want to use a SQL Server stored procedure for logging, create the stored procedure using the **create-stored-procedure.sql** script in `/database/` (see **Notes** below)
 1. Open **Power Automate Desktop**
 1. Create a new flow called **PADFramework: Logger** - make sure to not enable Power Fx when creating it
 
@@ -105,4 +108,7 @@ The flow produces several output variables that are returned to the parent flow 
 
 In case you do not plan on using one or more log types, you can easily skip the steps involved. Steps that can be skipped are marked as such in the description above.
 For example, if you do not plan to ever log to SharePoint list, you do not need to create the SharePoint connection, and then simply skip the **LogToSharePoint** subflow. Then delete the call to this subflow from **Main** after creating it.
+
+If you want to log to a database, the recommended table structure and a stored procedure for logging are also provided in `/database/`. You can amend these according to your needs, but then also make sure to include the adjustments to the Power Automate Desktop code in **log-to-database.txt** or **log-to-database-sp.txt**.
+
 The same applies to any other types, too, but most of them do not include extra steps, other than creating the subflow itself.
