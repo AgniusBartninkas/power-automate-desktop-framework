@@ -1,0 +1,7 @@
+IF IsEmpty(Input_LogAddress) THEN
+    SET ErrorMessage TO $'''Empty \'Input_LogAddress\' value provided. It is required when Log Type is \'%Input_LogType%\'.'''
+    EXIT FUNCTION
+END
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_LogAddress Statement: $'''INSERT INTO %Input_LogPath% (Level, Machine, Project, Flow, Subflow, Message)
+VALUES (\'%Log_Level%\', \'%Log_MachineName%\', \'%Input_ProjectName%\', \'%Input_FlowName%\', \'%Log_SubflowName%\',\'%Log_Message%\')''' Timeout: 45

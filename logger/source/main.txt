@@ -1,0 +1,25 @@
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    CALL Init
+    SWITCH Input_LogType
+        CASE = $'''Log File'''
+            CALL LogToFile
+        CASE = $'''CSV File'''
+            CALL LogToCSV
+        CASE = $'''Database'''
+            CALL LogToDatabase
+        CASE = $'''SharePoint List'''
+            CALL LogToSharePoint
+        DEFAULT
+            SET Output_ErrorMessage TO $'''The log type \'%Input_LogType%\' is not supported by the Logger flow.'''
+    END
+    Variables.MergeLists FirstList: Input_ErrorMessageList SecondList: Output_ErrorMessageList OutputList=> Output_ErrorMessageList
+    IF Contains(Input_LoggerObject['ErrorLogLevels'], Log_Level, True) THEN
+        SET Log_Message TO $'''\"Level\": \"%Log_Level%\", \"Timestamp\": \"%Log_Timestamp%\", \"Subflow\": \"%Log_SubflowName%\", \"Message\": \"%Log_Message%\"'''
+        Variables.AddItemToList Item: $'''%Log_Message%<br>''' List: Output_ErrorMessageList
+    END
+    EXIT Code: 0
+END
+ERROR => Output_ErrorMessage

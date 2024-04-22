@@ -1,0 +1,11 @@
+IF IsEmpty(Input_LogAddress) THEN
+    SET ErrorMessage TO $'''Empty \'Input_LogAddress\' value provided. It is required when Log Type is \'%Input_LogType%\'.'''
+    EXIT FUNCTION
+END
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_LogAddress Statement: $'''EXEC %Input_LogPath% @Level = \'%Log_Level%\', @Machine = \'%Log_MachineName%\', @Project = \'%Input_ProjectName%\', @Flow = \'%Input_FlowName%\', @Subflow = \'%Log_SubflowName%\', @Message = \'%Log_Message%\';''' Timeout: 45 Result=> Table_SPResult
+IF Table_SPResult.IsEmpty = True THEN
+    SET ErrorMessage TO $'''The database returned nothing when attempting to log the following message \'%Input_LogMessage%\''''
+ELSE IF Table_SPResult[0]['Status'] < 0 THEN
+    SET ErrorMessage TO $'''Status: %Table_SPResult[0]['Status']%, Message: %Table_SPResult[0]['Message']%'''
+END

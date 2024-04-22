@@ -1,0 +1,8 @@
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-ddTHH:mm:ss.fff''' Result=> Log_Timestamp
+IF (File.IfFile.DoesNotExist File: Input_LogPath) THEN
+    # Creating a file with headers if it doesn't exist yet.
+    File.WriteToCSVFile.WriteCSV VariableToWrite: {['Level', 'Timestamp', 'Project', 'Flow', 'Subflow', 'Message'] } CSVFile: Input_LogPath CsvFileEncoding: File.CSVEncoding.UTF8 IncludeColumnNames: False IfFileExists: File.IfFileExists.Overwrite ColumnsSeparator: File.CSVColumnsSeparator.Semicolon
+END
+IF Contains(Input_LoggerObject['LogLevels'], Log_Level, True) THEN
+    File.WriteToCSVFile.WriteCSV VariableToWrite: {[Log_Level, Log_Timestamp, Input_ProjectName, Input_FlowName, Log_SubflowName, Log_Message] } CSVFile: Input_LogPath CsvFileEncoding: File.CSVEncoding.UTF8 IncludeColumnNames: False IfFileExists: File.IfFileExists.Append ColumnsSeparator: File.CSVColumnsSeparator.Semicolon
+END
