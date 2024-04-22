@@ -2,7 +2,6 @@ IF IsEmpty(Input_LogAddress) THEN
     SET ErrorMessage TO $'''Empty \'Input_LogAddress\' value provided. It is required when Log Type is \'%Input_LogType%\'.'''
     EXIT FUNCTION
 END
-System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''COMPUTERNAME''' Value=> Log_MachineName
 @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_LogAddress Statement: $'''EXEC %Input_LogPath% @Level = \'%Log_Level%\', @Machine = \'%Log_MachineName%\', @Project = \'%Input_ProjectName%\', @Flow = \'%Input_FlowName%\', @Subflow = \'%Log_SubflowName%\', @Message = \'%Log_Message%\';''' Timeout: 45 Result=> Table_SPResult
 IF Table_SPResult.IsEmpty = True THEN

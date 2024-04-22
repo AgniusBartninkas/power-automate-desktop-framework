@@ -14,3 +14,4 @@ SET Log_SubflowName TO $'''Unknown'''
 IF Input_SubflowNamesList.Count <> 0 THEN
     SET Log_SubflowName TO Input_SubflowNamesList[Input_SubflowNamesList.Count - 1]
 END
+System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''COMPUTERNAME''' Value=> Log_MachineName

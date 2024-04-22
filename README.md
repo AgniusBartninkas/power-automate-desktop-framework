@@ -28,3 +28,9 @@ To get at least some of them pasted, you can try splitting the block into smalle
 It is very likely that most actions will still be accepted anyway, especially simple actions, such as **Set variable**, **Run subflow**, etc., while more recent actions or actions with more custom attributes may not be allowed.
 
 Then create the actions that were not accepted manually by following the screenshots, the descriptions or the code that is provided for the flow.
+
+## Environments
+
+The Framework should have its own dedicated development environment. This is the only environment where the Framework should reside as an unmanaged solution. 
+
+It should be imported as a managed solution to all other environments where flows will use the framework, including normal DEV, TEST, UAT and other non-production environments. This is so that changes cannot be made to the framework outside of its own DEV environment, but it can be used by calling utility flows such as the **Logger** as child flows, as well as making copies of the template flows for new projects.

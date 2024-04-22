@@ -44,13 +44,18 @@ The flow produces several output variables that are returned to the parent flow 
 
 ## Minimal path to awesome
 
-1. Open the browser and navigate to [Power Automate cloud portal](https://make.powerautomate.com/)
-1. Create a solution called **PADFramework**
-1. Create a SharePoint connection using the account that should make the logs in SharePoint lists (see **Notes** below)
-1. Create a connection reference for the SharePoint connection (see **Notes** below)
-1. Open SQL Server Management Studio (see **Notes** below)
-1. Create the table for logs using the **create-table.sql** script in `/database/` (see **Notes** below)
-1. If you want to use a SQL Server stored procedure for logging, create the stored procedure using the **create-stored-procedure.sql** script in `/database/` (see **Notes** below)
+1. If you have not prepared an environment and a solution for the framework yet:
+    1. Open the browser and navigate to [Power Automate cloud portal](https://make.powerautomate.com/)
+    1. Create an dedicated environment for the Framework (DEV environments for other flows should contain a managed solution of the Framework - see **Notes** below)
+    1. Create a solution called **PADFramework** in the new environment
+1. If you want to log to SharePoint (see **Notes** below):
+    1. Create a SharePoint list with appropriate fields
+    1. Create a SharePoint connection using the account that should make the logs in SharePoint lists
+    1. Create a connection reference for the SharePoint connection in the **PADFramework** solution
+1. If you want to log to a SQL database (see **Notes** below):
+    1. Open SQL Server Management Studio 
+    1. Create the table for logs using the **create-table.sql** script in `/database/`
+    1. If you want to use a SQL Server stored procedure for logging (recommended), create the stored procedure using the **create-stored-procedure.sql** script in `/database/`
 1. Open **Power Automate Desktop**
 1. Create a new flow called **PADFramework: Logger** - make sure to not enable Power Fx when creating it
 
@@ -60,11 +65,11 @@ The flow produces several output variables that are returned to the parent flow 
     1. Input:
         1. Input_ErrorMessageList (Data type - List; Mark as sensitive - True; Mark as optional - False)
 
-        ![View of the parameters for the 'Input_ErrorMessageList' input variable in PAD](./assets/input-error-message-list-variable-parameters.png)
+            ![View of the parameters for the 'Input_ErrorMessageList' input variable in PAD](./assets/input-error-message-list-variable-parameters.png)
 
         1. Input_FlowName (Data type - Text; Mark as sensitive - False; Mark as optional - False)
 
-        ![View of the parameters for the 'Input_FlowName' input variable in PAD](./assets/input-flow-name-variable-parameters.png)
+            ![View of the parameters for the 'Input_FlowName' input variable in PAD](./assets/input-flow-name-variable-parameters.png)
 
         1. Input_LogAddress (Data type - Text; Mark as sensitive - True; Mark as optional - True) 
         1. Input_LoggerObject (Data type - Custom object; Mark as sensitive - False; Mark as optional - False)
@@ -76,7 +81,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. Output:
         1. Output_ErrorMessage (Data type: Text; Mark as sensitive - True)
 
-        ![View of the parameters for the 'Output_ErrorMessageList' input variable in PAD](./assets/output-error-message-list-variable-parameters.png)
+            ![View of the parameters for the 'Output_ErrorMessageList' input variable in PAD](./assets/output-error-message-list-variable-parameters.png)
 
         1. Output_ErrorMessageList (Data type: List; Mark as sensitive - True)
 1. Create new subflows (see **Notes** below): 
@@ -94,17 +99,28 @@ The flow produces several output variables that are returned to the parent flow 
         1. **log-to-database.txt** if you want to use standard INSERT statements
         1. **log-to-database-sp.txt** if you want to use a Stored Procedure to insert the logs (recommended)
     1. **log-to-SharePoint.txt** to the **LogToSharePoint** subflow (see **Notes** below)
-1. Adjust the **Create item** action in the **LogToSharePoint** subflow to use the correct connection reference (see **Notes** below)
+        1. You will most likely need to rebuild the **Create item** action here, because it may get reset after you select the correct connection reference. The correct way to do this is to copy it out to a text editor after you've made your changes, and then replace the `dataset`, `table` and all the input parameters with the same syntax as shown in the snippet. 
 1. Review the code for any syntax errors
 
     ![View of the code in a LogToFile subflow in PAD](./assets/log-to-file-subflow-example.png)
 
 1. Click **Save** in the flow designer
 1. Add the **PADFramework: Logger** flow to the **PADFramework** solution for exporting it to other environments
-1. When exporting to other environments, export it as a **Managed** solution, so that it can be used, but not modified. Logger should be managed even in DEV environments for other flows.
+
+    ![View of the menu path to add an existing desktop flow to a solution](./assets/adding-existing-desktop-flow-to-solution.png)
+
+1. When exporting to other environments, export it as a **Managed** solution, so that it can be used, but not modified. Logger should be managed even in DEV environments for other flows (see **Notes** below)
 1. **Enjoy**
 
 ## Notes
+
+### Environments
+
+The Framework should have its own dedicated development environment. This is the only environment where the Framework should reside as an unmanaged solution. 
+
+It should be imported as a managed solution to all other environments where flows will use the framework, including normal DEV, TEST, UAT and other non-production environments. This is so that changes cannot be made to the framework outside of its own DEV environment, but it can be used by calling utility flows such as the **Logger** as child flows, as well as making copies of the template flows for new projects.
+
+### Log types
 
 In case you do not plan on using one or more log types, you can easily skip the steps involved. Steps that can be skipped are marked as such in the description above.
 For example, if you do not plan to ever log to SharePoint list, you do not need to create the SharePoint connection, and then simply skip the **LogToSharePoint** subflow. Then delete the call to this subflow from **Main** after creating it.
