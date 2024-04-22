@@ -1,0 +1,29 @@
+# Setting the status and message to 'Bad Request' by default in case the flow fails.
+SET Output_Status TO 400
+SET Output_Message TO $'''Bad Request'''
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    IF IsEmpty(Input_ScreenshotsDirectory) THEN
+        SET Output_Status TO 422
+        SET Output_Message TO $'''Empty screenshots directory parameter provided. Screenshot will not be taken.'''
+        GOTO 'Exit'
+    END
+    IF (Folder.IfFolderExists.DoesNotExist Path: Input_ScreenshotsDirectory) THEN
+        SET Output_Status TO 404
+        SET Output_Message TO $'''The provided screenshots directory at \'%Input_ScreenshotsDirectory%\' does not exist. Screenshot will not be taken.'''
+        GOTO 'Exit'
+    END
+    DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+    Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd HHmmss''' Result=> Timestamp
+    SET ScreenshotFilePath TO $'''%Input_ScreenshotsDirectory%\\%Input_ScreenshotFileName% %Timestamp%.png'''
+    Workstation.TakeScreenshot.TakeScreenshotOfPrimaryScreenAndSaveToFile File: ScreenshotFilePath ImageFormat: System.ImageFormat.Png
+    SET Output_Status TO 200
+    SET Output_Message TO $'''Successfully took screenshot and saved it as \'%ScreenshotFilePath%\''''
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+SET Output_Message TO $'''Failed to take screenshot due to %ErrorMessage%'''
