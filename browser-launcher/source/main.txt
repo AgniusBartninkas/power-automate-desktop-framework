@@ -1,0 +1,29 @@
+# Setting the status and message to 'Bad Request' by default in case the flow fails.
+SET Output_Status TO 400
+SET Output_Message TO $'''Bad Request'''
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    SET CommandLineArguments TO $'''www.google.com'''
+    SWITCH Input_Browser
+        CASE = $'''Chrome'''
+            CALL LaunchChrome
+        CASE = $'''Edge'''
+            CALL LaunchEdge
+        CASE = $'''Firefox'''
+            CALL LaunchFirefox
+        DEFAULT
+            SET Output_Status TO 400
+            SET Output_Message TO $'''Browser \'%Input_Browser%\' is not supported by the Browser Launcher flow.'''
+            GOTO 'Exit'
+    END
+    WebAutomation.GoToWebPage.GoToWebPageCloseDialog BrowserInstance: BrowserInstance Url: Input_URL WaitForPageToLoadTimeout: 60
+    SET Output_Status TO 200
+    SET Output_Message TO $'''Successfully launched %Input_Browser% and navigated to %Input_URL%'''
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+SET Output_Message TO $'''Failed to take screenshot due to %ErrorMessage%'''
