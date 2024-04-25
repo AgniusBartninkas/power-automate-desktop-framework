@@ -1,0 +1,26 @@
+SET Output_Status TO 200
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    SWITCH Input_Browser
+        CASE = $'''Chrome'''
+            CALL CloseChrome
+        CASE = $'''Edge'''
+            CALL CloseEdge
+        CASE = $'''Firefox'''
+            CALL CloseFirefox
+        DEFAULT
+            SET Output_Message TO $'''Closing all browsers as the input browser name was either unrecognized or empty (\"%Input_Browser%\").'''
+            CALL CloseChrome
+            CALL CloseEdge
+            CALL CloseFirefox
+            GOTO 'Exit'
+    END
+    Text.AppendLine Text: Output_Message LineToAppend: $'''Successfully closed %Input_Browser%.''' Result=> Output_Message
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+Text.AppendLine Text: Output_Message LineToAppend: $'''Failed to close browser due to %ErrorMessage%''' Result=> Output_Message
