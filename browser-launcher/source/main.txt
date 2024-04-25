@@ -26,4 +26,4 @@ END
 END
 ERROR => ErrorMessage
 SET Output_Status TO 500
-SET Output_Message TO $'''Failed to take screenshot due to %ErrorMessage%'''
+SET Output_Message TO $'''Failed to launch %Input_Browser% browser due to %ErrorMessage%'''

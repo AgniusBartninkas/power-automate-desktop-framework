@@ -1,6 +1,6 @@
 # BrowserLauncher
 
-The browser launcher flow launches a browser instance based on the inputs provided and returns a browser instance variable as outputs.
+The browser launcher flow launches a browser instance based on the inputs provided.
 It is to be called as a child flow by other flows, and as such it should reside as a utility flow that does not need to be copied, but can be re-used.
 
 ## Version compatibility
@@ -33,7 +33,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. Create an dedicated environment for the Framework (DEV environments for other flows should contain a managed solution of the Framework - see **Notes** below)
     1. Create a solution called **PADFramework** in the new environment
 1. Open **Power Automate Desktop**
-1. Create a new flow called **PADFramework: LauncherBrowser** - make sure to not enable Power Fx when creating it
+1. Create a new flow called **PADFramework: BrowserLauncher** - make sure to not enable Power Fx when creating it
 
     ![View of the flow creation window in PAD](./assets/creating-the-flow.png)
 
