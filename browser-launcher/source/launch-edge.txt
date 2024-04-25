@@ -1,0 +1,6 @@
+IF Input_IncognitoMode = True THEN
+    SET CommandLineArguments TO $'''%CommandLineArguments% -inprivate'''
+END
+System.RunApplication.RunApplication ApplicationPath: $'''msedge''' CommandLineArguments: CommandLineArguments WindowStyle: System.ProcessWindowStyle.Maximized ProcessId=> AppProcessId
+WAIT (UIAutomation.WaitForWindow.ToOpenByTitleClass Title: $'''Google*''' Class: $'''Chrome_WidgetWin_1''' FocusWindow: True) FOR 30
+WebAutomation.LaunchEdge.AttachToEdgeByTitle TabTitle: $'''Google''' AttachTimeout: 5 BrowserInstance=> BrowserInstance

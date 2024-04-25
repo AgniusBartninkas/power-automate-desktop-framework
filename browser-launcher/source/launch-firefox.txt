@@ -1,0 +1,6 @@
+IF Input_IncognitoMode = True THEN
+    SET CommandLineArguments TO $'''%CommandLineArguments% -private'''
+END
+System.RunApplication.RunApplication ApplicationPath: $'''firefox''' CommandLineArguments: CommandLineArguments WindowStyle: System.ProcessWindowStyle.Maximized ProcessId=> AppProcessId
+WAIT (UIAutomation.WaitForWindow.ToOpenByTitleClass Title: $'''Google*''' Class: $'''MozillaWindowClass''' FocusWindow: True) FOR 30
+WebAutomation.LaunchFirefox.AttachToFirefoxByTitle TabTitle: $'''Google''' AttachTimeout: 5 BrowserInstance=> BrowserInstance
