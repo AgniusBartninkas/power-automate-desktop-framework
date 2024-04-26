@@ -1,0 +1,86 @@
+SET Output_Status TO 200
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    IF (System.IfProcess.ProcessIsNotRunning ProcessName: $'''EXCEL''') THEN
+    ON ERROR
+
+    END
+        SET Output_Message TO $'''Excel is not running. Will not attempt to close it.'''
+        GOTO 'Exit'
+    END
+    IF IsNotEmpty(Input_FilePath) THEN
+        Excel.Attach DocumentName: Input_FilePath Instance=> ExcelToClose
+        Excel.CloseExcel.Close Instance: ExcelToClose
+        WAIT (System.WaitForProcess.ProcessToStop ProcessName: $'''EXCEL''') FOR 10 
+        ON ERROR TimeoutError
+
+        END
+        IF (System.IfProcess.ProcessIsNotRunning ProcessName: $'''EXCEL''') THEN
+        ON ERROR
+
+        END
+            SET Output_Message TO $'''Successfully closed Excel instance for document %Input_FilePath%'''
+            GOTO 'Exit'
+        END
+    END
+    LOOP FROM 1 TO 10 STEP 1
+        IF (System.IfProcess.ProcessIsRunning ProcessName: $'''EXCEL''') THEN
+        ON ERROR
+
+        END
+            @@copilotGeneratedAction: 'False'
+Scripting.RunPowershellScript.RunPowershellScript Script: $'''$excel = [Runtime.Interopservices.Marshal]::GetActiveObject(\'Excel.Application\')
+$excel.Visible = $false
+$excel.DisplayAlerts = $false
+
+$excel.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
+Remove-Variable -Name Excel 
+[GC]::Collect() 
+[GC]::WaitForPendingFinalizers()
+if ($excel.Workbooks.Count -eq 0)
+{
+    Stop-Process -Name EXCEL -ErrorAction SilentlyContinue
+}''' ScriptOutput=> PowershellOutput
+            WAIT (System.WaitForProcess.ProcessToStop ProcessName: $'''EXCEL''') FOR 5 
+            ON ERROR
+
+            END
+        ELSE
+            EXIT LOOP
+        END
+    END
+    LOOP FROM 1 TO 10 STEP 1
+        IF (System.IfProcess.ProcessIsRunning ProcessName: $'''EXCEL''') THEN
+        ON ERROR
+
+        END
+            System.TerminateProcess.TerminateProcessByName ProcessName: $'''EXCEL'''
+            ON ERROR
+
+            END
+            WAIT (System.WaitForProcess.ProcessToStop ProcessName: $'''EXCEL''') FOR 5 
+            ON ERROR
+
+            END
+        ELSE
+            EXIT LOOP
+        END
+    END
+    IF (System.IfProcess.ProcessIsRunning ProcessName: $'''EXCEL''') THEN
+    ON ERROR
+
+    END
+        SET Output_Status TO 500
+        SET ErrorMessage TO $'''Failed to properly close excel'''
+        GOTO 'Exit'
+    END
+    SET Output_Message TO $'''Successfully closed Excel'''
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+SET Output_Message TO $'''Failed to close Excel due to %ErrorMessage%'''
