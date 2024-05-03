@@ -66,14 +66,14 @@ The flow produces several output variables that are returned to the parent flow 
 
         1. Input_DisplayName (Data type - Text; Mark as sensitive - False; Mark as optional - False)
         1. Input_EmailAccount (Data type - Text; Mark as sensitive - False; Mark as optional - False)
-        1. Input_EmailMessage (Data type - Text; Mark as sensitive - False; Mark as optional - False)
+        1. Input_EmailMessage (Data type - Text; Mark as sensitive - True; Mark as optional - False)
         1. Input_EmailRecipient (Data type - Text; Mark as sensitive - True; Mark as optional - False)
         1. Input_EmailRecipientCC (Data type - Text; Mark as sensitive - True; Mark as optional - True)
         1. Input_EmailSubject (Data type - Text; Mark as sensitive - False; Mark as optional - False)
-        1. Input_ExchangeObject (Data type - Custom object; Mark as sensitive - False; Mark as optional - True)
+        1. Input_ExchangeObject (Data type - Custom object; Mark as sensitive - True; Mark as optional - True)
         1. Input_HTMLTemplatePath (Data type - Text; Mark as sensitive - False; Mark as optional - False)
         1. Input_MailboxType (Data type - Text; Mark as sensitive - False; Mark as optional - False)
-        1. Input_SMTPObject (Data type - Custom object; Mark as sensitive - False; Mark as optional - True)
+        1. Input_SMTPObject (Data type - Custom object; Mark as sensitive - True; Mark as optional - True)
     1. Output:
         1. Output_Message (Data type: Text; Mark as sensitive - True)
 
@@ -91,6 +91,10 @@ The flow produces several output variables that are returned to the parent flow 
     1. **send-email-via-outlook.txt** to the **SendEmailViaOutlook** subflow (see **Notes** below)
     1. **send-email-via-smtp.txt** to the **SendEmailViaSMTP** subflow (see **Notes** below)
     1. **set-email-body.txt** to the **SetEmailBody** subflow
+1. Right-click on the the *HTMLEmailBody* variable in the Variables pane and set it as sensitive, as it will contain the email message.
+
+    ![View of setting the 'HTMLEmailBody' variable as sensitive in PAD](./assets/setting-html-email-body-variable-as-sensitive.png)
+
 1. Review the code for any syntax errors
 
     ![View of the code in the Main subflow in PAD](./assets/main-subflow-example.png)
