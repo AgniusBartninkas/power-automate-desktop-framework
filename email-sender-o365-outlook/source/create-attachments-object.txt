@@ -1,0 +1,6 @@
+Variables.CreateNewList List=> List_AttachmentObjects
+LOOP FOREACH CurrentAttachment IN Input_Attachments
+    File.ConvertToBinary File: CurrentAttachment BinaryData=> BinaryData
+    File.GetPathPart File: CurrentAttachment FileName=> FileName
+    Variables.AddItemToList Item: { 'Name': FileName, 'ContentBytes': BinaryData } List: List_AttachmentObjects
+END
