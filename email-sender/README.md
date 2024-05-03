@@ -62,7 +62,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. Input:
         1. Input_Attachments (Data type - List; Mark as sensitive - False; Mark as optional - True)
 
-            ![View of the parameters for the 'Input_ScreenshotFileName' input variable in PAD](./assets/input-attachments-parameters.png)
+            ![View of the parameters for the 'Input_Attachments' input variable in PAD](./assets/input-attachments-variable-parameters.png)
 
         1. Input_DisplayName (Data type - Text; Mark as sensitive - False; Mark as optional - False)
         1. Input_EmailAccount (Data type - Text; Mark as sensitive - False; Mark as optional - False)

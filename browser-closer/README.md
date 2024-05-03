@@ -16,11 +16,10 @@ The code currently does not have a version for flows with Power Fx enabled. Howe
 
 There are several inputs required by this flow, and a couple that are optional (depending on other parameters):
 
-1. **Input_Browser** - Should contain the name of the browser to be closed. Available options are:
+1. **Input_Browser** - Should contain the name of the browser to be closed. If no browser name is provided, all open browser windows will be closed. Available options are:
     1. Chrome
     1. Edge
     1. Firefox
-    If no browser name is provided, all open browser windows will be closed.
 1. **Input_URL** - Should contain the URL for a specific browser tab to be closed. If no URL is provided, all browser tabs will be closed. If a URL is provided, but a tab with such a URL is not found, an error will be thrown.
 
 ## Output produced

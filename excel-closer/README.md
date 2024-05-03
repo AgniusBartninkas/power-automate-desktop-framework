@@ -40,7 +40,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. Input:
         1. Input_FilePath (Data type - Text; Mark as sensitive - False; Mark as optional - True)
 
-            ![View of the parameters for the 'Input_FilePath' input variable in PAD](./assets/input-browser-variable-parameters.png)
+            ![View of the parameters for the 'Input_FilePath' input variable in PAD](./assets/input-file-path-variable-parameters.png)
 
     1. Output:
         1. Output_Message (Data type: Text; Mark as sensitive - True)

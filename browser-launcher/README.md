@@ -91,7 +91,7 @@ However, for this to work, some settings need to be adjusted on the correspondin
 
 This can be done via the extension details on each browser.
 
-    ![View of the InPrivate mode allowed for Power Automate extension in Microsoft Edge](./assets/edge-extension-allowed-in-private.png)
+![View of the InPrivate mode allowed for Power Automate extension in Microsoft Edge](./assets/edge-extension-allowed-in-private.png)
 
 ### Skipping irrelevant browsers
 
@@ -111,4 +111,4 @@ If you are using a system with Internet Explorer installed and need to use it fo
 A browser instance is a special type of variable and it cannot be returned as an output variable by the child flow.
 As such, in order to use the browser that was launched by Browser Launcher in the parent flow for further web automation tasks, you will need to attach to it. Use **Launch New {Browser}** action for the appropriate action after running the child flow, and make it attach to a running instance by providing the same URL that was used to launch the browser as a parameter. Here's an example for what that would look like for Chrome:
 
-    ![View of the 'Launch New Chrome' action in the parent flow](./assets/launch-new-chrome-in-parent-flow-example.png)
+![View of the 'Launch New Chrome' action in the parent flow](./assets/launch-new-chrome-in-parent-flow-example.png)
