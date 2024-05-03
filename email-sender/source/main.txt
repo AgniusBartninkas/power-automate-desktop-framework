@@ -1,0 +1,28 @@
+# Setting the status and message to 'Bad Request' by default in case the flow fails.
+SET Output_Status TO 400
+SET Output_Message TO $'''Bad Request'''
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    CALL SetEmailBody
+    SWITCH Input_MailboxType
+        CASE = $'''Exchange'''
+            CALL SendEmailViaExchange
+        CASE = $'''Outlook'''
+            CALL SendEmailViaOutlook
+        CASE = $'''SMTP'''
+            CALL SendEmailViaSMTP
+        DEFAULT
+            SET Output_Status TO 400
+            SET Output_Message TO $'''Mailbox type \'%Input_MailboxType%\' is not supported by the Email Sender flow.'''
+            GOTO 'Exit'
+    END
+    SET Output_Status TO 200
+    SET Output_Message TO $'''Successfully sent an email with subject text \'%Input_EmailSubject%\' to \'%Input_EmailRecipient%\''''
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+SET Output_Message TO $'''Failed to send an email due to %ErrorMessage%'''
