@@ -1,0 +1,49 @@
+# Setting the status and message to 'Bad Request' by default in case the flow fails.
+SET Output_Status TO 400
+SET Output_Message TO $'''Bad Request'''
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    CALL SetEmailBody
+    IF IsNotEmpty(Input_Attachments) THEN
+        CALL CreateAttachmentsObject
+        @@'emailMessage/Sensitivity': ''
+@@connectionDisplayName: 'Office 365 Outlook - PAD Framework Demo'
+External.InvokeCloudConnector Connection: '{ReplaceWithConnectionReferenceId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_office365' OperationId: 'SendEmailV2' @'emailMessage/To': Input_EmailRecipient @'emailMessage/Subject': Input_EmailSubject @'emailMessage/Body': HTMLEmailBody @'emailMessage/Cc': Input_EmailRecipientCC @'emailMessage/Attachments': List_AttachmentObjects
+    ELSE
+        @@'emailMessage/Sensitivity': ''
+@@connectionDisplayName: 'Office 365 Outlook - PAD Framework Demo'
+External.InvokeCloudConnector Connection: '{ReplaceWithConnectionReferenceId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_office365' OperationId: 'SendEmailV2' @'emailMessage/To': Input_EmailRecipient @'emailMessage/Subject': Input_EmailSubject @'emailMessage/Body': HTMLEmailBody @'emailMessage/Cc': Input_EmailRecipientCC
+    END
+    SET Output_Status TO 200
+    SET Output_Message TO $'''Successfully sent an email with subject text \'%Input_EmailSubject%\' to \'%Input_EmailRecipient%\''''
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+SET Output_Message TO $'''Failed to send an email due to %ErrorMessage%'''
+
+# [ControlRepository][PowerAutomateDesktop]
+
+{
+  "ControlRepositorySymbols": [],
+  "ImageRepositorySymbol": {
+    "Repository": "{\r\n  \"Folders\": [],\r\n  \"Images\": [],\r\n  \"Version\": 1\r\n}",
+    "ImportMetadata": {},
+    "Name": "imgrepo"
+  },
+  "ConnectionReferences": [
+    {
+      "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+      "DisplayName": "Office 365 Outlook - PAD Framework Demo",
+      "InternalId": "{ReplaceWithConnectionReferenceId}",
+      "IsDisabled": false,
+      "LogicalName": "def_Office_365_Outlook_PAD_Framework_Demo",
+      "IsEmbedded": false,
+      "ConnectionName": "17587d78fc4f49da8dd2b1a564f6044d",
+      "ConnectionDisplayName": "{YourConnectionDisplayName}"
+    }
+  ]
+}
