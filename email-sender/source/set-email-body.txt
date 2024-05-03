@@ -1,0 +1,2 @@
+File.ReadTextFromFile.ReadText File: Input_HTMLTemplatePath Encoding: File.TextFileEncoding.UTF8 Content=> HTMLEmailBody
+Text.Replace Text: HTMLEmailBody TextToFind: $'''{EmailMessage}''' IsRegEx: False IgnoreCase: False ReplaceWith: Input_EmailMessage ActivateEscapeSequences: False Result=> HTMLEmailBody

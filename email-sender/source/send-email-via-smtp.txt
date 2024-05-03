@@ -1,0 +1,5 @@
+IF IsNotEmpty(Input_Attachments) THEN
+    Email.SendEmail.AuthenticateAndSend SMTPServer: Input_SMTPObject['Server'] Port: Input_SMTPObject['Port'] EnableSSL: True Username: Input_SMTPObject['Username'] Password: Input_SMTPObject['Password'] AcceptUntrustedCertificates: True SendFrom: Input_EmailAccount SenderDisplayName: Input_DisplayName SendTo: Input_EmailRecipient CC: Input_EmailRecipientCC Subject: Input_EmailSubject Body: HTMLEmailBody IsBodyHtml: True Attachments: Input_Attachments
+ELSE
+    Email.SendEmail.AuthenticateAndSend SMTPServer: Input_SMTPObject['Server'] Port: Input_SMTPObject['Port'] EnableSSL: True Username: Input_SMTPObject['Username'] Password: Input_SMTPObject['Password'] AcceptUntrustedCertificates: True SendFrom: Input_EmailAccount SenderDisplayName: Input_DisplayName SendTo: Input_EmailRecipient CC: Input_EmailRecipientCC Subject: Input_EmailSubject Body: HTMLEmailBody IsBodyHtml: True
+END

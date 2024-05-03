@@ -1,0 +1,6 @@
+Outlook.Launch Instance=> OutlookInstance
+IF IsNotEmpty(Input_Attachments) THEN
+    Outlook.SendEmailThroughOutlook.SendEmail Instance: OutlookInstance Account: Input_EmailAccount SendTo: Input_EmailRecipient CC: Input_EmailRecipientCC Subject: Input_EmailSubject Body: HTMLEmailBody IsBodyHtml: True IsDraft: False Attachments: Input_Attachments
+ELSE
+    Outlook.SendEmailThroughOutlook.SendEmail Instance: OutlookInstance Account: Input_EmailAccount SendTo: Input_EmailRecipient CC: Input_EmailRecipientCC Subject: Input_EmailSubject Body: HTMLEmailBody IsBodyHtml: True IsDraft: False
+END

@@ -1,0 +1,18 @@
+IF (Contains(Input_ExchangeObject, 'Server', False) AND Contains(Input_ExchangeObject, 'Username', False)) = True THEN
+    IF (IsNotEmpty(Input_ExchangeObject['Server']) AND IsNotEmpty(Input_ExchangeObject['Server'])) = True THEN
+        Exchange.ConnectToExchangeServer.ConnectToServerWithCredentials ServerVersion: Exchange.ServerVersion.Exchange2013_SP1 ServerAddress: Input_ExchangeObject['Server'] Domain: Input_ExchangeObject['Domain'] Username: Input_ExchangeObject['Username'] Password: Input_ExchangeObject['Password'] Timeout: 30 Connection=> ExchangeConnection
+    ELSE IF IsNotEmpty(Input_ExchangeObject['Server']) THEN
+        Exchange.ConnectToExchangeServer.ConnectToServer ServerVersion: Exchange.ServerVersion.Exchange2013_SP1 ServerAddress: Input_ExchangeObject['Server'] Timeout: 30 Connection=> ExchangeConnection
+    ELSE IF IsNotEmpty(Input_ExchangeObject['Username']) THEN
+        Exchange.ConnectToExchangeServer.ConnectWithCredentials ServerVersion: Exchange.ServerVersion.Exchange2013_SP1 EmailAddress: Input_EmailAccount Domain: Input_ExchangeObject['Domain'] Username: Input_ExchangeObject['Username'] Password: Input_ExchangeObject['Password'] Timeout: 30 Connection=> ExchangeConnection
+    ELSE
+        Exchange.ConnectToExchangeServer.Connect ServerVersion: Exchange.ServerVersion.Exchange2013_SP1 EmailAddress: Input_EmailAccount Timeout: 30 Connection=> ExchangeConnection
+    END
+ELSE
+    Exchange.ConnectToExchangeServer.Connect ServerVersion: Exchange.ServerVersion.Exchange2013_SP1 EmailAddress: Input_EmailAccount Timeout: 30 Connection=> ExchangeConnection
+END
+IF IsNotEmpty(Input_Attachments) THEN
+    Exchange.SendMessage Connection: ExchangeConnection SendFrom: Input_EmailAccount SenderDisplayName: Input_DisplayName SendTo: Input_EmailRecipient CC: Input_EmailRecipientCC Subject: Input_EmailSubject Body: HTMLEmailBody IsBodyHtml: True Attachments: Input_Attachments
+ELSE
+    Exchange.SendMessage Connection: ExchangeConnection SendFrom: Input_EmailAccount SenderDisplayName: Input_DisplayName SendTo: Input_EmailRecipient CC: Input_EmailRecipientCC Subject: Input_EmailSubject Body: HTMLEmailBody IsBodyHtml: True
+END
