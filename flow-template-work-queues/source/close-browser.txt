@@ -1,0 +1,42 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''CloseBrowser''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    /# The browser instance is a text value if is not instantiated and it does not have a .Handle property.
+Attempting to close with the happy path first.#/
+    IF IsNotEmpty(BrowserToClose) THEN
+        IF (BrowserToClose.Handle) <> (-1) THEN
+            WebAutomation.CloseWebBrowser BrowserInstance: BrowserToClose
+                ON ERROR REPEAT 3 TIMES WAIT 3
+                ON ERROR
+
+                END
+            IF BrowserToClose.IsAlive = False THEN
+                GOTO 'Exit'
+            END
+        END
+    END
+    /# Will close all browsers and all instances.
+Provide a browser name and URL (as variables) to close a specific browser and/or tab.#/
+    @@flowname: 'PADFramework: BrowserCloser'
+External.RunFlow FlowId: '{ReplaceWithBrowserCloserFlowId}' @Input_Browser: $'''''' @Input_URL: $'''''' @Output_Message=> Output_Message @Output_Status=> Output_Status
+    IF Output_Status <> 200 THEN
+        SET ErrorMessage TO Output_Message
+        GOTO 'Exit'
+    END
+    Variables.IncreaseVariable Value: BrowserRestartCount IncrementValue: 1
+    IF BrowserRestartCount >= Config_MaxErrorCountObject['Web'] THEN
+        SET Log_Message TO $'''FATAL;;;The browser has been restarted %BrowserRestartCount% time(s). Assuming it has fallen into an infinite loop and stopping the flow.'''
+        CALL Logger
+        CALL ThrowFatalError
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

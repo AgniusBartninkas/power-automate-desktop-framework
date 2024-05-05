@@ -1,0 +1,46 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''ExecuteWebFlow''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    /# These retries will apply to each work item retry (3 web retries times 3 work item retries by default).
+If you want to do less attempts, reduce the max error count values in config or remove this loop.#/
+    LOOP ErrorCount FROM 1 TO Config_MaxErrorCountObject['Web'] STEP 1
+        IF IsNotEmpty(ErrorMessage) THEN
+            SET Log_Message TO $'''ERROR;;;%ErrorMessage%'''
+            CALL Logger
+            SET ErrorMessage TO ''
+            CALL TakeScreenshot
+            IF IsNotEmpty(ErrorMessage) THEN
+                SET Log_Message TO $'''ERROR;;;%ErrorMessage%'''
+                CALL Logger
+                SET ErrorMessage TO ''
+            END
+        END
+        CALL PrepareWebPage
+        IF IsNotEmpty(ErrorMessage) THEN
+            NEXT LOOP
+        END
+        # Replace this comment with custom subflows
+        EXIT LOOP
+    END
+    SET BrowserToClose TO BrowserMain
+    CALL CloseBrowser
+    IF IsNotEmpty(ErrorMessage) THEN
+        SET Log_Message TO $'''WARN;;;%ErrorMessage%. Ignoring error and continuing on'''
+        CALL Logger
+        SET ErrorMessage TO ''
+    END
+    IF (ErrorCount) >= (Config_MaxErrorCountObject['Web']) THEN
+        SET WorkItem_Status TO $'''Fail'''
+        SET WorkItem_Message TO $'''Web Automation failed after %ErrorCount% attempts.'''
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

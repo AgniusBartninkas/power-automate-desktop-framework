@@ -1,0 +1,31 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''LaunchBrowser''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    SET URL TO Config_URLObject['Main']
+    /# Will launch Edge in normal mode by default.
+Adjust input parameters as necessary.#/
+    SET Browser TO $'''Edge'''
+    @@flowname: 'PADFramework: BrowserLauncher'
+External.RunFlow FlowId: 'aa0a967a-5f8c-4891-b6c1-87536e7f3d0b' @Input_Browser: Browser @Input_URL: URL @Input_IncognitoMode: False @Output_Status=> Output_Status @Output_Message=> Output_Message
+    IF Output_Status <> 200 THEN
+        SET ErrorMessage TO Output_Message
+    END
+    SWITCH Browser
+        CASE = $'''Chrome'''
+            WebAutomation.LaunchChrome.AttachToChromeByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> BrowserMain
+        CASE = $'''Edge'''
+            WebAutomation.LaunchEdge.AttachToEdgeByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> Browser
+        CASE = $'''Firefox'''
+            WebAutomation.LaunchFirefox.AttachToFirefoxByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> BrowserMain
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

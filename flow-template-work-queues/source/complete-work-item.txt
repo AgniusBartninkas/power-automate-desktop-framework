@@ -1,0 +1,24 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''CompleteWorkItem''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    SWITCH WorkItem_Status
+        CASE = $'''Success'''
+            WorkQueues.UpdateWorkQueueItem.UpdateWithProcessingNotes WorkQueueItem: WorkQueueItem Status: WorkQueues.WorkQueueItemStatus.Processed ProcessingResult: WorkItem_Message
+        CASE = $'''Skip'''
+            WorkQueues.UpdateWorkQueueItem.UpdateWithProcessingNotes WorkQueueItem: WorkQueueItem Status: WorkQueues.WorkQueueItemStatus.BusinessException ProcessingResult: WorkItem_Message
+        CASE = $'''Fail'''
+            WorkQueues.UpdateWorkQueueItem.UpdateWithProcessingNotes WorkQueueItem: WorkQueueItem Status: WorkQueues.WorkQueueItemStatus.ITException ProcessingResult: WorkItem_Message
+        DEFAULT
+            WorkQueues.UpdateWorkQueueItem.UpdateWithProcessingNotes WorkQueueItem: WorkQueueItem Status: WorkQueues.WorkQueueItemStatus.GenericException ProcessingResult: WorkItem_Message
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

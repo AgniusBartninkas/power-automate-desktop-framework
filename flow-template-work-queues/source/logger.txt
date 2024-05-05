@@ -1,0 +1,27 @@
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    # TRACE level used in "On block error" blocks only, indicating a system exception.
+    IF Log_Message = $'''TRACE''' THEN
+        ERROR => ErrorMessage
+        SET Log_Message TO $'''%Log_Message%;;;%ErrorMessage%'''
+    END
+    /# Adjust the parameters according to your logging needs.
+The current settings will log to a plain text .log file.#/
+    @@flowname: 'PADFramework: Logger'
+External.RunFlow FlowId: '{ReplaceWithLoggerFlowId}' @Input_SubflowNamesList: List_SubflowNames @Input_LoggerObject: Config_LoggerObject @Input_LogPath: Log_Path @Input_LogMessage: Log_Message @Input_LogType: Log_Type @Input_ErrorMessageList: List_ErrorMessages @Input_FlowName: FlowName @Input_ProjectName: ProjectName @Input_LogAddress: Log_Address @Output_ErrorMessageList=> List_ErrorMessages @Output_ErrorMessage=> ErrorMessage
+    IF IsNotEmpty(ErrorMessage) THEN
+        # Not calling ThrowFatalError here to prevent logical recursion.
+        SET Output_IsSuccess TO False
+        EXIT Code: 0
+    END
+    SET Log_Message TO ''
+    EXIT FUNCTION
+END
+# Retrieving the error captured by the block
+ERROR => ErrorMessage
+IF IsNotEmpty(ErrorMessage) THEN
+    SET Output_IsSuccess TO False
+    EXIT Code: 0
+END
