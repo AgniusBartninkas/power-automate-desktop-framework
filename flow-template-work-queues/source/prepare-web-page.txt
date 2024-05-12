@@ -1,0 +1,29 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''PrepareWebPage''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    /# Remove call for CloseBrowser if you do not want to close it on retry.
+Check for specific page title or URL or even a window to check if the flow can recover without restarting the browser.#/
+    CALL CloseBrowser
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    CALL LaunchBrowser
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    # Login subflow to be used only when relevant to login to the web page.
+    CALL LoginToWebPage
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

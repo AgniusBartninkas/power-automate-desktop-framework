@@ -1,0 +1,51 @@
+CALL Init
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+ON ERROR
+    GOTO Fatal
+END
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd''' Result=> DateStamp
+Variables.AddItemToList Item: $'''Main''' List: List_SubflowNames
+CALL Config
+IF IsNotEmpty(ErrorMessage) THEN
+    SET Log_Message TO $'''FATAL;;;%ErrorMessage%'''
+    CALL Logger
+    GOTO Fatal
+END
+CALL GetFlowSettings
+IF IsNotEmpty(ErrorMessage) THEN
+    SET Log_Message TO $'''FATAL;;;%ErrorMessage%'''
+    CALL Logger
+    GOTO Fatal
+END
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    SET Log_Message TO $'''INFO;;;Starting flow \"%FlowName%\"'''
+    CALL Logger
+    CALL ExecuteMainFlow
+    IF IsNotEmpty(ErrorMessage) THEN
+        SET Log_Message TO $'''ERROR;;;Failed to successfully run flow \"%FlowName%\". Last error: %ErrorMessage%. Flow stopped'''
+        CALL Logger
+        GOTO 'Exit'
+    END
+    SET Output_IsSuccess TO True
+    SET Log_Message TO $'''INFO;;;Finishing flow \"%FlowName%\"'''
+    CALL Logger
+END
+LABEL 'Exit'
+IF (List_ErrorMessages.Count) > (0) THEN
+    CALL SendErrorMessages
+    IF IsNotEmpty(ErrorMessage) THEN
+        CALL StopFlow
+    END
+END
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames
+EXIT Code: 0
+LABEL Fatal
+CALL StopFlow

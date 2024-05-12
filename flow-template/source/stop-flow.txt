@@ -1,0 +1,12 @@
+/# Description:
+This subflow gets the last occurred exception and stops the flow with the exception message. If the error handling is configured to do so, it would also send an email about the fatal error.
+
+Params:
+- None
+
+Returns:
+- Nothing
+#/
+SET Output_IsSuccess TO False
+ERROR => ErrorMessage
+EXIT Code: 0

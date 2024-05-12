@@ -1,0 +1,20 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''ProcessWorkItem''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    # Replace this comment with custom subflows
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    SET WorkItem_Status TO $'''Success'''
+    SET WorkItem_Message TO $'''Successfully processed work item with number %WorkItem_Number% and Id %WorkItem_Id%.'''
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

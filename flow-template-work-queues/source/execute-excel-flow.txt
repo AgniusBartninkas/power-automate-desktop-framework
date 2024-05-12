@@ -1,0 +1,45 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''ExecuteExcelFlow''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    SET ExcelDocument TO Config_FlowObject['ExcelDocument']
+    /# These retries will apply to each work item retry (3 Excel retries times 3 work item retries by default).
+If you want to do less attempts, reduce the max error count values in config or remove this loop.#/
+    LOOP ErrorCount FROM 0 TO Config_MaxErrorCountObject['Excel'] STEP 1
+        CALL CloseExcel
+        IF IsNotEmpty(ErrorMessage) THEN
+            GOTO 'Exit'
+        END
+        IF (File.IfFile.DoesNotExist File: ExcelDocument) THEN
+            SET ErrorMessage TO $'''File \"%ExcelDocument%\" does not exist. '''
+            GOTO 'Exit'
+        END
+        Excel.LaunchExcel.LaunchAndOpen Path: ExcelDocument Visible: False ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelMain
+        # Replace this comment custom subflow calls.
+        IF IsNotEmpty(ErrorMessage) THEN
+            SET Log_Message TO $'''ERROR;;;Failed to process Excel due to %ErrorMessage%. Retrying'''
+            CALL Logger
+            NEXT LOOP
+        END
+        EXIT LOOP
+    END
+    SET ExcelToClose TO ExcelMain
+    CALL CloseExcel
+    IF IsNotEmpty(ErrorMessage) THEN
+        SET Log_Message TO $'''WARN;;;%ErrorMessage%. Ignoring error and continuing'''
+        CALL Logger
+        SET ErrorMessage TO ''
+    END
+    IF (ErrorCount) >= (Config_MaxErrorCountObject['Excel']) THEN
+        SET ErrorMessage TO $'''Excel automation failed after retrying for %Config_MaxErrorCountObject['Excel']% times.'''
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

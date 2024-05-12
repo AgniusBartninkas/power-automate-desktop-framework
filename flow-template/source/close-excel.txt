@@ -1,0 +1,49 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''CloseExcel''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    # Attempting to close with the happy path first before calling ExcelCloser.
+    IF IsNotEmpty(ExcelToClose) THEN
+        IF ExcelToClose.Handle <> 0 THEN
+            BLOCK 
+ON BLOCK ERROR all
+
+END
+                Excel.CloseExcel.Close Instance: ExcelToClose
+                WAIT (System.WaitForProcess.ProcessToStop ProcessName: $'''EXCEL''') FOR 10 
+                    ON ERROR TimeoutError
+
+                    END
+                IF (System.IfProcess.ProcessIsNotRunning ProcessName: $'''EXCEL''') THEN
+                    ON ERROR
+
+                    END
+                    GOTO 'Exit'
+                END
+            END
+        END
+    END
+    /# Will close all Excel instances by default.
+Provide a file path as an input parameter to close a specific file.#/
+    @@flowname: 'PADFramework: ExcelCloser'
+External.RunFlow FlowId: '{ReplaceWithExcelCloserFlowId}' @Input_FilePath: $'''''' @Output_Message=> Output_Message @Output_Status=> Output_Status
+    IF Output_Status <> 200 THEN
+        SET ErrorMessage TO Output_Message
+        GOTO 'Exit'
+    END
+    Variables.IncreaseVariable Value: ExcelRestartCount IncrementValue: 1
+    IF ExcelRestartCount >= Config_MaxErrorCountObject['Excel'] THEN
+        SET Log_Message TO $'''FATAL;;;Excel has been restarted %ExcelRestartCount% time(s). Assuming it has fallen into an infinite loop and stopping the flow.'''
+        CALL Logger
+        CALL ThrowFatalError
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

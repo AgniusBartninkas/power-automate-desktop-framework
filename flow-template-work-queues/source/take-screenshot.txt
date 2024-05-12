@@ -1,0 +1,25 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''TakeScreenshot''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+    Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd HHmmss''' Result=> Timestamp
+    SET ScreenshotFileName TO $'''%WorkItem_Id% %WorkItem_Number% %Timestamp%.png'''
+    @@flowname: 'PADFramework: ScreenshotMaker'
+External.RunFlow FlowId: '{ReplaceWithScreenshotMakerFlowId}' @Input_ScreenshotsDirectory: Config_ScreenshotsPath @Input_ScreenshotFileName: ScreenshotFileName @Output_Message=> Output_Message @Output_Status=> Output_Status
+    IF Output_Status <> 200 THEN
+        SET ErrorMessage TO Output_Message
+        GOTO 'Exit'
+    END
+    SET Log_Message TO $'''DEBUG;;;Successfully took screenshot `%ScreenshotFileName%`'''
+    CALL Logger
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

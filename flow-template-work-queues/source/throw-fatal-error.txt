@@ -1,0 +1,11 @@
+Variables.AddItemToList Item: $'''ThrowFatalError''' List: List_SubflowNames
+SET Log_Message TO $'''FATAL;;;A fatal error has occurred. Stopping the flow \"%FlowName%\"'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames
+# These variables need to be reset, as there is a circular call between ThrowFatalError and any of the Close* subflows.
+SET ErrorCount TO 0
+SET ExcelRestartCount TO 0
+SET BrowserRestartCount TO 0
+CALL PrepareSystem
+CALL SendErrorMessages
+CALL StopFlow

@@ -1,0 +1,33 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''CleanupOnError''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    # If needed, call `TakeScreenshot` subflow to take a screenshot before calling any `Close*` subflows (except CloseExcel).
+    CALL HandleWorkItemTracking
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    IF WorkItem_RetrieveCount >= (Config_MaxErrorCountObject['WorkItem'] - 1) THEN
+        SET WorkItem_Status TO $'''Fail'''
+        SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% after %WorkItem_RetrieveCount% attempt(s). Skipping this work item'''
+        SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
+        CALL Logger
+        CALL CompleteWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            GOTO 'Exit'
+        END
+    END
+    CALL PrepareSystem
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

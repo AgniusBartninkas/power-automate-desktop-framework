@@ -1,0 +1,51 @@
+/# Gets settings from Config for a specific Flow.
+Parameters that are available globally in the config (MaxErrorCount, Logger, Environment, Recipient, etc.) are not mandatory, but can be set per flow, too.
+Custom parameters specific to a certain flow should be set in the flow object and not the global Config.#/
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''GetFlowSettings''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    SET Config_FlowObject TO Config_Object['Flows'][FlowName]
+    IF Contains(Config_FlowObject, $'''MaxErrorCount''', False) THEN
+        SET Config_MaxErrorCountObject TO Config_FlowObject['MaxErrorCount']
+    END
+    IF Contains(Config_FlowObject, $'''Logger''', False) THEN
+        SET Config_LoggerObject TO Config_FlowObject['Logger']
+        IF NotContains(Config_LoggerObject, $'''LogLevels''', False) THEN
+            SET ErrorMessage TO $'''Modules => %FlowName% => Logger => LogLevels'''
+            GOTO 'Exit'
+        ELSE IF NotContains(Config_LoggerObject, $'''ErrorLogLevels''', False) THEN
+            SET ErrorMessage TO $'''Modules => %FlowName% => Logger => ErrorLogLevels'''
+            GOTO 'Exit'
+        END
+        SET Log_Message TO $'''INFO;;;Using logger settings from the flow environment'''
+        CALL Logger
+    END
+    SET Config_PreviousFlow TO Config_FlowObject['PreviousFlow']
+    IF Contains(Config_FlowObject, $'''Environment''', False) THEN
+        SET Config_Environment TO Config_FlowObject['Environment']
+    END
+    IF Contains(Config_FlowObject, $'''Recipient''', False) THEN
+        SET Config_RecipientObject TO Config_FlowObject['Recipient']
+    END
+    IF Contains(Config_FlowObject, $'''ScreenshotsPath''', False) THEN
+        SET Config_ScreenshotsPath TO Config_FlowObject['ScreenshotsPath']
+    END
+    IF Contains(Config_FlowObject, $'''URL''', False) THEN
+        SET Config_URL TO Config_FlowObject['URL']
+    END
+    IF Contains(Config_FlowObject, $'''HTMLTemplatePath''', False) THEN
+        SET Config_HTMLTemplatePath TO Config_FlowObject['HTMLTemplatePath']
+    END
+    SET Log_Message TO $'''INFO;;;Environment is %Config_Environment%'''
+    CALL Logger
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

@@ -1,0 +1,29 @@
+/# Description:
+1. Closing any applications used by this flow.
+2. Clearing any temporary files that may interfere with the flow.
+3. Must be run in the beginning of the main flow (after Config). Also recommended to run at the end for cleanup purposes.#/
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''PrepareSystem''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    CALL CloseBrowser
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    CALL CloseExcel
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    /# Add additional subflow calls as necessary. 
+Remove CloseBrowser and/or CloseExcel if irrelevant.
+#/
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

@@ -1,0 +1,58 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''ProcessWorkItems''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    @@'InputSummaryValue:WORKQUEUE': 'WorkItem'
+LOOP WHILE (WorkQueues.ProcessWorkQueueItem WorkQueue: $'''4b22c5ab-fce5-ee11-904c-0022487f2c0b''' WorkQueueItem=> WorkQueueItem)
+        CALL ResetVariables
+        CALL GetWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            SET WorkItem_Status TO $'''Fail'''
+            SET WorkItem_Message TO $'''Failed to get the contents of work item with number %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%.'''
+            SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
+            CALL Logger
+            CALL CompleteWorkItem
+            IF IsNotEmpty(ErrorMessage) THEN
+                GOTO 'Exit'
+            END
+            NEXT LOOP
+        END
+        LOOP WorkItem_ErrorCount FROM 1 TO Config_MaxErrorCountObject['WorkItem'] STEP 1
+            CALL ProcessWorkItem
+            IF IsNotEmpty(ErrorMessage) THEN
+                SET WorkItem_Status TO $'''Fail'''
+                SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%. Retrying.'''
+                SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
+                CALL Logger
+                CALL CleanupOnError
+                IF IsNotEmpty(ErrorMessage) THEN
+                    SET Log_Message TO $'''ERROR;;;Failed to clean up for work item %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%. Ignoring error'''
+                    CALL Logger
+                    SET ErrorMessage TO $'''%''%'''
+                END
+                NEXT LOOP
+            END
+            EXIT LOOP
+        END
+        IF (WorkItem_Status = 'Fail' AND WorkItem_ErrorCount >= Config_MaxErrorCountObject['Workitem']) = True THEN
+            SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% after %WorkItem_ErrorCount% attempt(s). '''
+            SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
+            CALL Logger
+        END
+        SET Log_Message TO $'''DEBUG;;;Work item %WorkItem_Number%/%WorkItem_Id% status=(WorkItem_Status=%WorkItem_Status%;WorkItem_Message=%WorkItem_Message%)'''
+        CALL Logger
+        CALL CompleteWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            GOTO 'Exit'
+        END
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

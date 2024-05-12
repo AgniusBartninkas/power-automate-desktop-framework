@@ -1,0 +1,41 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''SendErrorMessages''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    SET HTML_EmailMessage TO $'''<i>
+ <p>You are receiving this message because you are set as the recipient for error/warning messages on project %ProjectName%. If you do not want to receive these messages in the future, please contact support.</p>
+ <p>Please see the messages below and take appropriate action. If the above explanations do not cover the messages you receive and you are not sure whether or not you need to take any action, please contact support for guidance.</p>
+</i> 
+<p>Hello,</p>
+<p>The project %UserFriendlyProjectName% (%ProjectName%) flow \"%FlowName%\" has completed {{TextToReplace}} and produced the following error log messages:</p>
+<p>%List_ErrorMessages%</p>
+<p>
+ Please act accordingly.<br>
+ Best regards,<br>
+ Robot
+</p>'''
+    IF Output_IsSuccess = True THEN
+        Text.Replace Text: HTML_EmailMessage TextToFind: $'''{{TextToReplace}}''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''successfully''' ActivateEscapeSequences: False Result=> HTML_EmailMessage
+    ELSE
+        Text.Replace Text: HTML_EmailMessage TextToFind: $'''{{TextToReplace}}''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''unsuccessfully''' ActivateEscapeSequences: False Result=> HTML_EmailMessage
+    END
+    IF Config_Environment <> $'''PROD''' THEN
+        SET ErrorLogRecipient TO Config_RecipientObject['Default']
+    ELSE
+        SET ErrorLogRecipient TO Config_RecipientObject['Error']
+    END
+    SET Log_Message TO $'''INFO;;;Sending error messages to \"%ErrorLogRecipient%\"'''
+    CALL Logger
+    # Use either 'EmailSender' or 'EmailSenderO365Outlook' depending on the mailbox type you want to send the message from.
+    @@flowname: 'PADFramework: EmailSenderO365Outlook'
+External.RunFlow FlowId: '{ReplaceWithEmailSenderFlowId}' @Input_Attachments: $'''''' @Input_EmailMessage: HTML_EmailMessage @Input_EmailRecipient: ErrorLogRecipient @Input_EmailRecipientCC: $'''%''%''' @Input_EmailSubject: $'''%ProjectName% error log''' @Input_HTMLTemplatePath: Config_FlowObject['HTMLTemplatePath'] @Output_Message=> Output_Message @Output_Status=> Output_Status
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

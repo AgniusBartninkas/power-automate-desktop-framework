@@ -1,0 +1,65 @@
+**REGION Initializing variables
+/# Initializing variables. Setting blank values and 0 on numeric variables is not absolutely necessary - it can be skipped. 
+Creating empty lists is also not mandatory, as "Add item to list" works without the list being initialized.
+It's added for some extra clarity and readability.#/
+SET ErrorMessage TO ''
+SET ErrorCount TO 0
+SET ExcelRestartCount TO 0
+SET BrowserRestartCount TO 0
+SET Output_IsSuccess TO False
+Variables.CreateNewList List=> List_SubflowNames
+Variables.CreateNewList List=> List_ErrorMessages
+**ENDREGION
+**REGION Flow variables - adjust as necessary
+/# Flow and directory variables.
+ProjectName should match the directory name for the project.
+FlowName and UserFriendlyProjectName are used for logging and notifications.#/
+SET ProjectName TO $'''{ReplaceMe}'''
+SET FlowName TO $'''{ReplaceMe}'''
+SET UserFriendlyProjectName TO $'''{ReplaceMe}'''
+# Directory can be adjusted if necessary as well. C:\RPA is just a suggestion.
+SET ProjectDirectory TO $'''C:\\RPA\\%ProjectName%'''
+**ENDREGION
+**REGION ConfigReader variables - adjust as necessary
+/# Config_Type is used by ConfigReader. Should be set to one of the following:
+- JSON
+- Excel
+- Database
+- SharePoint List#/
+SET Config_Type TO $'''JSON'''
+/# Config_Address is used by ConfigReader. Should be blank for JSON or Excel files. Otherwise, should contain:
+- A Connection string for getting Config values from a Database
+- A Site address for for getting Config values from a SharePoint List#/
+SET Config_Address TO $'''%''%'''
+/# Config_Path is used by ConfigReader. Should contain:
+- File path for JSON and Excel files (set in the Config subflow)
+- Database table name or stored procedure for Databases
+- SharePoint list name for SharePoint#/
+SET Config_Path TO $'''%''%'''
+**ENDREGION
+**REGION Logger variables - adjust as necessary
+/# Log_Type is used by Logger. Should be set to one of the following:
+- Log File (plain text .log files)
+- CSV file
+- Database
+- SharePoint List#/
+SET Log_Type TO $'''Log File'''
+/# Log_Address is used by Logger. Should be blank for plain text or CSV files. Otherwise, should contain:
+- A Connection string for logging to Database
+- A Site address for logging to SharePoint List#/
+SET Log_Address TO $'''%''%'''
+/# Log_Path is used by Logger. Should contain:
+- File path for Plain text and CSV files (set in Config)
+- Database table name or stored procedure for Databases
+- SharePoint list name for SharePoint#/
+SET Log_Path TO $'''%''%'''
+**ENDREGION
+**REGION Directories
+/# These directories should be created as needed:
+- Logs for logging to files. Not needed for logging to SharePoint lists or databases
+- Flow for any files that may be temporarily stored by the flow, as well as screenshots, etc.
+- Config for external config files. Not needed when Configs are stored in databases.#/
+SET LogsDirectory TO $'''%ProjectDirectory%\\Logs'''
+SET FlowDirectory TO $'''%ProjectDirectory%\\Flow'''
+SET ConfigDirectory TO $'''%ProjectDirectory%\\Config'''
+**ENDREGION
