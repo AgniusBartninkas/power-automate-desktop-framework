@@ -1,17 +1,18 @@
 SET ErrorMessage TO ''
 Variables.AddItemToList Item: $'''ExecuteMainFlow''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
 BLOCK 
 ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    SET Log_Message TO $'''INFO;;;Start'''
-    CALL Logger
     CALL PrepareSystem
     IF IsNotEmpty(ErrorMessage) THEN
         GOTO 'Exit'
     END
-    # Add custom subflow calls here
+    /# Add custom subflow calls here.
+Call GenerateWorkItems instead of ProcessWorkItems if this flow is supposed to be the work item generator and not the processor.#/
     CALL ProcessWorkItems
     IF IsNotEmpty(ErrorMessage) THEN
         GOTO 'Exit'

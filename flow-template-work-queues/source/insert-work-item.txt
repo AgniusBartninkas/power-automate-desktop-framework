@@ -1,0 +1,17 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''InsertWorkItem''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    # Adjust priority, expiration and other parameters as necessary.
+    @@'InputSummaryValue:WORKQUEUE': 'WorkItem'
+WorkQueues.EnqueueWorkQueueItem.WithoutUniqueId WorkQueue: $'''{ReplaceWithWorkItemQueueId}''' Status: WorkQueues.WorkQueueItemEnqueueStatus.Queued Priority: WorkQueues.WorkQueueItemPriority.Normal Name: WorkItem_Number Value: WorkItem_DataContent
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

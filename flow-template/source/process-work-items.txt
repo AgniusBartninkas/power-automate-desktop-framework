@@ -1,0 +1,53 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''ProcessWorkItems''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    LOOP WHILE (1) = (1)
+        CALL ResetVariables
+        CALL GetWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            SET WorkItem_Status TO $'''Fail'''
+            SET WorkItem_Message TO $'''Failed to get the contents of work item with number %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%.'''
+            SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
+            CALL Logger
+            CALL CompleteWorkItem
+            IF IsNotEmpty(ErrorMessage) THEN
+                GOTO 'Exit'
+            END
+            NEXT LOOP
+        ELSE IF IsEmpty(WorkItem_Id) THEN
+            SET Log_Message TO $'''INFO;;;No work items to process.'''
+            CALL Logger
+            EXIT LOOP
+        END
+        CALL ProcessWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            SET WorkItem_Status TO $'''Fail'''
+            SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%. Retrying.'''
+            SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
+            CALL Logger
+            CALL CleanupOnError
+            IF IsNotEmpty(ErrorMessage) THEN
+                SET Log_Message TO $'''ERROR;;;Failed to clean up for work item %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%. Ignoring error'''
+                CALL Logger
+                SET ErrorMessage TO $'''%''%'''
+            END
+            NEXT LOOP
+        END
+        SET Log_Message TO $'''DEBUG;;;Work item %WorkItem_Number%/%WorkItem_Id% status=(WorkItem_Status=%WorkItem_Status%;WorkItem_Message=%WorkItem_Message%)'''
+        CALL Logger
+        CALL CompleteWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            GOTO 'Exit'
+        END
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

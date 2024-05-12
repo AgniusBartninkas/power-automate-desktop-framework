@@ -12,6 +12,8 @@ The code currently does not have a version for flows with Power Fx enabled.
 
 ## Inputs expected
 
+By default, the template does not require any inputs, but input variables can be added based on custom requirements of each flow.
+
 ## Output produced
 
 The flow produces several output variables that are returned to the parent flow (cloud or desktop) after execution:
@@ -45,9 +47,11 @@ The flow produces several output variables that are returned to the parent flow 
     1. **ExecuteExcelflow**
     1. **ExecuteMainFlow**
     1. **ExecuteWebflow**
+    1. **GenerateWorkItems**
     1. **GetFlowSettings**
     1. **GetWorkItem**
     1. **Init**
+    1. **InsertWorkItem**
     1. **LaunchBrowser**
     1. **Logger**
     1. **LoginToWebPage**
@@ -57,6 +61,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. **ProcessWorkItems**
     1. **ResetVariables**
     1. **SendErrorMessages**
+    1. **SerializeWorkItem**
     1. **StopFlow**
     1. **TakeScreenshot**
     1. **Template**
@@ -70,9 +75,11 @@ The flow produces several output variables that are returned to the parent flow 
     1. **execute-excel-flow.txt** to **ExecuteExcelFlow**
     1. **execute-main-flow.txt** to **ExecuteMainFlow**
     1. **execute-web-flow.txt** to **ExecuteWebFlow**
+    1. **generate-work-items.txt** to **GenerateWorkItems**
     1. **get-flow-settings.txt** to **GetFlowSettings**
     1. **get-work-item.txt** to **GetWorkItem**
     1. **init.txt** to **Init**
+    1. **insert-work-item.txt** to **InsertWorkItem**
     1. **launch-browser.txt** to **LaunchBrowser**
     1. **logger.txt** to **Logger**
     1. **login-to-web-page.txt** to **LoginToWebPage**
@@ -82,6 +89,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. **process-work-items.txt** to **ProcessWorkItems**
     1. **reset-variables.txt** to **ResetVariables**
     1. **send-error-messages.txt** to **SendErrorMessages**
+    1. **serialize-work-item.txt** to **SerializeWorkItem**
     1. **stop-flow.txt** to **StopFlow**
     1. **take-screenshot.txt** to **TakeScreenshot**
     1. **template.txt** to **Template**
@@ -89,6 +97,7 @@ The flow produces several output variables that are returned to the parent flow 
 1. Adjust the utility desktop flows called by the `Run desktop flow` actions in the following subflows:
     1. **CloseBrowser**
     1. **CloseExcel**
+    1. **Config**
     1. **LaunchBrowser**
     1. **Logger**
     1. **SendErrorMessages**
@@ -98,7 +107,7 @@ The flow produces several output variables that are returned to the parent flow 
     ![View of the code in the Main subflow in PAD](./assets/main-subflow-example.png)
 
 1. Click **Save** in the flow designer
-1. Add the **PADFramework: FlowTemplate** flow to the **PADFramework** solution for exporting it to other environments
+1. Add the **PADFramework: FlowTemplate (WorkQueues)** flow to the **PADFramework** solution for exporting it to other environments
 
     ![View of the menu path to add an existing desktop flow to a solution](./assets/adding-existing-desktop-flow-to-solution.png)
 
@@ -137,6 +146,14 @@ When makers want to start creating a new flow, they should follow these guidelin
 
 Some subflows are not called anywhere by default within the Flow Template. This is because they are not always needed. This includes Browser related subflows, as well as Excel related subflows. 
 If makers want to use them, calls should be added appropriately to either **ExecuteMainFlow** or **ProcessWorkItem** based on the custom logic of the flow.
+
+### Work Item Handling
+
+When building flows using this template, it is recommended to separate flows that generate (create) work items from those that process them. This is to apply the Single Responsibility Principle (SRP) of software programming.
+
+As such, the flows that generate work items will require the **GenerateWorkItems** subflow with its child subflows, but may not require **ProcessWorkItems** and vice versa for flows that process work items.
+
+The default **ExecuteMainFlow** subflow contains a call for **ProcessWorkItems** but this should be amended accordingly.
 
 ## Notes
 

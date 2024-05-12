@@ -11,12 +11,18 @@ IF IsNotEmpty(ErrorMessage) THEN
     CALL Logger
     GOTO Fatal
 END
+CALL GetFlowSettings
+IF IsNotEmpty(ErrorMessage) THEN
+    SET Log_Message TO $'''FATAL;;;%ErrorMessage%'''
+    CALL Logger
+    GOTO Fatal
+END
 SET Log_Message TO $'''INFO;;;Start'''
 CALL Logger
 BLOCK 
 ON BLOCK ERROR all
-SET Log_Message TO $'''TRACE'''
-CALL Logger
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
 END
     SET Log_Message TO $'''INFO;;;Starting flow \"%FlowName%\"'''
     CALL Logger

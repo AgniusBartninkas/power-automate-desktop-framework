@@ -1,5 +1,7 @@
 SET ErrorMessage TO ''
 Variables.AddItemToList Item: $'''CloseBrowser''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
 BLOCK 
 ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''

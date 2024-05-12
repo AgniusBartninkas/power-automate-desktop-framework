@@ -1,12 +1,12 @@
 SET ErrorMessage TO ''
 Variables.AddItemToList Item: $'''TakeScreenshot''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
 BLOCK 
 ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    SET Log_Message TO $'''INFO;;;Start'''
-    CALL Logger
     DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
     Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd HHmmss''' Result=> Timestamp
     SET ScreenshotFileName TO $'''%WorkItem_Id% %WorkItem_Number% %Timestamp%.png'''

@@ -20,12 +20,24 @@ SET UserFriendlyProjectName TO $'''{ReplaceMe}'''
 # Directory can be adjusted if necessary as well. C:\RPA is just a suggestion.
 SET ProjectDirectory TO $'''C:\\RPA\\%ProjectName%'''
 **ENDREGION
-**REGION Logger variables - adjust as necessary
-/# Log_Type is used by Logger. Should be set to one of the following:
-- Log File (plain text .log files)
-- CSV file
+**REGION ConfigReader variables - adjust as necessary
+/# Config_Type is used by ConfigReader. Should be set to one of the following:
+- JSON
+- Excel
 - Database
 - SharePoint List#/
+SET Config_Type TO $'''JSON'''
+/# Config_Address is used by ConfigReader. Should be blank for JSON or Excel files. Otherwise, should contain:
+- A Connection string for getting Config values from a Database
+- A Site address for for getting Config values from a SharePoint List#/
+SET Config_Address TO $'''%''%'''
+/# Config_Path is used by ConfigReader. Should contain:
+- File path for JSON and Excel files (set in the Config subflow)
+- Database table name or stored procedure for Databases
+- SharePoint list name for SharePoint#/
+SET Config_Path TO $'''%''%'''
+**ENDREGION
+**REGION Logger variables - adjust as necessary
 /# Log_Type is used by Logger. Should be set to one of the following:
 - Log File (plain text .log files)
 - CSV file

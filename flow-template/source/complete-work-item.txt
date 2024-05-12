@@ -1,5 +1,5 @@
 SET ErrorMessage TO ''
-Variables.AddItemToList Item: $'''LoginToWebPage''' List: List_SubflowNames
+Variables.AddItemToList Item: $'''CompleteWorkItem''' List: List_SubflowNames
 SET Log_Message TO $'''INFO;;;Start'''
 CALL Logger
 BLOCK 
@@ -7,10 +7,11 @@ ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    /# Populate credentials.
-Press button to login.
-Wait for page to load.#/
-    # Check if Credentials are correct. If they are not => call ThrowFatalError
+    SET WorkItem_Operation TO $'''Complete'''
+    CALL HandleWorkItem
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
 END
 LABEL 'Exit'
 SET Log_Message TO $'''INFO;;;End'''

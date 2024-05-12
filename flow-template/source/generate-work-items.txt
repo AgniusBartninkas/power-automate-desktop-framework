@@ -1,0 +1,27 @@
+SET ErrorMessage TO ''
+Variables.AddItemToList Item: $'''GenerateWorkItems''' List: List_SubflowNames
+SET Log_Message TO $'''INFO;;;Start'''
+CALL Logger
+BLOCK 
+ON BLOCK ERROR all
+    SET Log_Message TO $'''TRACE'''
+    CALL Logger
+END
+    /# Replace this comment with custom subflows for retrieving the work item data from some data source.
+Delete the "Create new data table" action afterwards - it is only used to create a variable so that the loop has something to iterate through.#/
+    Variables.CreateNewDatatable InputTable: { } DataTable=> DataTable_WorkItems
+    LOOP FOREACH DataRow_CurrentWorkItem IN DataTable_WorkItems
+        CALL SerializeWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            GOTO 'Exit'
+        END
+        CALL UpsertWorkItem
+        IF IsNotEmpty(ErrorMessage) THEN
+            GOTO 'Exit'
+        END
+    END
+END
+LABEL 'Exit'
+SET Log_Message TO $'''INFO;;;End'''
+CALL Logger
+Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames
