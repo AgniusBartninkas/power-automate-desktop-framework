@@ -1,0 +1,33 @@
+# Setting the status and message to 'Bad Request' by default in case the flow fails.
+SET Output_Status TO 400
+SET Output_Message TO $'''Bad Request'''
+BLOCK 
+ON BLOCK ERROR all
+
+END
+    System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''COMPUTERNAME''' Value=> ComputerName
+    SWITCH Input_DatabaseType
+        CASE = $'''SQLite'''
+            CALL PerformSQLiteOperations
+        CASE = $'''SQL Server'''
+            CALL PerformSQLServerOperations
+        DEFAULT
+            SET Output_Status TO 400
+            SET Output_Message TO $'''Browser \'%Input_DatabaseType%\' is not supported by the Work Item Handler flow.'''
+            GOTO 'Exit'
+    END
+    IF IsNotEmpty(ErrorMessage) THEN
+        # Business exceptions are considered to be BadRequest.
+        SET Output_Status TO 400
+        SET Output_Message TO $'''Failed to perform a %Input_WorkItemOperation% operation on database type %Input_DatabaseType% due to %ErrorMessage%'''
+    ELSE IF Output_Status >= 400 THEN
+        # Not overwriting other success statuses that may be set in child flows.
+        SET Output_Status TO 200
+        SET Output_Message TO $'''Successfully performed a %Input_WorkItemOperation% operation on database type %Input_DatabaseType%.'''
+    END
+    LABEL 'Exit'
+    EXIT Code: 0
+END
+ERROR => ErrorMessage
+SET Output_Status TO 500
+SET Output_Message TO $'''Failed to perform a %Input_WorkItemOperation% operation on database type %Input_DatabaseType% due to %ErrorMessage%'''

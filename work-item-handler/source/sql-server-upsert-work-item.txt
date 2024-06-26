@@ -1,0 +1,33 @@
+IF IsEmpty(Input_WorkItemNumber) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemNumber parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_ProjectName) THEN
+    SET ErrorMessage TO $'''Empty Input_ProjectName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_FlowName) THEN
+    SET ErrorMessage TO $'''Empty Input_FlowName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemData) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemData parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemDataSource) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemDataSource parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+END
+Variables.ConvertCustomObjectToJson CustomObject: Input_WorkItemData Json=> WorkItem_DataContent
+Text.Replace Text: Input_WorkItemDataSource TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataSource
+Text.Replace Text: WorkItem_DataContent TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataContent
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''EXEC usp_UpsertWorkItem @Number = \'%Input_WorkItemNumber%\', @ProjectNumber = \'%Input_ProjectName%\', @FlowName = \'%Input_FlowName%\', @DataContent = \'%WorkItem_DataContent%\', @DataSource = \'%WorkItem_DataSource%\';''' Timeout: 180 Result=> Table_SPResult
+IF Table_SPResult.IsEmpty = $'''true''' THEN
+    SET ErrorMessage TO $'''The database returned nothing when upserting work item \"%Input_WorkItemNumber%\".'''
+    GOTO 'Exit'
+ELSE IF Table_SPResult[0]['Status'] < 0 THEN
+    SET ErrorMessage TO $'''Status: %Table_SPResult[0]['Status']%, Message: %Table_SPResult[0]['Message']%'''
+    GOTO 'Exit'
+END
+SET Output_WorkItemId TO Table_SPResult[0]['WorkItemId']
+IF $'''Output_WorkItemId''' = (-1) THEN
+    SET ErrorMessage TO $'''UpsertWorkItem did not return a valid Work Item Id'''
+END
+LABEL 'Exit'

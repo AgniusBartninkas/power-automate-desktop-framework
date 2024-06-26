@@ -8,12 +8,13 @@ ON BLOCK ERROR all
     CALL Logger
 END
     # If needed, call `TakeScreenshot` subflow to take a screenshot before calling any `Close*` subflows (except CloseExcel).
-    CALL HandleWorkItemTracking
+    CALL UpsertWorkItem
     IF IsNotEmpty(ErrorMessage) THEN
         GOTO 'Exit'
     END
     IF WorkItem_RetrieveCount >= (Config_MaxErrorCountObject['WorkItem'] - 1) THEN
         SET WorkItem_Status TO $'''Fail'''
+        SET WorkItem_Reason TO $'''MaxRetryFailure'''
         SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% after %WorkItem_RetrieveCount% attempt(s). Skipping this work item'''
         SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
         CALL Logger

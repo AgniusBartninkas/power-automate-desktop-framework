@@ -1,0 +1,23 @@
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> ProcessingEndTimestamp
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT
+  wi.AccumulatedRunTime
+FROM WorkItem wi
+WHERE
+    wi.Id = %Input_WorkItemId%''' Timeout: 30 Result=> Table_WorkItem
+IF (Table_WorkItem.IsEmpty) = (True) THEN
+    SET ErrorMessage TO $'''Work item with Id \"%Input_WorkItemId%\" not found in the Work Item table.'''
+    GOTO 'Exit'
+END
+Text.ToNumber Text: Table_WorkItem[0]['AccumulatedRunTime'] Number=> AccumulatedRunTime
+Text.ConvertTextToDateTime.ToDateTimeCustomFormat Text: Input_WorkItemProcessingStartTime CustomFormat: $'''yyyy-MM-dd HH:mm:ss''' DateTime=> ProcessingStartTimestamp
+DateTime.Subtract SubstractDate: ProcessingStartTimestamp FromDate: ProcessingEndTimestamp TimeUnit: DateTime.DifferenceTimeUnit.Seconds TimeDifference=> Seconds
+Variables.IncreaseVariable Value: AccumulatedRunTime IncrementValue: Seconds
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
+    WorkItem
+SET
+    AccumulatedRunTime = %AccumulatedRunTime%
+WHERE
+    Id = %Input_WorkItemId%''' Timeout: 30
+LABEL 'Exit'

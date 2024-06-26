@@ -1,0 +1,38 @@
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT
+    wi.Id
+  ,wi.Number
+  ,wi.RetrieveCount
+  ,wi.AccumulatedRunTime
+  ,wid.DataContent
+  ,wid.DataSource
+FROM WorkItem wi
+INNER JOIN WorkItemData wid ON wi.Id = wid.WorkItemId
+INNER JOIN Project p ON wi.ProjectId = p.Id
+WHERE
+    wi.Processed = 0
+  AND wi.RetrieveCount < %Input_MaxRetrieveCount%
+  AND p.ProjectNumber = \'%Input_ProjectName%\'
+  AND wi.ModuleName = \'%Input_FlowName%\'
+LIMIT 1''' Timeout: 30 Result=> Table_WorkItem
+IF (Table_WorkItem.IsEmpty) = (True) THEN
+    SET Output_Status TO 204
+    SET Output_Message TO $'''No unprocessed work items available.'''
+    GOTO 'Exit'
+END
+SET Output_WorkItemId TO Table_WorkItem[0]['Id']
+SET Output_WorkItemNumber TO Table_WorkItem[0]['Number']
+SET Output_WorkItemRetrieveCount TO Table_WorkItem[0]['RetrieveCount']
+SET WorkItem_AccumulatedRunTime TO Table_WorkItem[0]['AccumulatedRunTime']
+Variables.ConvertJsonToCustomObject Json: Table_WorkItem[0]['DataContent'] CustomObject=> Output_WorkItemData
+SET Output_WorkItemDataSource TO Table_WorkItem[0]['DataSource']
+Variables.IncreaseVariable Value: Output_WorkItemRetrieveCount IncrementValue: 1
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
+    WorkItem
+SET
+    RetrieveCount = %Output_WorkItemRetrieveCount%
+WHERE
+    Id = %Output_WorkItemId%''' Timeout: 30
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> Output_WorkItemProcessingStartTimestamp
+LABEL 'Exit'

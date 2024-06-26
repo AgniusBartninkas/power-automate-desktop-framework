@@ -1,0 +1,15 @@
+CALL SQLiteGetStatuses
+IF IsNotEmpty(ErrorMessage) THEN
+    GOTO 'Exit'
+ELSE IF NotContains(Status_Object, Input_WorkItemStatus, False) THEN
+    SET ErrorMessage TO $'''Status (%Input_WorkItemStatus%) does not exist in the Status table.'''
+    GOTO 'Exit'
+END
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
+    WorkItem
+SET
+    StatusId = %Status_Object[Input_WorkItemStatus]%
+WHERE
+    Id = %Input_WorkItemId%''' Timeout: 30
+LABEL 'Exit'

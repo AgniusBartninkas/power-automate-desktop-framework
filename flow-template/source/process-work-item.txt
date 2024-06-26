@@ -12,6 +12,7 @@ END
         GOTO 'Exit'
     END
     SET WorkItem_Status TO $'''Success'''
+    SET WorkItem_Reason TO $'''%''%'''
     SET WorkItem_Message TO $'''Successfully processed work item with number %WorkItem_Number% and Id %WorkItem_Id%.'''
 END
 LABEL 'Exit'

@@ -12,6 +12,7 @@ END
         CALL GetWorkItem
         IF IsNotEmpty(ErrorMessage) THEN
             SET WorkItem_Status TO $'''Fail'''
+            SET WorkItem_Reason TO $'''GetWorkItemFailure'''
             SET WorkItem_Message TO $'''Failed to get the contents of work item with number %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%.'''
             SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
             CALL Logger
@@ -28,6 +29,7 @@ END
         CALL ProcessWorkItem
         IF IsNotEmpty(ErrorMessage) THEN
             SET WorkItem_Status TO $'''Fail'''
+            SET WorkItem_Reason TO $'''ProcessingFailure'''
             SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% due to: %ErrorMessage%. Retrying.'''
             SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
             CALL Logger

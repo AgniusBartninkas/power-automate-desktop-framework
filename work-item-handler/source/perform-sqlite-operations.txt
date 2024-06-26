@@ -1,0 +1,10 @@
+SWITCH Input_WorkItemOperation
+    CASE = $'''Complete'''
+        CALL SQLiteCompleteWorkItem
+    CASE = $'''Get'''
+        CALL SQLiteGetWorkItem
+    CASE = $'''Upsert'''
+        CALL SQLiteUpsertWorkItem
+    DEFAULT
+        SET ErrorMessage TO $'''Operation \"%Input_WorkItemOperation%\" is not supported.'''
+END

@@ -1,0 +1,11 @@
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT * FROM Status''' Timeout: 30 Result=> Table_Status
+IF (Table_Status.IsEmpty) = (True) THEN
+    SET ErrorMessage TO $'''Status table is empty in database type %Input_DatabaseType%'''
+    GOTO 'Exit'
+END
+SET Status_Object TO {{ }}
+LOOP FOREACH Row_Status IN Table_Status
+    SET Status_Object[Row_Status['Status']] TO Row_Status['Id']
+END
+LABEL 'Exit'
