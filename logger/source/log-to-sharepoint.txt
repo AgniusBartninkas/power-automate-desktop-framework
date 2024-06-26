@@ -7,8 +7,9 @@ Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFo
 @@table: '%Input_LogPath%'
 @@view: ''
 @@'InputSchema:item': '903008207'
+@@'OutputSchema:PostItemResponse': '-1550202392'
 @@connectionDisplayName: '{ReplaceWithYourConnectionReferenceName}'
-External.InvokeCloudConnector Connection: '{ReplaceWithYourConnectionReferenceId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_sharepointonline' OperationId: 'PostItem' @dataset: Input_LogAddress @table: Input_LogPath @'item/Title': Log_Level @'item/Timestamp': Log_Timestamp @'item/Machine': Log_MachineName @'item/Project': Input_ProjectName @'item/Flow': Input_FlowName @'item/Subflow': Log_SubflowName @'item/Message': Log_Message @PostItemResponse=> PostItemResponse
+External.InvokeCloudConnector Connection: '{ReplaceWithYourConnectionReferenceId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_sharepointonline' OperationId: 'PostItem' @dataset: Input_LogAddress @table: Input_LogPath @'item/Title': Log_Level @'item/Timestamp': Log_Timestamp @'item/Machine': Log_MachineName @'item/Project': Input_ProjectName @'item/Flow': Input_FlowName @'item/Subflow': Log_SubflowName @'item/Message': Log_Message @'item/FlowRunURL': $'''%''%''' @PostItemResponse=> PostItemResponse
 
 # [ControlRepository][PowerAutomateDesktop]
 

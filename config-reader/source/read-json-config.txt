@@ -1,0 +1,1 @@
+File.ReadTextFromFile.ReadText File: Input_Configpath Encoding: File.TextFileEncoding.UTF8 Content=> Output_ConfigObject
