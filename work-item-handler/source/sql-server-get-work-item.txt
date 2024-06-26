@@ -1,0 +1,25 @@
+IF IsEmpty(Input_FlowName) THEN
+    SET ErrorMessage TO $'''Empty Input_FlowName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF (IsEmpty(Input_MaxRetrieveCount) OR Input_MaxRetrieveCount = 0) = True THEN
+    SET ErrorMessage TO $'''Empty Input_MaxRetrieveCount parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+END
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''EXEC usp_GetWorkItem @MachineName = \'%ComputerName%\', @FlowName = \'%Input_FlowName%\', @MaxRetrieveCount = %Input_MaxRetrieveCount%;''' Timeout: 180 Result=> Table_SPResult
+IF Table_SPResult.IsEmpty = $'''true''' THEN
+    SET ErrorMessage TO $'''The database returned nothing when trying to get a work item.'''
+    GOTO 'Exit'
+ELSE IF Table_SPResult[0]['Status'] < 0 THEN
+    SET ErrorMessage TO $'''Status: %Table_SPResult[0]['Status']%, Message: %Table_SPResult[0]['Message']%'''
+    GOTO 'Exit'
+ELSE IF Table_SPResult[0]['Status'] = 1 THEN
+    SET Output_Status TO 204
+    SET Output_Message TO $'''No unprocessed work items available.'''
+    GOTO 'Exit'
+END
+SET Output_WorkItemId TO Table_SPResult[0]['WorkItemId']
+SET Output_WorkItemRetrieveCount TO Table_SPResult[0]['RetrieveCount']
+Variables.ConvertJsonToCustomObject Json: Table_SPResult[0]['DataContent'] CustomObject=> Output_WorkItemData
+SET Output_WorkItemDataSource TO Table_SPResult[0]['DataSource']
+LABEL 'Exit'

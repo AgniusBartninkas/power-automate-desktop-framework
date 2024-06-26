@@ -1,0 +1,51 @@
+IF IsEmpty(Input_WorkItemNumber) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemNumber parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_ProjectName) THEN
+    SET ErrorMessage TO $'''Empty Input_ProjectName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemData) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemData parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemDataSource) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemDataSource parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_FlowName) THEN
+    SET ErrorMessage TO $'''Empty Input_FlowName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+END
+Variables.ConvertCustomObjectToJson CustomObject: Input_WorkItemData Json=> WorkItem_DataContent
+Text.Replace Text: WorkItem_DataContent TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataContent
+Text.Replace Text: Input_WorkItemDataSource TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataSource
+Text.Replace Text: Input_FlowName TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> FlowName
+Text.Replace Text: Input_WorkItemNumber TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItemNumber
+CALL SQLiteGetUnprocessedWorkItem
+IF IsNotEmpty(Output_WorkItemId) THEN
+    @@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
+    WorkItemData
+SET
+    DataContent = \'%WorkItem_DataContent%\',
+    RetrieveCount = 0,
+    Processed = 0
+WHERE
+    WorkItemId = %Output_WorkItemId%''' Timeout: 30
+ELSE
+    CALL SQLiteGetProjectId
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
+    @@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
+    WorkItem (Number, ProjectId, PreviousModuleName)
+VALUES
+(\'%WorkItemNumber%\', \'%ProjectId%\', \'%FlowName%\')''' Timeout: 30
+    # Getting the Id of the new work item after inserting it.
+    CALL SQLiteGetUnprocessedWorkItem
+    @@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
+    WorkItemData (WorkItemId, DataContent, DataSource)
+VALUES
+(%Output_WorkItemId%, \'%WorkItem_DataContent%\', \'%WorkItem_DataSource%\')''' Timeout: 30
+END
+LABEL 'Exit'

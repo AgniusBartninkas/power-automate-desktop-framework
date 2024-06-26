@@ -37,6 +37,7 @@ If you want to do less attempts, reduce the max error count values in config or 
     END
     IF (ErrorCount) >= (Config_MaxErrorCountObject['Web']) THEN
         SET WorkItem_Status TO $'''Fail'''
+        SET WorkItem_Reason TO $'''ProcessingFailure'''
         SET WorkItem_Message TO $'''Web Automation failed after %ErrorCount% attempts.'''
     END
 END

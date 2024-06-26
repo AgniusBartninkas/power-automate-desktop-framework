@@ -1,0 +1,36 @@
+IF IsEmpty(Input_WorkItemId) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemId parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemStatus) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemStatus parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemProcessingStartTime) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemProcessingStartTime parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_FlowName) THEN
+    SET ErrorMessage TO $'''Empty Input_FlowName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemMessage) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemMessage parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
+END
+CALL SQLiteUpdateWorkItemStatus
+IF IsNotEmpty(ErrorMessage) THEN
+    GOTO 'Exit'
+END
+CALL SQLiteUpdateAccumulatedRuntime
+IF IsNotEmpty(ErrorMessage) THEN
+    GOTO 'Exit'
+END
+CALL SQLiteInsertWorkItemResult
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
+    WorkItem
+SET
+    StatusId = %Status_Object[Input_WorkItemStatus]%,
+    ProcessedBy = \'%ComputerName%\',
+    Processed = 1
+WHERE
+    Id = %Input_WorkItemId%''' Timeout: 30
+CALL SQLiteUpdateFlowName
+LABEL 'Exit'

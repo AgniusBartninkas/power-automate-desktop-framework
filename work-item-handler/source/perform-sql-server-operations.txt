@@ -1,0 +1,10 @@
+SWITCH Input_WorkItemOperation
+    CASE = $'''Complete'''
+        CALL SQLServerCompleteWorkItem
+    CASE = $'''Get'''
+        CALL SQLServerGetWorkItem
+    CASE = $'''Upsert'''
+        CALL SQLServerUpsertWorkItem
+    DEFAULT
+        SET ErrorMessage TO $'''Operation \"%Input_WorkItemOperation%\" is not supported.'''
+END
