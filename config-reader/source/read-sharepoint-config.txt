@@ -1,0 +1,43 @@
+IF IsEmpty(Input_ConfigAddress) THEN
+    SET ErrorMessage TO $'''Empty Input_ConfigAddress parameter provided. It is required for config type %Input_ConfigType%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_ProjectName) THEN
+    SET ErrorMessage TO $'''Empty Input_ProjectName parameter provided. It is required for config type %Input_ConfigType%.'''
+    GOTO 'Exit'
+END
+@@dataset: '%Input_ConfigAddress%'
+@@table: '%Input_ConfigPath%'
+@@folderPath: ''
+@@viewScopeOption: ''
+@@view: ''
+@@connectionDisplayName: 'PADFramework_SharePoint'
+External.InvokeCloudConnector Connection: '{ReplaceWithSharePointConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_sharepointonline' OperationId: 'GetItems' @dataset: Input_ConfigAddress @table: Input_ConfigPath @'$filter': $'''ProjectNumber eq \'%Input_ProjectName%\'''' @GetItemsResponse=> GetItemsResponse
+Variables.CreateNewDatatable InputTable: { ^['PropertyName', 'Value'], [$'''''', $''''''] } DataTable=> Table_ConfigData
+LOOP FOREACH CurrentItem IN GetItemsResponse['value']
+    Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem['PropertyName'], CurrentItem['Value']]
+END
+CALL ConvertTabularConfigToCustomObject
+LABEL 'Exit'
+
+# [ControlRepository][PowerAutomateDesktop]
+
+{
+  "ControlRepositorySymbols": [],
+  "ImageRepositorySymbol": {
+    "Repository": "{\r\n  \"Folders\": [],\r\n  \"Images\": [],\r\n  \"Version\": 1\r\n}",
+    "ImportMetadata": {},
+    "Name": "imgrepo"
+  },
+  "ConnectionReferences": [
+    {
+      "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+      "DisplayName": "PADFramework_SharePoint",
+      "InternalId": "{ReplaceWithSharePointConnectionId}",
+      "IsDisabled": false,
+      "LogicalName": "def_PADFramework_SharePoint",
+      "IsEmbedded": false,
+      "ConnectionName": "{ReplaceWithSharePointConnectionName}",
+      "ConnectionDisplayName": "{ReplaceWithSharePointConnectionDisplayName}"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ IF IsEmpty(Input_ConfigAddress) THEN
 END
 Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Input_ConfigAddress Visible: False ReadOnly: True Instance=> ExcelInstance
 Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelInstance Name: Input_ConfigPath
-Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: True RangeValue=> ExcelData
+Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: True RangeValue=> Table_ConfigData
 Excel.CloseExcel.Close Instance: ExcelInstance
     ON ERROR
         CALL RunExcelCloser
@@ -12,11 +12,5 @@ Excel.CloseExcel.Close Instance: ExcelInstance
 IF IsNotEmpty(ErrorMessage) THEN
     GOTO 'Exit'
 END
-SET ConfigObject TO {{ }}
-LOOP FOREACH CurrentItem IN ExcelData
-    IF IsEmpty(CurrentItem['PropertyName']) THEN
-        EXIT LOOP
-    END
-    SET ConfigObject[CurrentItem['PropertyName']] TO CurrentItem['Value']
-END
+CALL ConvertTabularConfigToCustomObject
 LABEL 'Exit'

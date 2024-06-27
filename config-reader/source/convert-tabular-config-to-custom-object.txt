@@ -1,0 +1,9 @@
+Variables.DeleteEmptyRowsFromDataTable DataTable: Table_ConfigData
+Variables.DeleteDuplicateRowsFromDataTable DataTable: Table_ConfigData
+SET ConfigObject TO {{ }}
+LOOP FOREACH CurrentItem IN Table_ConfigData
+    IF IsEmpty(CurrentItem['PropertyName']) THEN
+        EXIT LOOP
+    END
+    SET ConfigObject[CurrentItem['PropertyName']] TO CurrentItem['Value']
+END

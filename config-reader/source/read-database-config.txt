@@ -1,0 +1,18 @@
+IF IsEmpty(Input_ConfigAddress) THEN
+    SET ErrorMessage TO $'''Empty Input_ConfigAddress parameter provided. It is required for config type %Input_ConfigType%.'''
+    GOTO 'Exit'
+ELSE IF IsEmpty(Input_ProjectName) THEN
+    SET ErrorMessage TO $'''Empty Input_ProjectName parameter provided. It is required for config type %Input_ConfigType%.'''
+    GOTO 'Exit'
+END
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConfigAddress Statement: $'''EXEC %Input_ConfigPath% @ProjectNumber = \'%Input_ProjectName%\';''' Timeout: 180 Result=> Table_ConfigData
+IF Table_ConfigData.IsEmpty = $'''true''' THEN
+    SET ErrorMessage TO $'''The database returned nothing when trying to get config values.'''
+    GOTO 'Exit'
+ELSE IF Table_ConfigData[0]['Status'] < 0 THEN
+    SET ErrorMessage TO $'''Status: %Table_ConfigData[0]['Status']%, Message: %Table_ConfigData[0]['Message']%'''
+    GOTO 'Exit'
+END
+CALL ConvertTabularConfigToCustomObject
+LABEL 'Exit'

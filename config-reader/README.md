@@ -15,8 +15,17 @@ The code currently does not have a version for flows with Power Fx enabled. Howe
 
 There are several inputs required by this flow, and a couple that are optional (depending on other parameters):
 
-1. **Input_ConfigAddress** - Should contain the connection string or a site address when the config type is 'Database' or 'SharePoint' respectively, or a file path when the type is 'Excel'. Should be marked as **sensitive** in case the string contains any sensitive information, such as credentials. Should also be marked as **optional** as it is optional for other config types.
-1. **Input_ConfigPath** - Should contain the path to the config data. Should contain the file path when the config type is 'JSON', a sheet name when the type is 'Excel', a list name when the type is 'SharePoint', a table name when the type is 'Dataverse', or either a table name (not recommended) or a stored procedure name when the type is 'Database'. Should be marked as **sensitive** in case it contains any sensitive information.
+1. **Input_ConfigAddress** - Should contain the address for where the config resource is stored. Should be marked as **sensitive** in case the string contains any sensitive information, such as credentials. Should also be marked as **optional** as it is optional for other config types. For the types where it is necessary, the flow expects it to contain:
+    - the connection string the config type is 'Database'
+    - the site address when the type is 'SharePoint'
+    - the environment URL when the type is 'Dataverse' (can be found in the environment details in the PP admin center)
+    - the file path when the type is 'Excel'
+1. **Input_ConfigPath** - Should contain the path to the config data. Should be marked as **sensitive** in case it contains any sensitive information. The flow expects it to contain:
+    - the file path when the config type is 'JSON'
+    - a sheet name when the type is 'Excel' 
+    - a list name when the type is 'SharePoint' 
+    - a table logical name when the type is 'Dataverse'
+    - a stored procedure name when the type is 'Database'
 1. **Input_ConfigType** - Should contain the config type. Currently supported options are:
     1. JSON
     1. Excel
@@ -62,44 +71,28 @@ The flow produces several output variables that are returned to the parent flow 
         1. Output_Status (Data type: Number; Mark as sensitive - False)
 
 1. Create new subflows (see **Notes**): 
-    1. **PerformSQLServerOperations** 
-    1. **PerformSQLiteOperations** 
-    1. **SQLServerCompleteWorkItem**
-    1. **SQLServerGetWorkItem**
-    1. **SQLServerUpsertWorkItem**
-    1. **SQLiteCompleteWorkItem**
-    1. **SQLiteGetProjectId**
-    1. **SQLiteGetStatuses**
-    1. **SQLiteGetUnprocessedWorkItem**
-    1. **SQLiteGetWorkItem**
-    1. **SQLiteInsertWorkItemResult**
-    1. **SQLiteUpdateAccumulatedRunTime**
-    1. **SQLiteUpdateFlowName**
-    1. **SQLiteUpdateWorkItemStatus**
-    1. **SQLiteUpsertWorkItem**
+    1. **ConvertTabularConfigToCustomObject** 
+    1. **ReadDatabaseConfig** 
+    1. **ReadDataverseConfig**
+    1. **ReadExcelConfig**
+    1. **ReadJSONConfig**
+    1. **ReadSharePointConfig**
+    1. **RunExcelCloser**
 1. Copy the code in the .txt files in `\source\` and paste it into Power Automate Desktop flow designer window into the appropriate subflows (see **Notes**):
     1. **main.txt** to the **Main** subflow
-    1. **perform-sql-server-operations.txt** to the **PerformSQLServerOperations** subflow
-    1. **perform-sqlite-operations.txt** to the **PerformSQLiteOperations** subflow
-    1. **sql-server-complete-work-item.txt** to the **SQLServerCompleteWorkItem** subflow
-    1. **sql-server-get-work-item.txt** to the **SQLServerGetWorkItem** subflow
-    1. **sql-server-upsert-work-item.txt** to the **SQLServerUpsertWorkItem** subflow
-    1. **sqlite-complete-work-item.txt** to the **SQLiteCompleteWorkItem** subflow
-    1. **sqlite-get-project-id.txt** to the **SQLiteGetProjectId** subflow
-    1. **sqlite-get-statuses.txt** to the **SQLiteGetStatuses** subflow
-    1. **sqlite-get-unprocessed-work-item.txt** to the **SQLiteGetUnprocessedWorkItem** subflow
-    1. **sqlite-get-work-item.txt** to the **SQLiteGetWorkItem** subflow
-    1. **sqlite-insert-work-item-result.txt** to the **SQLiteInsertWorkItemResult** subflow
-    1. **sqlite-update-accumulated-run-time.txt** to the **SQLiteUpdateAccumulatedRunTime** subflow
-    1. **sqlite-update-flow-name.txt** to the **SQLiteUpdateFlowName** subflow
-    1. **sqlite-update-work-item-status.txt** to the **SQLiteUpdateWorkItemStatus** subflow
-    1. **sqlite-upsert-work-item.txt** to the **SQLiteUpsertWorkItem** subflow
+    1. **convert-tabular-config-to-custom-object.txt** to the **ConvertTabularConfigToCustomObject** subflow
+    1. **read-database-config.txt** to the **ReadDatabaseConfig** subflow
+    1. **read-dataverse-config.txt** to the **ReadDataverseConfig** subflow
+    1. **read-excel-config.txt** to the **ReadExcelConfig** subflow
+    1. **read-json-config.txt** to the **ReadJSONConfig** subflow
+    1. **read-sharepoint-config.txt** to the **ReadSharePointConfig** subflow
+    1. **run-excel-closer.txt** to the **RunExcelCloser** subflow
 1. Review the code for any syntax errors
 
     ![View of the code in the Main subflow in PAD](./assets/main-subflow-example.png)
 
 1. Click **Save** in the flow designer
-1. Add the **PADFramework: WorkItemHandler** flow to the **PADFramework** solution for exporting it to other environments
+1. Add the **PADFramework: ConfigReader** flow to the **PADFramework** solution for exporting it to other environments
 
     ![View of the menu path to add an existing desktop flow to a solution](./assets/adding-existing-desktop-flow-to-solution.png)
 
@@ -113,6 +106,10 @@ The flow produces several output variables that are returned to the parent flow 
 The Framework should have its own dedicated development environment. This is the only environment where the Framework should reside as an unmanaged solution. 
 
 It should be imported as a managed solution to all other environments where flows will use the framework, including normal DEV, TEST, UAT and other non-production environments. This is so that changes cannot be made to the framework outside of its own DEV environment, but it can be used by calling utility flows such as the **WorkItemHandler** as child flows, as well as making copies of the template flows for new projects.
+
+### Different types of configs
+
+In most organizations, you would normally not want to have different types of storage for external configs being used across flows. It's best to pick one and stick to that. So, you do not actually need to create all of the subflows listed here, as this adds extra complexity where it is not necessary. Feel free to just go with the one type of config you prefer.
 
 ### Using direct SQL Statements vs Stored Procedures in SQL Server
 
