@@ -11,7 +11,7 @@ END
 @@viewScopeOption: ''
 @@view: ''
 @@connectionDisplayName: 'PADFramework_SharePoint'
-External.InvokeCloudConnector Connection: '{ReplaceWithSharePointConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_sharepointonline' OperationId: 'GetItems' @dataset: Input_ConfigAddress @table: Input_ConfigPath @'$filter': $'''ProjectNumber eq \'%Input_ProjectName%\'''' @GetItemsResponse=> GetItemsResponse
+External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_sharepointonline' OperationId: 'GetItems' @dataset: Input_ConfigAddress @table: Input_ConfigPath @'$filter': $'''ProjectNumber eq \'%Input_ProjectName%\'''' @GetItemsResponse=> GetItemsResponse
 Variables.CreateNewDatatable InputTable: { ^['PropertyName', 'Value'], [$'''''', $''''''] } DataTable=> Table_ConfigData
 LOOP FOREACH CurrentItem IN GetItemsResponse['value']
     Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem['PropertyName'], CurrentItem['Value']]
@@ -31,13 +31,13 @@ LABEL 'Exit'
   "ConnectionReferences": [
     {
       "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-      "DisplayName": "PADFramework_SharePoint",
-      "InternalId": "{ReplaceWithSharePointConnectionId}",
+      "DisplayName": "{ReplaceWithConnectionDisplayName}",
+      "InternalId": "{ReplaceWithConnectionId}",
       "IsDisabled": false,
-      "LogicalName": "def_PADFramework_SharePoint",
+      "LogicalName": "{ReplaceWithConnectionLogicalName}",
       "IsEmbedded": false,
-      "ConnectionName": "{ReplaceWithSharePointConnectionName}",
-      "ConnectionDisplayName": "{ReplaceWithSharePointConnectionDisplayName}"
+      "ConnectionName": "{ReplaceWithConnectionName}",
+      "ConnectionDisplayName": "{ReplaceWithConnectionDisplayName}"
     }
   ]
 }
