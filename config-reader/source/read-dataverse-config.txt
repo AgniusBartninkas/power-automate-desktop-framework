@@ -12,7 +12,7 @@ SET ColumnName_Value TO $'''%Prefix%value'''
 @@organization: '%Input_ConfigAddress%'
 @@entityName: '%Input_ConfigPath%'
 @@connectionDisplayName: 'PADFramework_Dataverse'
-External.InvokeCloudConnector Connection: '{ReplaceWithDataverseConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps' OperationId: 'ListRecordsWithOrganization' @organization: Input_ConfigAddress @entityName: Input_ConfigPath @'$filter': $'''crace_projectname eq \'%Input_ProjectName%\'''' @ListRecordsWithOrganizationResponse=> ListRecordsWithOrganizationResponse
+External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps' OperationId: 'ListRecordsWithOrganization' @organization: Input_ConfigAddress @entityName: Input_ConfigPath @'$filter': $'''crace_projectname eq \'%Input_ProjectName%\'''' @ListRecordsWithOrganizationResponse=> ListRecordsWithOrganizationResponse
 Variables.CreateNewDatatable InputTable: { ^['PropertyName', 'Value'], [$'''''', $''''''] } DataTable=> Table_ConfigData
 LOOP FOREACH CurrentItem IN ListRecordsWithOrganizationResponse['value']
     Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem[ColumnName_PropertyName], CurrentItem[ColumnName_Value]]
@@ -32,13 +32,13 @@ LABEL 'Exit'
   "ConnectionReferences": [
     {
       "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
-      "DisplayName": "PADFramework_Dataverse",
-      "InternalId": "{ReplaceWithDataverseConnectionId}",
+      "DisplayName": "{ReplaceWithConnectionDisplayName}",
+      "InternalId": "{ReplaceWithConnectionId}",
       "IsDisabled": false,
-      "LogicalName": "def_PADFramework_Dataverse",
+      "LogicalName": "{ReplaceWithConnectionLogicalName}",
       "IsEmbedded": false,
-      "ConnectionName": "{ReplaceWithDataverseConnectionLogicalName}",
-      "ConnectionDisplayName": "{ReplaceWithDataverseConnectionDisplayName}"
+      "ConnectionName": "{ReplaceWithConnectionName}",
+      "ConnectionDisplayName": "{ReplaceWithConnectionDisplayName}"
     }
   ]
 }

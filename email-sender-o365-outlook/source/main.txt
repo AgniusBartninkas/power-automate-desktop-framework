@@ -9,11 +9,11 @@ END
     IF IsNotEmpty(Input_Attachments) THEN
         CALL CreateAttachmentsObject
         @@'emailMessage/Sensitivity': ''
-@@connectionDisplayName: 'Office 365 Outlook - PAD Framework Demo'
+@@connectionDisplayName: '{ReplaceWithConnectionDisplayName}'
 External.InvokeCloudConnector Connection: '{ReplaceWithConnectionReferenceId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_office365' OperationId: 'SendEmailV2' @'emailMessage/To': Input_EmailRecipient @'emailMessage/Subject': Input_EmailSubject @'emailMessage/Body': HTMLEmailBody @'emailMessage/Cc': Input_EmailRecipientCC @'emailMessage/Attachments': List_AttachmentObjects
     ELSE
         @@'emailMessage/Sensitivity': ''
-@@connectionDisplayName: 'Office 365 Outlook - PAD Framework Demo'
+@@connectionDisplayName: '{ReplaceWithConnectionDisplayName}'
 External.InvokeCloudConnector Connection: '{ReplaceWithConnectionReferenceId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_office365' OperationId: 'SendEmailV2' @'emailMessage/To': Input_EmailRecipient @'emailMessage/Subject': Input_EmailSubject @'emailMessage/Body': HTMLEmailBody @'emailMessage/Cc': Input_EmailRecipientCC
     END
     SET Output_Status TO 200
@@ -37,13 +37,13 @@ SET Output_Message TO $'''Failed to send an email due to %ErrorMessage%'''
   "ConnectionReferences": [
     {
       "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_office365",
-      "DisplayName": "Office 365 Outlook - PAD Framework Demo",
-      "InternalId": "{ReplaceWithConnectionReferenceId}",
+      "DisplayName": "{ReplaceWithConnectionDisplayName}",
+      "InternalId": "{ReplaceWithConnectionId}",
       "IsDisabled": false,
-      "LogicalName": "def_Office_365_Outlook_PAD_Framework_Demo",
+      "LogicalName": "{ReplaceWithConnectionLogicalName}",
       "IsEmbedded": false,
-      "ConnectionName": "17587d78fc4f49da8dd2b1a564f6044d",
-      "ConnectionDisplayName": "{YourConnectionDisplayName}"
+      "ConnectionName": "{ReplaceWithConnectionName}",
+      "ConnectionDisplayName": "{ReplaceWithConnectionDisplayName}"
     }
   ]
 }
