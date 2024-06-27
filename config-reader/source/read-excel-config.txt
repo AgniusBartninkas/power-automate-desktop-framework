@@ -1,0 +1,16 @@
+IF IsEmpty(Input_ConfigAddress) THEN
+    SET ErrorMessage TO $'''Empty Input_ConfigAddress parameter provided. It is required for config type %Input_ConfigType%.'''
+    GOTO 'Exit'
+END
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: Input_ConfigAddress Visible: False ReadOnly: True Instance=> ExcelInstance
+Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelInstance Name: Input_ConfigPath
+Excel.ReadFromExcel.ReadAllCells Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: True RangeValue=> Table_ConfigData
+Excel.CloseExcel.Close Instance: ExcelInstance
+    ON ERROR
+        CALL RunExcelCloser
+    END
+IF IsNotEmpty(ErrorMessage) THEN
+    GOTO 'Exit'
+END
+CALL ConvertTabularConfigToCustomObject
+LABEL 'Exit'
