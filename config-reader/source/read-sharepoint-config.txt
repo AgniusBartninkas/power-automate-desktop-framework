@@ -12,9 +12,9 @@ END
 @@view: ''
 @@connectionDisplayName: 'PADFramework_SharePoint'
 External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_sharepointonline' OperationId: 'GetItems' @dataset: Input_ConfigAddress @table: Input_ConfigPath @'$filter': $'''ProjectNumber eq \'%Input_ProjectName%\'''' @GetItemsResponse=> GetItemsResponse
-Variables.CreateNewDatatable InputTable: { ^['PropertyName', 'Value'], [$'''''', $''''''] } DataTable=> Table_ConfigData
+Variables.CreateNewDatatable InputTable: { ^['Flow Name', 'Property Name', 'Value'], [$'''''', $'''''', $''''''] } DataTable=> Table_ConfigData
 LOOP FOREACH CurrentItem IN GetItemsResponse['value']
-    Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem['PropertyName'], CurrentItem['Value']]
+    Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem['Flow Name'], CurrentItem['Property Name'], CurrentItem['Value']]
 END
 CALL ConvertTabularConfigToCustomObject
 LABEL 'Exit'

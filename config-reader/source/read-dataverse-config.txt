@@ -7,15 +7,17 @@ ELSE IF IsEmpty(Input_ProjectName) THEN
 END
 # Getting the prefix from the table name, as it is also used in logical column names.
 Text.ParseText.RegexParseForFirstOccurrence Text: Input_ConfigPath TextToFind: $'''^[^_]+_''' StartingPosition: 0 IgnoreCase: False Match=> Prefix
+SET ColumnName_ProjectNumber TO $'''%Prefix%projectnumber'''
+SET ColumnName_FlowName TO $'''%Prefix%flowname'''
 SET ColumnName_PropertyName TO $'''%Prefix%propertyname'''
 SET ColumnName_Value TO $'''%Prefix%value'''
 @@organization: '%Input_ConfigAddress%'
 @@entityName: '%Input_ConfigPath%'
 @@connectionDisplayName: 'PADFramework_Dataverse'
-External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps' OperationId: 'ListRecordsWithOrganization' @organization: Input_ConfigAddress @entityName: Input_ConfigPath @'$filter': $'''crace_projectname eq \'%Input_ProjectName%\'''' @ListRecordsWithOrganizationResponse=> ListRecordsWithOrganizationResponse
+External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps' OperationId: 'ListRecordsWithOrganization' @organization: Input_ConfigAddress @entityName: Input_ConfigPath @'$filter': $'''%ColumnName_ProjectNumber% eq \'%Input_ProjectName%\'''' @ListRecordsWithOrganizationResponse=> ListRecordsWithOrganizationResponse
 Variables.CreateNewDatatable InputTable: { ^['PropertyName', 'Value'], [$'''''', $''''''] } DataTable=> Table_ConfigData
 LOOP FOREACH CurrentItem IN ListRecordsWithOrganizationResponse['value']
-    Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem[ColumnName_PropertyName], CurrentItem[ColumnName_Value]]
+    Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem[ColumnName_FlowName], CurrentItem[ColumnName_PropertyName], CurrentItem[ColumnName_Value]]
 END
 CALL ConvertTabularConfigToCustomObject
 LABEL 'Exit'

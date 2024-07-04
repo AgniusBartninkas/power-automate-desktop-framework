@@ -25,16 +25,21 @@ SET ProjectDirectory TO $'''C:\\RPA\\%ProjectName%'''
 - JSON
 - Excel
 - Database
-- SharePoint List#/
+- SharePoint List
+- Dataverse#/
 SET Config_Type TO $'''JSON'''
-/# Config_Address is used by ConfigReader. Should be blank for JSON or Excel files. Otherwise, should contain:
-- A Connection string for getting Config values from a Database
-- A Site address for for getting Config values from a SharePoint List#/
+/# Config_Address is used by ConfigReader. Should be blank for JSON files. Otherwise, should contain:
+- A connection string for getting Config values from a Database
+- A site address for for getting Config values from a SharePoint List
+- An environment URL for getting Config values from a Dataverse table
+- A file path for getting Config values from an Excel file#/
 SET Config_Address TO $'''%''%'''
 /# Config_Path is used by ConfigReader. Should contain:
-- File path for JSON and Excel files (set in the Config subflow)
-- Database table name or stored procedure for Databases
-- SharePoint list name for SharePoint#/
+- File path for JSON files (set in the Config subflow)
+- Sheet name for Excel files
+- SQL stored procedure name for Databases
+- SharePoint list name for SharePoint
+- Table logical name for Dataverse#/
 SET Config_Path TO $'''%''%'''
 **ENDREGION
 **REGION Logger variables - adjust as necessary

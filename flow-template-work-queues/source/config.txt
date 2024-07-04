@@ -26,14 +26,15 @@ External.RunFlow FlowId: '{ReplaceWithConfigReaderFlowId}' @Input_ConfigType: Co
         SET ErrorMessage TO Output_Message
         GOTO 'Exit'
     END
-    SET Config_RecipientObject TO Config_Object['Recipient']
-    SET Config_LoggerObject TO Config_Object['Logger']
-    SET Config_MaxErrorCountObject TO Config_Object['MaxErrorCount']
+    # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+    Variables.ConvertJsonToCustomObject Json: Config_Object['Recipient'] CustomObject=> Config_RecipientObject
+    Variables.ConvertJsonToCustomObject Json: Config_Object['Logger'] CustomObject=> Config_LoggerObject
+    Variables.ConvertJsonToCustomObject Json: Config_Object['MaxErrorCount'] CustomObject=> Config_MaxErrorCountObject
     IF Contains(Config_Object, $'''ScreenshotsPath''', False) THEN
         SET Config_ScreenshotsPath TO Config_Object['ScreenshotsPath']
     END
     IF Contains(Config_Object, $'''URL''', False) THEN
-        SET Config_URLObject TO Config_Object['URL']
+        Variables.ConvertJsonToCustomObject Json: Config_Object['URL'] CustomObject=> Config_URLObject
     END
     IF Contains(Config_Object, $'''HTMLTemplatePath''', False) THEN
         SET Config_HTMLTemplatePath TO Config_Object['HTMLTemplatePath']
