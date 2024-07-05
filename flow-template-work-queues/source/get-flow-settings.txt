@@ -12,10 +12,10 @@ ON BLOCK ERROR all
 END
     SET Config_FlowObject TO Config_Object['Flows'][FlowName]
     IF Contains(Config_FlowObject, $'''MaxErrorCount''', False) THEN
-        SET Config_MaxErrorCountObject TO Config_FlowObject['MaxErrorCount']
+        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['MaxErrorCount'] CustomObject=> Config_MaxErrorCountObject
     END
     IF Contains(Config_FlowObject, $'''Logger''', False) THEN
-        SET Config_LoggerObject TO Config_FlowObject['Logger']
+        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['Logger'] CustomObject=> Config_LoggerObject
         IF NotContains(Config_LoggerObject, $'''LogLevels''', False) THEN
             SET ErrorMessage TO $'''Modules => %FlowName% => Logger => LogLevels'''
             GOTO 'Exit'
@@ -26,18 +26,17 @@ END
         SET Log_Message TO $'''INFO;;;Using logger settings from the flow environment'''
         CALL Logger
     END
-    SET Config_PreviousFlow TO Config_FlowObject['PreviousFlow']
     IF Contains(Config_FlowObject, $'''Environment''', False) THEN
         SET Config_Environment TO Config_FlowObject['Environment']
     END
     IF Contains(Config_FlowObject, $'''Recipient''', False) THEN
-        SET Config_RecipientObject TO Config_FlowObject['Recipient']
+        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['Recipient'] CustomObject=> Config_RecipientObject
     END
     IF Contains(Config_FlowObject, $'''ScreenshotsPath''', False) THEN
         SET Config_ScreenshotsPath TO Config_FlowObject['ScreenshotsPath']
     END
     IF Contains(Config_FlowObject, $'''URL''', False) THEN
-        SET Config_URL TO Config_FlowObject['URL']
+        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['URL'] CustomObject=> Config_URLObject
     END
     IF Contains(Config_FlowObject, $'''HTMLTemplatePath''', False) THEN
         SET Config_HTMLTemplatePath TO Config_FlowObject['HTMLTemplatePath']
