@@ -1,13 +1,12 @@
-Text.Replace Text: Input_ProjectName TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> ProjectName
 @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT
     Id
 FROM
     Project
 WHERE
-     ProjectNumber = \'%ProjectName%\'''' Timeout: 30 Result=> Table_Project
+     ProjectNumber = \'%Input_ProjectName%\'''' Timeout: 30 Result=> Table_Project
 IF (Table_Project.IsEmpty) = (True) THEN
-    SET ErrorMessage TO $'''Project \"%ProjectName%\" not found in the Project table.'''
+    SET ErrorMessage TO $'''Project \"%Input_ProjectName%\" not found in the Project table.'''
     GOTO 'Exit'
 END
 SET ProjectId TO Table_Project[0]['Id']

@@ -1,0 +1,14 @@
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT
+    Id
+FROM
+    Flow
+WHERE
+     Name = \'%Input_FlowName%\'
+     AND ProjectId = %ProjectId%''' Timeout: 30 Result=> Table_Flow
+IF Table_Flow.IsEmpty = True THEN
+    SET ErrorMessage TO $'''Flow \"%Input_FlowName%\" under project \"%Input_ProjectName%\" not found in the Flow table.'''
+    GOTO 'Exit'
+END
+SET FlowId TO Table_Flow[0]['Id']
+LABEL 'Exit'

@@ -1,9 +1,0 @@
-Text.Replace Text: Input_FlowName TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> FlowName
-@@copilotGeneratedAction: 'False'
-Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
-    WorkItem
-SET
-    PreviousModuleName = \'%FlowName%\',
-    RetrieveCount = 0
-WHERE
-    Id = %Input_WorkItemId%''' Timeout: 30

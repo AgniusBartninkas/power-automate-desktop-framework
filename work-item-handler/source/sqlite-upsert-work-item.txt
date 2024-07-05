@@ -16,9 +16,6 @@ ELSE IF IsEmpty(Input_FlowName) THEN
 END
 Variables.ConvertCustomObjectToJson CustomObject: Input_WorkItemData Json=> WorkItem_DataContent
 Text.Replace Text: WorkItem_DataContent TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataContent
-Text.Replace Text: Input_WorkItemDataSource TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataSource
-Text.Replace Text: Input_FlowName TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> FlowName
-Text.Replace Text: Input_WorkItemNumber TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItemNumber
 CALL SQLiteGetUnprocessedWorkItem
 IF IsNotEmpty(Output_WorkItemId) THEN
     @@copilotGeneratedAction: 'False'
@@ -35,17 +32,21 @@ ELSE
     IF IsNotEmpty(ErrorMessage) THEN
         GOTO 'Exit'
     END
+    CALL SQLiteGetFlowId
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
     @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
-    WorkItem (Number, ProjectId, PreviousModuleName)
+    WorkItem (Number, ProjectId, FlowId)
 VALUES
-(\'%WorkItemNumber%\', \'%ProjectId%\', \'%FlowName%\')''' Timeout: 30
+(\'%Input_WorkItemNumber%\', %ProjectId%, %FlowId%)''' Timeout: 30
     # Getting the Id of the new work item after inserting it.
     CALL SQLiteGetUnprocessedWorkItem
     @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
     WorkItemData (WorkItemId, DataContent, DataSource)
 VALUES
-(%Output_WorkItemId%, \'%WorkItem_DataContent%\', \'%WorkItem_DataSource%\')''' Timeout: 30
+(%Output_WorkItemId%, \'%WorkItem_DataContent%\', \'%Input_WorkItemDataSource%\')''' Timeout: 30
 END
 LABEL 'Exit'

@@ -5,6 +5,7 @@ BLOCK
 ON BLOCK ERROR all
 
 END
+    CALL Init
     System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''COMPUTERNAME''' Value=> ComputerName
     SWITCH Input_DatabaseType
         CASE = $'''SQLite'''

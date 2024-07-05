@@ -9,11 +9,12 @@ Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_Connectio
 FROM WorkItem wi
 INNER JOIN WorkItemData wid ON wi.Id = wid.WorkItemId
 INNER JOIN Project p ON wi.ProjectId = p.Id
+INNER JOIN Flow f ON wi.FlowId = f.Id
 WHERE
     wi.Processed = 0
   AND wi.RetrieveCount < %Input_MaxRetrieveCount%
   AND p.ProjectNumber = \'%Input_ProjectName%\'
-  AND wi.ModuleName = \'%Input_FlowName%\'
+  AND f.Name = \'%Input_FlowName%\'
 LIMIT 1''' Timeout: 30 Result=> Table_WorkItem
 IF (Table_WorkItem.IsEmpty) = (True) THEN
     SET Output_Status TO 204
