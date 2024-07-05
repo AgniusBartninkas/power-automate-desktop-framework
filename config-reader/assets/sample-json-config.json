@@ -1,0 +1,44 @@
+{
+    "Recipient": {
+        "Error": "someone@domain.com",
+        "Info": "",
+        "Success": "",
+        "Skip": "",
+        "Fail": "",
+        "Default": "yourdefaultrecipient@testing.com"
+    },
+    "Flows": {
+        "SampleFlowName": {
+            "NextFlowName": "SampleNextFlowName",
+            "MaxErrorCount": {
+                "Excel": 10,
+                "Web": 10,
+                "Application": 10,
+                "WorkItem": 3
+            },
+            "Logger": {
+                "LogLevels": "TRACE,DEBUG,INFO,WARN,ERROR,FATAL",
+                "ErrorLogLevels": "ERROR,TRACE,FATAL"
+            },
+            "Environment": "DEV",
+            "Recipient": {
+                "Error": "someone@domain.com",
+                "Info": "",
+                "Success": "",
+                "Skip": "",
+                "Fail": "",
+                "Default": "yourdefaultrecipient@testing.com"
+            }
+        }
+    },
+    "Logger": {
+        "LogLevels": "TRACE,DEBUG,INFO,WARN,ERROR,FATAL",
+        "ErrorLogLevels": "ERROR,TRACE,FATAL"
+    },
+    "MaxErrorCount": {
+        "Excel": 10,
+        "Web": 10,
+        "Application": 10
+    },
+    "Environment": "DEV"
+}

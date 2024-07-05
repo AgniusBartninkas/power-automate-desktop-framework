@@ -1,0 +1,107 @@
+ALTER TABLE [WorkItemData]
+DROP CONSTRAINT IF EXISTS FK_WorkItemData_WorkItemId_WorkItem_Id
+
+ALTER TABLE [WorkItemData]
+ADD CONSTRAINT FK_WorkItemData_WorkItemId_WorkItem_Id
+FOREIGN KEY (WorkItemId)
+REFERENCES WorkItem (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [WorkItemResult]
+DROP CONSTRAINT IF EXISTS FK_WorkItemResult_WorkItemId_WorkItem_Id
+
+ALTER TABLE [WorkItemResult]
+ADD CONSTRAINT FK_WorkItemResult_WorkItemId_WorkItem_Id
+FOREIGN KEY (WorkItemId)
+REFERENCES WorkItem (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [WorkItemResult]
+DROP CONSTRAINT IF EXISTS FK_WorkItemResult_FlowId_Flow_Id
+
+ALTER TABLE [WorkItemResult]
+ADD CONSTRAINT FK_WorkItemResult_FlowId_Flow_Id
+FOREIGN KEY (FlowId)
+REFERENCES Flow (Id)
+ON DELETE NO ACTION
+
+ALTER TABLE [WorkItemResult]
+DROP CONSTRAINT IF EXISTS FK_WorkItemResult_MachineId_Machine_Id
+
+ALTER TABLE [WorkItemResult]
+ADD CONSTRAINT FK_WorkItemResult_MachineId_Machine_Id
+FOREIGN KEY (MachineId)
+REFERENCES Machine (Id)
+ON DELETE NO ACTION
+
+ALTER TABLE [WorkItemResult]
+DROP CONSTRAINT IF EXISTS FK_WorkItemResult_StatusId_Status_Id
+
+ALTER TABLE [WorkItemResult]
+ADD CONSTRAINT FK_WorkItemResult_StatusId_Status_Id
+FOREIGN KEY (StatusId)
+REFERENCES Status (Id)
+ON DELETE NO ACTION
+
+ALTER TABLE [Flow]
+DROP CONSTRAINT IF EXISTS FK_Flow_ProjectId_Project_Id
+
+ALTER TABLE [Flow]
+ADD CONSTRAINT FK_Flow_ProjectId_Project_Id
+FOREIGN KEY (ProjectId)
+REFERENCES Project (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [WorkItem]
+DROP CONSTRAINT IF EXISTS FK_WorkItem_FlowId_Flow_Id
+
+ALTER TABLE [WorkItem]
+ADD CONSTRAINT FK_WorkItem_FlowId_Flow_Id
+FOREIGN KEY (FlowId)
+REFERENCES Flow (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [WorkItem]
+DROP CONSTRAINT IF EXISTS FK_WorkItem_MachineId_Machine_Id
+
+ALTER TABLE [WorkItem]
+ADD CONSTRAINT FK_WorkItem_MachineId_Machine_Id
+FOREIGN KEY (MachineId)
+REFERENCES Machine (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [WorkItem]
+DROP CONSTRAINT IF EXISTS FK_WorkItem_StatusId_Status_Id
+
+ALTER TABLE [WorkItem]
+ADD CONSTRAINT FK_WorkItem_StatusId_Status_Id
+FOREIGN KEY (StatusId)
+REFERENCES Status (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [WorkItem]
+DROP CONSTRAINT IF EXISTS FK_WorkItem_PriorityId_Priority_Id
+
+ALTER TABLE [WorkItem]
+ADD CONSTRAINT FK_WorkItem_PriorityId_Priority_Id
+FOREIGN KEY (PriorityId)
+REFERENCES Priority (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [Config]
+DROP CONSTRAINT IF EXISTS FK_Config_ProjectId_Project_Id
+
+ALTER TABLE [Config]
+ADD CONSTRAINT FK_Config_ProjectId_Project_Id
+FOREIGN KEY (ProjectId)
+REFERENCES Project (Id)
+ON DELETE CASCADE
+
+ALTER TABLE [Config]
+DROP CONSTRAINT IF EXISTS FK_Config_FlowId_Flow_Id
+
+ALTER TABLE [Config]
+ADD CONSTRAINT FK_Config_FlowId_Flow_Id
+FOREIGN KEY (FlowId)
+REFERENCES Flow (Id)
+ON DELETE NO ACTION
