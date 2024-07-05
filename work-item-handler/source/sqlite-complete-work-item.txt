@@ -22,15 +22,23 @@ CALL SQLiteUpdateAccumulatedRuntime
 IF IsNotEmpty(ErrorMessage) THEN
     GOTO 'Exit'
 END
-CALL SQLiteInsertWorkItemResult
+CALL SQLiteGetFlowId
+IF IsNotEmpty(ErrorMessage) THEN
+    GOTO 'Exit'
+END
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
+    WorkItemResult (WorkItemId, StatusId, ModuleName, Reason, Message)
+VALUES
+(%Input_WorkItemId%, %Status_Object[Input_WorkItemStatus]%, \'%Input_FlowName%\', \'%Input_WorkItemReason%\', \'%Input_WorkItemMessage%\')''' Timeout: 30
 @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
     WorkItem
 SET
     StatusId = %Status_Object[Input_WorkItemStatus]%,
+    FlowId = %FlowId%
     ProcessedBy = \'%ComputerName%\',
     Processed = 1
 WHERE
     Id = %Input_WorkItemId%''' Timeout: 30
-CALL SQLiteUpdateFlowName
 LABEL 'Exit'

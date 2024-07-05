@@ -1,8 +1,0 @@
-Text.Replace Text: Input_FlowName TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> FlowName
-Text.Replace Text: Input_WorkItemReason TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> Reason
-Text.Replace Text: Input_WorkItemMessage TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> Message
-@@copilotGeneratedAction: 'False'
-Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
-    WorkItemResult (WorkItemId, StatusId, ModuleName, Reason, Message)
-VALUES
-(%Input_WorkItemId%, %Status_Object[Input_WorkItemStatus]%, \'%FlowName%\', \'%Reason%\', \'%Message%\')''' Timeout: 30

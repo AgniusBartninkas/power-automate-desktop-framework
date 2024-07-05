@@ -1,15 +1,15 @@
-Text.Replace Text: Input_WorkItemNumber TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItemNumber
-Text.Replace Text: Input_ProjectName TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> ProjectName
 @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT
     wi.Id
 FROM
     WorkItem wi
 INNER JOIN Project p ON wi.ProjectId = p.Id
+INNER JOIN Flow f ON wi.FlowId = f.Id
 WHERE
-    wi.Number = \'%WorkItemNumber%\'
+    wi.Number = \'%Input_WorkItemNumber%\'
     AND wi.Processed = 0
-    AND p.ProjectNumber = \'%ProjectName%\'''' Timeout: 30 Result=> Table_WorkItemId
+    AND p.ProjectNumber = \'%Input_ProjectName%\'
+    AND f.Name = \'%Input_FlowName%\'''' Timeout: 30 Result=> Table_WorkItemId
 IF (Table_WorkItemId.IsEmpty) = (True) THEN
     GOTO 'Exit'
 END

@@ -92,36 +92,36 @@ The flow produces several output variables that are returned to the parent flow 
         1. Output_WorkItemProcessingStartTime (Data type: Text; Mark as sensitive - False)
         1. Output_WorkItemRetrieveCount (Data type: Number; Mark as sensitive - False)
 1. Create new subflows (see **Notes**): 
+    1. **Init**
     1. **PerformSQLServerOperations** 
     1. **PerformSQLiteOperations** 
     1. **SQLServerCompleteWorkItem**
     1. **SQLServerGetWorkItem**
     1. **SQLServerUpsertWorkItem**
     1. **SQLiteCompleteWorkItem**
+    1. **SQLiteGetFlowId**
     1. **SQLiteGetProjectId**
     1. **SQLiteGetStatuses**
     1. **SQLiteGetUnprocessedWorkItem**
     1. **SQLiteGetWorkItem**
-    1. **SQLiteInsertWorkItemResult**
     1. **SQLiteUpdateAccumulatedRunTime**
-    1. **SQLiteUpdateFlowName**
     1. **SQLiteUpdateWorkItemStatus**
     1. **SQLiteUpsertWorkItem**
 1. Copy the code in the .txt files in `\source\` and paste it into Power Automate Desktop flow designer window into the appropriate subflows (see **Notes**):
     1. **main.txt** to the **Main** subflow
+    1. **init.txt** to the **Init** subflow
     1. **perform-sql-server-operations.txt** to the **PerformSQLServerOperations** subflow
     1. **perform-sqlite-operations.txt** to the **PerformSQLiteOperations** subflow
     1. **sql-server-complete-work-item.txt** to the **SQLServerCompleteWorkItem** subflow
     1. **sql-server-get-work-item.txt** to the **SQLServerGetWorkItem** subflow
     1. **sql-server-upsert-work-item.txt** to the **SQLServerUpsertWorkItem** subflow
     1. **sqlite-complete-work-item.txt** to the **SQLiteCompleteWorkItem** subflow
+    1. **sqlite-get-flow-id.txt** to the **SQLiteGetFlowId** subflow
     1. **sqlite-get-project-id.txt** to the **SQLiteGetProjectId** subflow
     1. **sqlite-get-statuses.txt** to the **SQLiteGetStatuses** subflow
     1. **sqlite-get-unprocessed-work-item.txt** to the **SQLiteGetUnprocessedWorkItem** subflow
     1. **sqlite-get-work-item.txt** to the **SQLiteGetWorkItem** subflow
-    1. **sqlite-insert-work-item-result.txt** to the **SQLiteInsertWorkItemResult** subflow
     1. **sqlite-update-accumulated-run-time.txt** to the **SQLiteUpdateAccumulatedRunTime** subflow
-    1. **sqlite-update-flow-name.txt** to the **SQLiteUpdateFlowName** subflow
     1. **sqlite-update-work-item-status.txt** to the **SQLiteUpdateWorkItemStatus** subflow
     1. **sqlite-upsert-work-item.txt** to the **SQLiteUpsertWorkItem** subflow
 1. Review the code for any syntax errors
