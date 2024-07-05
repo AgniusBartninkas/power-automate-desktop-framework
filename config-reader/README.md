@@ -97,6 +97,19 @@ The flow produces several output variables that are returned to the parent flow 
     ![View of the menu path to add an existing desktop flow to a solution](./assets/adding-existing-desktop-flow-to-solution.png)
 
 1. When exporting to other environments, export it as a **Managed** solution, so that it can be used, but not modified. Logger should be managed even in DEV environments for other flows (see **Notes** below)
+1. Create a config storage of your choice:
+    1. If you decide to use a JSON config, try using a sample JSON config file provided in `/assets/` and build on it (optional, but recommended).
+    1. If you want to use Dataverse for config, create a table in Dataverse with the following structure:
+        
+        ![View of a sample config table schema in Dataverse](./assets/dataverse-config-table-schema-example.png)
+
+    1. If you want to use a Database for config, see the `/database-sql-server/` for sample code for setting up the database. It includes work item processing structures, but if you don't need those, you can focus on the tables, functions and procedures for configs only.
+    1. If you want to use a SharePoint list for config, create a list in SharePoint with the following structure:
+
+        ![View of a sample config as a SharePoint list](./assets/sharepoint-config-table-schema-example.png)
+
+    1. If you want to use Excel for config, create an appropriate Excel file with a similar data structure to the samples above.
+
 1. **Enjoy**
 
 ## Notes
