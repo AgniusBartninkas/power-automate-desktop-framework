@@ -9,6 +9,7 @@ SET BrowserRestartCount TO 0
 SET Output_IsSuccess TO False
 Variables.CreateNewList List=> List_SubflowNames
 Variables.CreateNewList List=> List_ErrorMessages
+Variables.CreateNewList List=> List_Attachments
 **ENDREGION
 **REGION Flow variables - adjust as necessary
 /# Flow and directory variables.
