@@ -10,9 +10,10 @@ END
     /# Adjust the parameters according to your logging needs.
 The current settings will log to a plain text .log file.#/
     @@flowname: 'PADFramework: Logger'
-External.RunFlow FlowId: '{ReplaceWithLoggerFlowId}' @Input_SubflowNamesList: List_SubflowNames @Input_LoggerObject: Config_LoggerObject @Input_LogPath: Log_Path @Input_LogMessage: Log_Message @Input_LogType: Log_Type @Input_ErrorMessageList: List_ErrorMessages @Input_FlowName: FlowName @Input_ProjectName: ProjectName @Input_LogAddress: Log_Address @Output_ErrorMessageList=> List_ErrorMessages @Output_ErrorMessage=> ErrorMessage
-    IF IsNotEmpty(ErrorMessage) THEN
+External.RunFlow FlowId: '{ReplaceWithLoggerFlowId}' @Input_SubflowNamesList: List_SubflowNames @Input_LoggerObject: Config_LoggerObject @Input_LogPath: Log_Path @Input_LogMessage: Log_Message @Input_LogType: Log_Type @Input_ErrorMessageList: List_ErrorMessages @Input_FlowName: FlowName @Input_ProjectName: ProjectName @Input_LogAddress: Log_Address @Output_ErrorMessageList=> List_ErrorMessages @Output_ErrorMessage=> Output_Message
+    IF IsNotEmpty(Output_Message) THEN
         # Not calling ThrowFatalError here to prevent logical recursion.
+        SET ErrorMessage TO Output_Message
         SET Output_IsSuccess TO False
         EXIT Code: 0
     END
