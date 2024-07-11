@@ -2,7 +2,7 @@
 SET WorkItem_Status TO $'''%''%'''
 SET WorkItem_Reason TO $'''%''%'''
 SET WorkItem_Message TO $'''%''%'''
-SET WorkItem_DataContent TO $'''%''%'''
+SET WorkItem_DataContent TO {{ }}
 SET WorkItem_Id TO ''
 SET WorkItem_Number TO ''
 SET WorkItem_RetrieveCount TO ''
