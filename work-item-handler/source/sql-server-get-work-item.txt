@@ -35,6 +35,7 @@ ELSE IF Table_SPResult[0]['Status'] > 0 THEN
     GOTO 'Exit'
 END
 SET Output_WorkItemId TO Table_SPResult[0]['WorkItemId']
+SET Output_WorkItemNumber TO Table_SPResult[0]['Number']
 SET Output_WorkItemRetrieveCount TO Table_SPResult[0]['RetrieveCount']
 Variables.ConvertJsonToCustomObject Json: Table_SPResult[0]['DataContent'] CustomObject=> Output_WorkItemData
 SET Output_WorkItemDataSource TO Table_SPResult[0]['DataSource']
