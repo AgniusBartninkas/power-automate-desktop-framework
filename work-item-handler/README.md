@@ -19,6 +19,10 @@ There are several inputs required by this flow, and a couple that are optional (
 1. **Input_DatabaseType** - Should contain the database type, as the flow runtime depends on it. When SQLite is used, direct SQL statements are executed. For SQL Server, stored procedures are called instead. Currently supported options are:
     1. SQLite
     1. SQL Server
+1. **Input_Environment** - Should contain the environment name. Only required when operation is *Get* and database type is *SQL Server*. Optional in all other cases. Currently supported options are:
+    1. DEV
+    1. TEST
+    1. PROD
 1. **Input_FlowName** - Should contain the name of the parent flow. This is used in several operations.
 1. **Input_MaxRetrieveCount** - Should contain the maximum allowed retry count for a work item. Work items that are still open but have exceeded this count will be ignored. Should be marked as **optional** as it is only relevant for *Get* operations.
 1. **Input_ProjectName** - Should contain the name of the project to identify the relevant entries in the database. Should be marked as **optional**, as it is only required for *Get* and *Upsert* operations (e.g. when getting a work item or updating/inserting one).
@@ -67,6 +71,7 @@ The flow produces several output variables that are returned to the parent flow 
             ![View of the parameters for the 'Input_ConnectionString' input variable in PAD](./assets/input-connection-string-variable-parameters.png)
 
         1. Input_DatabaseType (Data type - Text; Mark as sensitive - False; Mark as optional - False)
+        1. Input_Environment (Data type - Text; Mark as sensitive - False; Mark as optional - True)
         1. Input_FlowName (Data type - Text; Mark as sensitive - False; Mark as optional - False)
         1. Input_MaxRetrieveCount (Data type - Number; Mark as sensitive - False; Mark as optional - True)
         1. Input_ProjectName (Data type - Text; Mark as sensitive - False; Mark as optional - True)
