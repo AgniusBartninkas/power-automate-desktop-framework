@@ -15,7 +15,7 @@ SET ColumnName_Value TO $'''%Prefix%value'''
 @@entityName: '%Input_ConfigPath%'
 @@connectionDisplayName: 'PADFramework_Dataverse'
 External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps' OperationId: 'ListRecordsWithOrganization' @organization: Input_ConfigAddress @entityName: Input_ConfigPath @'$filter': $'''%ColumnName_ProjectNumber% eq \'%Input_ProjectName%\'''' @ListRecordsWithOrganizationResponse=> ListRecordsWithOrganizationResponse
-Variables.CreateNewDatatable InputTable: { ^['PropertyName', 'Value'], [$'''''', $''''''] } DataTable=> Table_ConfigData
+Variables.CreateNewDatatable InputTable: { ^['Flow Name', 'Property Name', 'Value'], [$'''''', $'''''', $''''''] } DataTable=> Table_ConfigData
 LOOP FOREACH CurrentItem IN ListRecordsWithOrganizationResponse['value']
     Variables.AddRowToDataTable.AppendRowToDataTable DataTable: Table_ConfigData RowToAdd: [CurrentItem[ColumnName_FlowName], CurrentItem[ColumnName_PropertyName], CurrentItem[ColumnName_Value]]
 END
