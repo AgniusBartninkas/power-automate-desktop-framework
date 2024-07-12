@@ -13,11 +13,14 @@ ELSE IF IsEmpty(Input_WorkItemData) THEN
 ELSE IF IsEmpty(Input_WorkItemDataSource) THEN
     SET ErrorMessage TO $'''Empty Input_WorkItemDataSource parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
     GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemPriority) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemPriority parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
 END
 Variables.ConvertCustomObjectToJson CustomObject: Input_WorkItemData Json=> WorkItem_DataContent
 Text.Replace Text: WorkItem_DataContent TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataContent
 @@copilotGeneratedAction: 'False'
-Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''EXEC usp_UpsertWorkItem @Number = \'%Input_WorkItemNumber%\', @ProjectNumber = \'%Input_ProjectName%\', @FlowName = \'%Input_FlowName%\', @DataContent = \'%WorkItem_DataContent%\', @DataSource = \'%Input_WorkItemDataSource%\';''' Timeout: 180 Result=> Table_SPResult
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''EXEC usp_UpsertWorkItem @Number = \'%Input_WorkItemNumber%\', @ProjectNumber = \'%Input_ProjectName%\', @FlowName = \'%Input_FlowName%\', @DataContent = \'%WorkItem_DataContent%\', @DataSource = \'%Input_WorkItemDataSource%\', @Priority = \'%Input_WorkItemPriority%\';''' Timeout: 180 Result=> Table_SPResult
 IF Table_SPResult.IsEmpty = $'''true''' THEN
     SET ErrorMessage TO $'''The database returned nothing when upserting work item \"%Input_WorkItemNumber%\".'''
     GOTO 'Exit'

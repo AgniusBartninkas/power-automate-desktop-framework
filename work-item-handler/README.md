@@ -35,6 +35,7 @@ There are several inputs required by this flow, and a couple that are optional (
     1. Complete - closes the work item.
     1. Get - retrieves the work item with it's status and data.
     1. Upsert - either inserts a work item if it doesn't exist or updates it, if it does exist (by using the combination of ProjectName and WorkItemNumber)
+1. **Input_WorkItemPriority** - Should contain the priority for the work item. Should be marked as **optional** as it is only relevant for *Upsert* operations, and is optional for other operations. Supports values that are inserted via the *insert* statements in `/database-sql-server/source/insert/priorities.sql` and `/database-sqlite/source/insert/priorities.sql`.
 1. **Input_WorkItemProcessingStartTime** - Should contain the timestamp for when the work item processing started. Should be marked as **optional** as it is required when completing and updating work items, but not for *Get* type operations.
 1. **Input_WorkItemReason** - Should contain the reason for the work item status when updating or completing it. Should be marked as **optional** as it is only required when completing unsuccessfully or updating due to a retry.
 1. **Input_WorkItemStatus** - Should contain the status for the work item. Should be marked as **optional** as it is required when completing and updating work items, but not for *Get* type operations.
@@ -49,6 +50,7 @@ The flow produces several output variables that are returned to the parent flow 
 1. **Output_WorkItemDataSource** - Returns the data source for the work item. Is generally useful when using the *Get* operation. In other cases, it either returns an empty value, or the same value that was provided to it as inputs. Should be marked as **sensitive** as it may contain sensitive values.
 1. **Output_WorkItemId** - Returns the Id of the work item. Is generally useful when using the *Get* operation. In other cases, it either returns an empty value, or the same value that was provided to it as inputs.
 1. **Output_WorkItemNumber** - Returns the Number of the work item. Is generally useful when using the *Get* operation. In other cases, it either returns an empty value, or the same value that was provided to it as inputs.
+1. **Output_WorkItemPriority** - Contains the priority of the work item.
 1. **Output_WorkItemProcessingStartTime** - Returns the timestamp for when the work item was picked up for processing by a *Get* operation. In other cases returns an empty value.
 1. **Output_WorkItemRetrieveCount** - Returns the number of times a specific work item has been retrieved. This is useful in cases when a decision needs to be made on whether the item should be closed or not after too many retries.
 
@@ -81,6 +83,7 @@ The flow produces several output variables that are returned to the parent flow 
         1. Input_WorkItemMessage (Data type - Text; Mark as sensitive - True; Mark as optional - True)
         1. Input_WorkItemNumber (Data type - Text; Mark as sensitive - False; Mark as optional - True)
         1. Input_WorkItemOperation (Data type - Text; Mark as sensitive - False; Mark as optional - False)
+        1. Input_WorkItemPriority (Data type - Text; Mark as sensitive - False; Mark as optional - True)
         1. Input_WorkItemProcessingStartTime (Data type - Text; Mark as sensitive - False; Mark as optional - True)
         1. Input_WorkItemReason (Data type - Text; Mark as sensitive - False; Mark as optional - True)
         1. Input_WorkItemStatus (Data type - Text; Mark as sensitive - False; Mark as optional - True)
@@ -94,6 +97,7 @@ The flow produces several output variables that are returned to the parent flow 
         1. Output_WorkItemDataSource (Data type: Text; Mark as sensitive - True)
         1. Output_WorkItemId (Data type: Text; Mark as sensitive - False)
         1. Output_WorkItemNumber (Data type: Text; Mark as sensitive - False)
+        1. Output_WorkItemPriority (Data type: Text; Mark as sensitive - False)
         1. Output_WorkItemProcessingStartTime (Data type: Text; Mark as sensitive - False)
         1. Output_WorkItemRetrieveCount (Data type: Number; Mark as sensitive - False)
 1. Create new subflows (see **Notes**): 

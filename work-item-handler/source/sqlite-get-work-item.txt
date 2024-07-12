@@ -6,10 +6,12 @@ Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_Connectio
   ,wi.AccumulatedRunTime
   ,wid.DataContent
   ,wid.DataSource
+  ,pr.Name \'Priority\'
 FROM WorkItem wi
 INNER JOIN WorkItemData wid ON wi.Id = wid.WorkItemId
 INNER JOIN Project p ON wi.ProjectId = p.Id
 INNER JOIN Flow f ON wi.FlowId = f.Id
+INNER JOIN Priority pr ON wi.PriorityId = pr.Id
 WHERE
     wi.Processed = 0
   AND wi.RetrieveCount < %Input_MaxRetrieveCount%
@@ -27,6 +29,7 @@ SET Output_WorkItemRetrieveCount TO Table_WorkItem[0]['RetrieveCount']
 SET WorkItem_AccumulatedRunTime TO Table_WorkItem[0]['AccumulatedRunTime']
 Variables.ConvertJsonToCustomObject Json: Table_WorkItem[0]['DataContent'] CustomObject=> Output_WorkItemData
 SET Output_WorkItemDataSource TO Table_WorkItem[0]['DataSource']
+SET Output_WorkItemPriority TO Table_WorkItem[0]['Priority']
 Variables.IncreaseVariable Value: Output_WorkItemRetrieveCount IncrementValue: 1
 @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''UPDATE
