@@ -13,6 +13,9 @@ ELSE IF IsEmpty(Input_WorkItemDataSource) THEN
 ELSE IF IsEmpty(Input_FlowName) THEN
     SET ErrorMessage TO $'''Empty Input_FlowName parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
     GOTO 'Exit'
+ELSE IF IsEmpty(Input_WorkItemPriority) THEN
+    SET ErrorMessage TO $'''Empty Input_WorkItemPriority parameter provided. It is required for operation type %Input_WorkItemOperation%.'''
+    GOTO 'Exit'
 END
 Variables.ConvertCustomObjectToJson CustomObject: Input_WorkItemData Json=> WorkItem_DataContent
 Text.Replace Text: WorkItem_DataContent TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> WorkItem_DataContent
@@ -36,11 +39,15 @@ ELSE
     IF IsNotEmpty(ErrorMessage) THEN
         GOTO 'Exit'
     END
+    CALL SQLiteGetPriorityId
+    IF IsNotEmpty(ErrorMessage) THEN
+        GOTO 'Exit'
+    END
     @@copilotGeneratedAction: 'False'
 Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''INSERT INTO
-    WorkItem (Number, ProjectId, FlowId)
+    WorkItem (Number, ProjectId, FlowId, PriorityId)
 VALUES
-(\'%Input_WorkItemNumber%\', %ProjectId%, %FlowId%)''' Timeout: 30
+(\'%Input_WorkItemNumber%\', %ProjectId%, %FlowId%, %PriorityId%)''' Timeout: 30
     # Getting the Id of the new work item after inserting it.
     CALL SQLiteGetUnprocessedWorkItem
     @@copilotGeneratedAction: 'False'

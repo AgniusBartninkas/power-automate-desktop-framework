@@ -77,8 +77,8 @@ BEGIN
 
         COMMIT TRANSACTION
 
-        SELECT @WorkItemId 'WorkItemId', wi.[Number], wi.[RetrieveCount], wid.[DataContent], wid.[DataSource], s.[Name] 'WorkItemStatus', @Status 'Status', @Message 'Message'
-        FROM [WorkItem] wi INNER JOIN [WorkItemData] wid ON wi.[Id] = wid.[WorkItemId] INNER JOIN [Status] s ON wi.[StatusId] = s.[Id]
+        SELECT @WorkItemId 'WorkItemId', wi.[Number], wi.[RetrieveCount], wid.[DataContent], wid.[DataSource], s.[Name] 'WorkItemStatus', p.[Name] 'Priority', @Status 'Status', @Message 'Message'
+        FROM [WorkItem] wi INNER JOIN [WorkItemData] wid ON wi.[Id] = wid.[WorkItemId] INNER JOIN [Status] s ON wi.[StatusId] = s.[Id] INNER JOIN [Priorty] p on wi.[PriorityId] = p.[Id]
         WHERE wi.[Id] = @WorkItemId
     END TRY
 

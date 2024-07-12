@@ -4,6 +4,7 @@ Text.Replace Text: Input_WorkItemNumber TextToFind: $'''\'''' IsRegEx: False Ign
 Text.Replace Text: Input_WorkItemDataSource TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> Input_WorkItemDataSource
 Text.Replace Text: Input_WorkItemReason TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> Input_WorkItemReason
 Text.Replace Text: Input_WorkItemMessage TextToFind: $'''\'''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''\'\'''' ActivateEscapeSequences: False Result=> Input_WorkItemMessage
+SET Output_WorkItemPriority TO Input_WorkItemPriority
 SET Output_WorkItemData TO Input_WorkItemData
 SET Output_WorkItemDataSource TO Input_WorkItemDataSource
 SET Output_WorkItemId TO Input_WorkItemId

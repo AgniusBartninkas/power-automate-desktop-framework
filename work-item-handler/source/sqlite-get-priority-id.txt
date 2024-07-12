@@ -1,0 +1,13 @@
+@@copilotGeneratedAction: 'False'
+Database.ExecuteSqlStatement.ConnectAndExecute ConnectionString: Input_ConnectionString Statement: $'''SELECT
+    Id
+FROM
+    Priority
+WHERE
+     Name = \'%Input_WorkItemPriority%\'''' Timeout: 30 Result=> Table_Priority
+IF Table_Priority.IsEmpty = True THEN
+    SET ErrorMessage TO $'''Priority \"%Input_WorkItemPriority%\" not found in the Priority table.'''
+    GOTO 'Exit'
+END
+SET PriorityId TO Table_Priority[0]['Id']
+LABEL 'Exit'
