@@ -19,6 +19,7 @@ BEGIN
                 ,@MachineId SMALLINT
                 ,@InsertedAtUTC DATETIMEOFFSET(3)
                 ,@UpdatedAtUTC DATETIMEOFFSET(3)
+                ,@ProcessingStartTimeUTC DATETIMEOFFSET(3)
         -- try to lock stored procedure exclusively, wait for 30s
         EXEC @Result = sp_getapplock @Resource = 'usp_GetWorkItem', @LockMode = 'Exclusive', @LockTimeout = 30000, @LockOwner = 'Transaction'
 
@@ -31,6 +32,7 @@ BEGIN
 
         SET @InsertedAtUTC = [dbo].[ufn_GetUTCDate]()
         SET @UpdatedAtUTC = @InsertedAtUTC
+        SET @ProcessingStartTimeUTC = @InsertedAtUTC
         SET @WorkItemId = [dbo].[ufn_GetAvailableWorkItemId](@MachineName, @FlowName, @MaxRetrieveCount)
         SET @StatusId = [dbo].[ufn_GetStatusId]('InProgress')
         SET @MachineId = [dbo].[ufn_GetMachineId](@MachineName)
@@ -77,7 +79,7 @@ BEGIN
 
         COMMIT TRANSACTION
 
-        SELECT @WorkItemId 'WorkItemId', wi.[Number], wi.[RetrieveCount], wid.[DataContent], wid.[DataSource], s.[Name] 'WorkItemStatus', p.[Name] 'Priority', @Status 'Status', @Message 'Message'
+        SELECT @WorkItemId 'WorkItemId', wi.[Number], wi.[RetrieveCount], wid.[DataContent], wid.[DataSource], s.[Name] 'WorkItemStatus', p.[Name] 'Priority', @ProcessingStartTimeUTC 'ProcessingStartTime', @Status 'Status', @Message 'Message'
         FROM [WorkItem] wi INNER JOIN [WorkItemData] wid ON wi.[Id] = wid.[WorkItemId] INNER JOIN [Status] s ON wi.[StatusId] = s.[Id] INNER JOIN [Priorty] p on wi.[PriorityId] = p.[Id]
         WHERE wi.[Id] = @WorkItemId
     END TRY
