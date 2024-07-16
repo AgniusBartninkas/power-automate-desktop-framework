@@ -38,7 +38,7 @@ SET Output_WorkItemId TO Table_SPResult[0]['WorkItemId']
 SET Output_WorkItemNumber TO Table_SPResult[0]['Number']
 SET Output_WorkItemPriority TO Table_SPResult[0]['Priority']
 SET Output_WorkItemRetrieveCount TO Table_SPResult[0]['RetrieveCount']
-SET Output_WorkItemProcessingStartTimestamp TO Table_SPResult[0]['ProcessingStartTime']
+SET Output_WorkItemProcessingStartTime TO Table_SPResult[0]['ProcessingStartTime']
 Variables.ConvertJsonToCustomObject Json: Table_SPResult[0]['DataContent'] CustomObject=> Output_WorkItemData
 SET Output_WorkItemDataSource TO Table_SPResult[0]['DataSource']
 LABEL 'Exit'
