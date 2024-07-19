@@ -24,6 +24,7 @@ External.RunFlow FlowId: '{ReplaceWithBrowserLauncherFlowId}' @Input_Browser: Br
         CASE = $'''Firefox'''
             WebAutomation.LaunchFirefox.AttachToFirefoxByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> BrowserMain
     END
+    SET BrowserToClose TO BrowserMain
 END
 LABEL 'Exit'
 SET Log_Message TO $'''INFO;;;End'''
