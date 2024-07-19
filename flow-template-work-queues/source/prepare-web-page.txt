@@ -7,8 +7,15 @@ ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    /# Remove call for CloseBrowser if you do not want to close it on retry.
-Check for specific page title or URL or even a window to check if the flow can recover without restarting the browser.#/
+    /# Checking for whether a browser instance is alive to not clean up on each retry and work item.
+Additional checks for specific page title or URL or even a window can be added to check if the flow can recover without restarting the browser.#/
+    IF IsNotEmpty(BrowserMain) THEN
+        IF (BrowserMain.Handle <> -1 AND BrowserMain.IsAlive = True) = True THEN
+            SET Log_Message TO $'''INFO;;;Browser is open and ready.'''
+            CALL Logger
+            GOTO 'Exit'
+        END
+    END
     CALL CloseBrowser
     IF IsNotEmpty(ErrorMessage) THEN
         GOTO 'Exit'

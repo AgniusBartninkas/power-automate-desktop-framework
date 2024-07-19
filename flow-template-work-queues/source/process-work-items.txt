@@ -39,7 +39,7 @@ LOOP WHILE (WorkQueues.ProcessWorkQueueItem WorkQueue: $'''4b22c5ab-fce5-ee11-90
             END
             EXIT LOOP
         END
-        IF (WorkItem_Status = 'Fail' AND WorkItem_ErrorCount >= Config_MaxErrorCountObject['Workitem']) = True THEN
+        IF (WorkItem_Status = 'Fail' AND WorkItem_ErrorCount >= Config_MaxErrorCountObject['WorkItem']) = True THEN
             SET WorkItem_Message TO $'''Failed to process work item with number %WorkItem_Number% and Id %WorkItem_Id% after %WorkItem_ErrorCount% attempt(s). '''
             SET Log_Message TO $'''ERROR;;;%WorkItem_Message%'''
             CALL Logger

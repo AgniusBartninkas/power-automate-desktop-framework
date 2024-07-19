@@ -28,13 +28,6 @@ If you want to do less attempts, reduce the max error count values in config or 
         # Replace this comment with custom subflows
         EXIT LOOP
     END
-    SET BrowserToClose TO BrowserMain
-    CALL CloseBrowser
-    IF IsNotEmpty(ErrorMessage) THEN
-        SET Log_Message TO $'''WARN;;;%ErrorMessage%. Ignoring error and continuing on'''
-        CALL Logger
-        SET ErrorMessage TO ''
-    END
     IF (ErrorCount) >= (Config_MaxErrorCountObject['Web']) THEN
         SET WorkItem_Status TO $'''Fail'''
         SET WorkItem_Message TO $'''Web Automation failed after %ErrorCount% attempts.'''
