@@ -20,7 +20,7 @@ External.RunFlow FlowId: '{ReplaceWithBrowserLauncherFlowId}' @Input_Browser: Br
         CASE = $'''Chrome'''
             WebAutomation.LaunchChrome.AttachToChromeByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> BrowserMain
         CASE = $'''Edge'''
-            WebAutomation.LaunchEdge.AttachToEdgeByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> Browser
+            WebAutomation.LaunchEdge.AttachToEdgeByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> BrowserMain
         CASE = $'''Firefox'''
             WebAutomation.LaunchFirefox.AttachToFirefoxByUrl TabUrl: URL AttachTimeout: 5 BrowserInstance=> BrowserMain
     END
