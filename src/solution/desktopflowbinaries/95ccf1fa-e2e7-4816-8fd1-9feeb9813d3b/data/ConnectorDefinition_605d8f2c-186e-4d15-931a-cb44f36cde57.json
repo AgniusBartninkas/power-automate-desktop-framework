@@ -1,0 +1,297 @@
+{
+  "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+  "Definition": {
+    "Id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+    "Name": "shared_sharepointonline",
+    "Properties": {
+      "IsCustomApi": false,
+      "Swagger": {
+        "basePath": "/apim/sharepointonline",
+        "definitions": {
+          "ItemsList": {
+            "additionalProperties": null,
+            "example": null,
+            "properties": {
+              "value": {
+                "additionalProperties": null,
+                "example": null,
+                "items": {
+                  "additionalProperties": null,
+                  "example": null,
+                  "$ref": "#/definitions/Item",
+                  "default": null
+                },
+                "type": "array",
+                "default": null,
+                "description": "List of Items"
+              }
+            },
+            "type": "object",
+            "default": null,
+            "description": "List of Items"
+          },
+          "Item": {
+            "additionalProperties": {
+              "$ref": "#/definitions/Object"
+            },
+            "x-ms-dynamic-properties": {
+              "itemValuePath": "Schema/Items",
+              "operationId": "GetTable",
+              "parameters": {
+                "dataset": {
+                  "parameterReference": "dataset",
+                  "value": null
+                },
+                "table": {
+                  "parameterReference": "table",
+                  "value": null
+                },
+                "view": {
+                  "parameterReference": "view",
+                  "value": null
+                }
+              }
+            },
+            "example": null,
+            "properties": {
+              "dynamicProperties": {
+                "additionalProperties": {
+                  "$ref": "#/definitions/Object"
+                },
+                "example": null,
+                "type": "object",
+                "default": null
+              }
+            },
+            "type": "object",
+            "default": null,
+            "description": "Table item entity"
+          },
+          "Object": {
+            "additionalProperties": null,
+            "example": null,
+            "properties": {},
+            "type": "object",
+            "default": null
+          }
+        },
+        "host": "europe-002.azure-apim.net",
+        "info": {
+          "title": "SharePoint",
+          "version": "1.0"
+        },
+        "parameters": {},
+        "paths": {
+          "/{connectionId}/datasets/{dataset}/tables/{table}/items": {
+            "get": {
+              "consumes": [],
+              "deprecated": false,
+              "description": "Gets items from a SharePoint list.",
+              "externalDocs": {
+                "url": "https://docs.microsoft.com/connectors/sharepointonline/#get-items"
+              },
+              "operationId": "GetItems",
+              "x-ms-pageable": {
+                "nextLinkName": "@odata.nextLink"
+              },
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "connectionId",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemsPath": "value",
+                    "itemTitlePath": "DisplayName",
+                    "itemValuePath": "Name",
+                    "operationId": "GetDataSets",
+                    "parameters": {}
+                  },
+                  "in": "path",
+                  "name": "dataset",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "description": "Example: https://contoso.sharepoint.com/sites/sitename",
+                  "x-ms-summary": "Site Address",
+                  "x-ms-url-encoding": "double"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemsPath": "value",
+                    "itemTitlePath": "DisplayName",
+                    "itemValuePath": "Name",
+                    "operationId": "GetTables",
+                    "parameters": {
+                      "dataset": {
+                        "parameterReference": "dataset",
+                        "value": null
+                      }
+                    }
+                  },
+                  "in": "path",
+                  "name": "table",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "description": "SharePoint list name",
+                  "x-ms-summary": "List Name",
+                  "x-ms-url-encoding": "double"
+                },
+                {
+                  "in": "query",
+                  "name": "$filter",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+                  "x-ms-summary": "Filter Query",
+                  "x-ms-visibility": "advanced"
+                },
+                {
+                  "in": "query",
+                  "name": "$orderby",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "An ODATA orderBy query for specifying the order of entries.",
+                  "x-ms-summary": "Order By",
+                  "x-ms-visibility": "advanced"
+                },
+                {
+                  "in": "query",
+                  "name": "$top",
+                  "required": false,
+                  "type": "integer",
+                  "default": null,
+                  "description": "Total number of entries to retrieve (default = all).",
+                  "format": "int32",
+                  "x-ms-summary": "Top Count",
+                  "x-ms-visibility": "advanced"
+                },
+                {
+                  "x-ms-dynamic-tree": {
+                    "browse": {
+                      "itemFullTitlePath": "Path",
+                      "itemIsParent": "(IsFolder eq true)",
+                      "itemTitlePath": "DisplayName",
+                      "itemValuePath": "Path",
+                      "operationId": "ListFolder",
+                      "parameters": {
+                        "dataset": {
+                          "parameterReference": "dataset",
+                          "value": null
+                        },
+                        "id": {
+                          "selectedItemValuePath": "Id",
+                          "value": null
+                        }
+                      }
+                    },
+                    "open": {
+                      "itemFullTitlePath": "Path",
+                      "itemIsParent": "(IsFolder eq true)",
+                      "itemTitlePath": "DisplayName",
+                      "itemValuePath": "Path",
+                      "operationId": "ListAllRootFolders",
+                      "parameters": {
+                        "dataset": {
+                          "parameterReference": "dataset",
+                          "value": null
+                        }
+                      }
+                    },
+                    "settings": {
+                      "canSelectLeafNodes": false,
+                      "canSelectParentNodes": true
+                    }
+                  },
+                  "in": "query",
+                  "name": "folderPath",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Select a folder, or leave blank for the whole list",
+                  "x-ms-summary": "Limit Entries to Folder"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemTitlePath": "name",
+                    "itemValuePath": "value",
+                    "operationId": "GetViewScopeOptions",
+                    "parameters": {}
+                  },
+                  "in": "query",
+                  "name": "viewScopeOption",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Return entries contained in sub-folders (default = true)",
+                  "x-ms-summary": "Include Nested Items"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemTitlePath": "DisplayName",
+                    "itemValuePath": "Name",
+                    "operationId": "GetTableViews",
+                    "parameters": {
+                      "dataset": {
+                        "parameterReference": "dataset",
+                        "value": null
+                      },
+                      "table": {
+                        "parameterReference": "table",
+                        "value": null
+                      }
+                    }
+                  },
+                  "in": "query",
+                  "name": "view",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Avoid column threshold issues by only using columns defined in a view",
+                  "x-ms-summary": "Limit Columns by View",
+                  "x-ms-visibility": "advanced"
+                }
+              ],
+              "produces": [
+                "application/json",
+                "text/json",
+                "application/xml",
+                "text/xml"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "additionalProperties": null,
+                    "example": null,
+                    "$ref": "#/definitions/ItemsList",
+                    "default": null
+                  }
+                },
+                "default": {
+                  "description": "Operation Failed."
+                }
+              },
+              "summary": "Get items",
+              "x-ms-visibility": "important"
+            }
+          }
+        },
+        "responses": {},
+        "schemes": [
+          "https"
+        ],
+        "swagger": "2.0"
+      }
+    }
+  },
+  "DynamicSchemas": {},
+  "Locale": "en-US"
+}
