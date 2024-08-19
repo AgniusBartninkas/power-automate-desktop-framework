@@ -3,7 +3,10 @@
 2. Clearing any temporary files that may interfere with the flow.
 3. Must be run in the beginning of the main flow (after Config). Also recommended to run at the end for cleanup purposes.#/
 SET ErrorMessage TO ''
-Variables.AddItemToList Item: $'''PrepareSystem''' List: List_SubflowNames
+Text.ToNumber Text: $'''\'\''''
+    ON ERROR
+        CALL GetSubflowName
+    END
 SET Log_Message TO $'''INFO;;;Start'''
 CALL Logger
 BLOCK 

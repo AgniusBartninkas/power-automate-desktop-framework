@@ -1,10 +1,13 @@
 CALL Init
+Text.ToNumber Text: $'''\'\''''
+    ON ERROR
+        CALL GetSubflowName
+    END
 DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
 ON ERROR
     GOTO Fatal
 END
 Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd''' Result=> DateStamp
-Variables.AddItemToList Item: $'''Main''' List: List_SubflowNames
 CALL Config
 IF IsNotEmpty(ErrorMessage) THEN
     SET Log_Message TO $'''FATAL;;;%ErrorMessage%'''

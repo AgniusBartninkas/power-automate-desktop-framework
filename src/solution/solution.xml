@@ -1,11 +1,11 @@
-<ImportExportXml version="9.2.24063.176" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.24071.192" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>PADFramework</UniqueName>
     <LocalizedNames>
       <LocalizedName description="PADFramework" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.02407.1937</Version>
+    <Version>1.0.12408.191</Version>
     <Managed>0</Managed>
     <Publisher>
       <UniqueName>Definra</UniqueName>

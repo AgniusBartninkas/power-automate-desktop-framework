@@ -2,7 +2,10 @@
 Parameters that are available globally in the config (MaxErrorCount, Logger, Environment, Recipient, etc.) are not mandatory, but can be set per flow, too.
 Custom parameters specific to a certain flow should be set in the flow object and not the global Config.#/
 SET ErrorMessage TO ''
-Variables.AddItemToList Item: $'''GetFlowSettings''' List: List_SubflowNames
+Text.ToNumber Text: $'''\'\''''
+    ON ERROR
+        CALL GetSubflowName
+    END
 SET Log_Message TO $'''INFO;;;Start'''
 CALL Logger
 BLOCK 
