@@ -10,11 +10,9 @@ ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
-    Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd HHmmss''' Result=> Timestamp
-    SET ScreenshotFileName TO $'''%WorkItem_Id% %WorkItem_Number% %Timestamp%.png'''
+    SET ScreenshotFileName TO $'''%WorkItem_Id% %WorkItem_Number%'''
     @@flowname: 'PADFramework: ScreenshotMaker'
-External.RunFlow FlowId: '{ReplaceWithScreenshotMakerFlowId}' @Input_ScreenshotsDirectory: Config_ScreenshotsPath @Input_ScreenshotFileName: ScreenshotFileName @Output_Message=> Output_Message @Output_Status=> Output_Status
+External.RunFlow FlowId: '{ReplaceWithScreenshotMakerFlowId}' @Input_ScreenshotsDirectory: Config_ScreenshotsPath @Input_ScreenshotFileName: ScreenshotFileName @Output_Message=> Output_Message @Output_Status=> Output_Status @Output_ScreenshotFileName=> ScreenshotFileName
     IF Output_Status <> 200 THEN
         SET ErrorMessage TO Output_Message
         GOTO 'Exit'

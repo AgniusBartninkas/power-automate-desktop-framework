@@ -23,6 +23,7 @@ There are several inputs required by this flow, and a couple that are optional (
 The flow produces several output variables that are returned to the parent flow after execution:
 
 1. **Output_Message** - Contains the response of the flow. Can either return a success, or a failure response. Should be used by the parent flow for any logging after taking a screenshot (or failing to do so). Should be marked as **sensitive** in case the message may contain any sensitive data.
+1. **Output_ScreenshotFileName** - Contains the file name for the screenshot file if it is created.
 1. **Output_Status** - Contains the status code for the response of the flow. Uses standard HTTP status codes. Can either return a success (200), or a failure status (4xx, 5xx). Should be checked by the parent flow to verify if taking a screenshot succeeded.
 
 ## Minimal path to awesome
@@ -48,6 +49,7 @@ The flow produces several output variables that are returned to the parent flow 
 
             ![View of the parameters for the 'Output_Message' input variable in PAD](./assets/output-message-variable-parameters.png)
 
+        1. Output_ScreenshotFileName (Data type: Text; Mark as sensitive - False)
         1. Output_Status (Data type: Number; Mark as sensitive - False)
 1. Copy the code from **main.txt** in `\source\`
 1. Paste it into the Power Automate Desktop flow designer window into the **Main** subflow to have the actions created automatically.
