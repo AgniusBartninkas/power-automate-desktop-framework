@@ -138,7 +138,7 @@ When makers want to start creating a new flow, they should follow these guidelin
     1. **LoginToWebPage**
     1. **PrepareSystem**
     1. **PrepareWebPage**
-1. Copy the **Template** subflow for any custom subflows that are needed and edit the **Add item to list** action in it to add the correct name of the subflow to the subflow names list.
+1. Copy the **Template** subflow for any custom subflows that are needed.
 1. Add any custom actions inside the `On block error` action in these custom subflows.
 1. Add appropriate subflow calls for these custom subflows to parent subflows
 

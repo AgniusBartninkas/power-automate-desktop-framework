@@ -1,0 +1,3 @@
+ERROR => MockError Reset: True
+Text.ParseText.RegexParseForFirstOccurrence Text: MockError.Location TextToFind: $'''(?<=Subflow:\\s).+(?=,\\sAction:)''' StartingPosition: 0 IgnoreCase: False Match=> SubflowName
+Variables.AddItemToList Item: SubflowName List: List_SubflowNames

@@ -1,4 +1,7 @@
-Variables.AddItemToList Item: $'''ThrowFatalError''' List: List_SubflowNames
+Text.ToNumber Text: $'''\'\''''
+    ON ERROR
+        CALL GetSubflowName
+    END
 SET Log_Message TO $'''FATAL;;;A fatal error has occurred. Stopping the flow \"%FlowName%\"'''
 CALL Logger
 Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

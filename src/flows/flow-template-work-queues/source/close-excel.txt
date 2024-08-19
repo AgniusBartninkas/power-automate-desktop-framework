@@ -1,5 +1,8 @@
 SET ErrorMessage TO ''
-Variables.AddItemToList Item: $'''CloseExcel''' List: List_SubflowNames
+Text.ToNumber Text: $'''\'\''''
+    ON ERROR
+        CALL GetSubflowName
+    END
 SET Log_Message TO $'''INFO;;;Start'''
 CALL Logger
 BLOCK 
