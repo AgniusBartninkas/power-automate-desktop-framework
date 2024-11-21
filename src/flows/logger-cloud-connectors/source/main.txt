@@ -4,12 +4,6 @@ ON BLOCK ERROR all
 END
     CALL Init
     SWITCH Input_LogType
-        CASE = $'''Log File'''
-            CALL LogToFile
-        CASE = $'''CSV File'''
-            CALL LogToCSV
-        CASE = $'''Database'''
-            CALL LogToDatabase
         CASE = $'''SharePoint List'''
             CALL LogToSharePoint
         CASE = $'''Dataverse'''

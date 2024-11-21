@@ -1,6 +1,6 @@
-# Logger
+# LoggerCloudConnectors
 
-The logger flow creates a log message entry in a specific log type as provided via input parameters.
+The logger flow creates a log message entry in a specific log type as provided via input parameters. The Cloud Connectors version of the Logger logs to either a SharePoint list or a Dataverse table. See **Notes** below regarding the use of the Logger flows.
 
 ## Version compatibility
 
@@ -13,22 +13,11 @@ There are several inputs required by this flow, and a couple that are optional (
 
 1. **Input_ErrorMessageList** - Should contain the list of error messages already accumulated in the parent flow. Is used to add the new message (if it is an error message) and produce the output list. Can be a blank list, if no prior error messages exist. Should be marked as **sensitive** in case the error messages contain any sensitive information.
 1. **Input_FlowName** - Should contain the name of the parent flow. Is used in the logs.
-1. **Input_LogAddress** (optional) - Should contain the address for certain log types. Is required for some log types, but optional for others. See the definition for **Input_LogType** below for more details. Should be marked as **sensitive**, in case the SQL connection string contains credentials.
+1. **Input_LogAddress** - Should contain the address for certain log types. Is required for all log types in this flow. See the definition for **Input_LogType** below for more details. 
 1. **Input_LoggerObject** - Should be a custom object that contains at least two parameters: 'LogLevels' (defining the levels of messages that should be logged in a case-sensitive, comma-separated string) and 'ErrorLogLevels' (defining the levels of messages that should be added to the error messages list in a case-sensitive, comma-separated string). Is used for logging.
 1. **Input_LogMessage** - Should contain the actual message to log, possibly with the entire stack trace for system exceptions. Should be marked as **sensitive** in case the message contains any sensitive data. The message must be preceeded by the log level and three (3) semicolons to separate the level from the message. For example: `INFO;;;Finished processing work item no. 123456 with status 'Success'.`
 1. **Input_LogPath** - Should contain the path to which the log message should be written. The expected value depends on the log type. See the definition for **Input_LogType** below for more details.
 1. **Input_LogType** - Should contain one of the available values for the types of logs to be created. The currently supported parameter values are: 
-    1. 'Log File' - for plain text files saved with a .log extension. Log messages are stored as JSON objects. 
-        1. The **Input_LogPath** input variable expects a file path (required).
-        1. The **Input_LogAddress** input variable is ignored (optional).
-    1. 'CSV File' - for CSV files. Log message fields are delimited with the semicolon. 
-        1. The **Input_LogPath** input variable expects a file path (required).
-        1. The **Input_LogAddress** input variable is ignored (optional).
-    1. 'Database' - for writing it to a database table. 
-        1. The **Input_LogPath** input variable expects:
-            1. A table name when using standard INSERT statements (required).
-            1. A stored procedure name when using a stored procedure (required).
-        1. The **Input_LogAddress** input variable expects a connection string (required).
     1. 'SharePoint List' - for writing it to a SharePoint list.  
         1. The **Input_LogPath** input variable expects a list name (required).
         1. The **Input_LogAddress** input variable expects a site address (required).
@@ -55,10 +44,6 @@ The flow produces several output variables that are returned to the parent flow 
     1. Create a SharePoint list with appropriate fields
     1. Create a SharePoint connection using the account that should make the logs in SharePoint lists
     1. Create a connection reference for the SharePoint connection in the **PADFramework** solution
-1. If you want to log to a SQL database (see **Notes** below):
-    1. Open SQL Server Management Studio 
-    1. Create the table for logs using the **create-table.sql** script in `/database/`
-    1. If you want to use a SQL Server stored procedure for logging (recommended), create the stored procedure using the **create-stored-procedure.sql** script in `/database/`
 1. If you want to log to a Dataverse table (see **Notes** below):
     1. Create a Dataverse table with appropriate fields in the **PADFramework** solution
 
@@ -67,7 +52,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. Create a Dataverse connection using the account that should make the logs in the Dataverse table
     1. Create a connection reference for the Dataverse connection in the **PADFramework** solution
 1. Open **Power Automate Desktop**
-1. Create a new flow called **PADFramework: Logger** - make sure to not enable Power Fx when creating it
+1. Create a new flow called **PADFramework: LoggerCloudConnectors** - make sure to not enable Power Fx when creating it
 
     ![View of the flow creation window in PAD](./assets/creating-the-flow.png)
 
@@ -96,29 +81,21 @@ The flow produces several output variables that are returned to the parent flow 
 
 1. Create new subflows (see **Notes** below): 
     1. **Init**
-    1. **LogToFile** 
-    1. **LogToCSV** 
-    1. **LogToDatabase**
     1. **LogToSharePoint**
     1. **LogToDataverse**
 1. Copy the code in the .txt files and paste it into Power Automate Desktop flow designer window into the appropriate subflows:
     1. **main.txt** to the **Main** subflow
     1. **init.txt** to the **Init** subflow
-    1. **log-to-file.txt** to the **LogToFile** subflow (see **Notes** below)
-    1. **log-to-csv.txt** to the **LogToCSV** subflow (see **Notes** below)
-    1. To the **LogToDatabase** subflow (see **Notes** below) paste either:
-        1. **log-to-database.txt** if you want to use standard INSERT statements
-        1. **log-to-database-sp.txt** if you want to use a Stored Procedure to insert the logs (recommended)
     1. **log-to-sharepoint.txt** to the **LogToSharePoint** subflow (see **Notes** below)
         1. You will most likely need to rebuild the **Create item** action here, because it may get reset after you select the correct connection reference. The correct way to do this is to copy it out to a text editor after you've made your changes, and then replace the `dataset`, `table` and all the input parameters with the same syntax as shown in the snippet.
     1. **log-to-dataverse.txt** to the **LogToDataverse** subflow (see **Notes** below)
         1. You will most likely need to rebuild the **Add a new row to selected environment** action here, because it may get reset after you select the correct connection reference. The correct way to do this is to copy it out to a text editor after you've made your changes, and then replace the `dataset`, `table` and all the input parameters with the same syntax as shown in the snippet. 
 1. Review the code for any syntax errors
 
-    ![View of the code in a LogToFile subflow in PAD](./assets/log-to-file-subflow-example.png)
+    ![View of the code in a LogToDataverse subflow in PAD](./assets/log-to-dataverse-subflow-example.png)
 
 1. Click **Save** in the flow designer
-1. Add the **PADFramework: Logger** flow to the **PADFramework** solution for exporting it to other environments
+1. Add the **PADFramework: LoggerCloudConnectors** flow to the **PADFramework** solution for exporting it to other environments
 
     ![View of the menu path to add an existing desktop flow to a solution](./assets/adding-existing-desktop-flow-to-solution.png)
 
@@ -138,6 +115,8 @@ It should be imported as a managed solution to all other environments where flow
 In case you do not plan on using one or more log types, you can easily skip the steps involved. Steps that can be skipped are marked as such in the description above.
 For example, if you do not plan to ever log to SharePoint list, you do not need to create the SharePoint connection, and then simply skip the **LogToSharePoint** subflow. Then delete the call to this subflow from **Main** after creating it.
 
-If you want to log to a database, the recommended table structure and a stored procedure for logging are also provided in `/database/`. You can amend these according to your needs, but then also make sure to include the adjustments to the Power Automate Desktop code in **log-to-database.txt** or **log-to-database-sp.txt**.
+### Other log types
 
-The same applies to any other types, too, but most of them do not include extra steps, other than creating the subflow itself.
+This flow only supports logging to SharePoint lists and Dataverse tables as these two types require setting up connection references to the cloud and also require Premium and require these two connectors being allowed in the environment, which can prevent the solution from being imported to some environments, even if the user has Premium. Other types of logging (CSV files, Log files and Databases are in a separate flow called **LoggerLocalConnectors**).
+
+It is recommended to only keep one of these utility flows, as logging should be done universally within an organization anyway. So, pick your preferred way for logging and keep the one utility flow, while deleting the other one.
