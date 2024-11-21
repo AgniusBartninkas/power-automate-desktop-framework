@@ -20,20 +20,29 @@ END
     END
     **ENDREGION
     @@flowname: 'PADFramework: ConfigReader'
-External.RunFlow FlowId: '{ReplaceWithConfigReaderFlowId}' @Input_ConfigType: Config_Type @Input_ConfigPath: Config_Path @Input_ConfigAddress: Config_Address @Input_ProjectName: ProjectName @Output_ConfigObject=> Config_Object @Output_Message=> Output_Message @Output_Status=> Output_Status
+External.RunFlow FlowId: 'c74ad727-5617-4d54-89a9-9d7b35187d34' @Input_ConfigType: Config_Type @Input_ConfigPath: Config_Path @Input_ConfigAddress: Config_Address @Input_ProjectName: ProjectName @Output_ConfigObject=> Config_Object @Output_Message=> Output_Message @Output_Status=> Output_Status
     IF Output_Status <> 200 THEN
         SET ErrorMessage TO Output_Message
         GOTO 'Exit'
     END
-    # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
-    Variables.ConvertJsonToCustomObject Json: Config_Object['Recipient'] CustomObject=> Config_RecipientObject
-    Variables.ConvertJsonToCustomObject Json: Config_Object['Logger'] CustomObject=> Config_LoggerObject
-    Variables.ConvertJsonToCustomObject Json: Config_Object['MaxErrorCount'] CustomObject=> Config_MaxErrorCountObject
+    SET Config_RecipientObject TO Config_Object['Recipient']
+    SET Config_LoggerObject TO Config_Object['Logger']
+    SET Config_MaxErrorCountObject TO Config_Object['MaxErrorCount']
+    IF Config_Type <> $'''JSON''' THEN
+        # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+        Variables.ConvertJsonToCustomObject Json: Config_RecipientObject CustomObject=> Config_RecipientObject
+        Variables.ConvertJsonToCustomObject Json: Config_LoggerObject CustomObject=> Config_LoggerObject
+        Variables.ConvertJsonToCustomObject Json: Config_MaxErrorCountObject CustomObject=> Config_MaxErrorCountObject
+    END
     IF Contains(Config_Object, $'''ScreenshotsPath''', False) THEN
         SET Config_ScreenshotsPath TO Config_Object['ScreenshotsPath']
     END
     IF Contains(Config_Object, $'''URL''', False) THEN
-        Variables.ConvertJsonToCustomObject Json: Config_Object['URL'] CustomObject=> Config_URLObject
+        SET Config_URLObject TO Config_Object['URL']
+        IF Config_Type <> $'''JSON''' THEN
+            # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+            Variables.ConvertJsonToCustomObject Json: Config_URLObject CustomObject=> Config_URLObject
+        END
     END
     IF Contains(Config_Object, $'''HTMLTemplatePath''', False) THEN
         SET Config_HTMLTemplatePath TO Config_Object['HTMLTemplatePath']

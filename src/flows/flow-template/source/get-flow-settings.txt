@@ -15,10 +15,18 @@ ON BLOCK ERROR all
 END
     SET Config_FlowObject TO Config_Object['Flows'][FlowName]
     IF Contains(Config_FlowObject, $'''MaxErrorCount''', False) THEN
-        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['MaxErrorCount'] CustomObject=> Config_MaxErrorCountObject
+        SET Config_MaxErrorCountObject TO Config_FlowObject['MaxErrorCount']
+        IF Config_Type <> $'''JSON''' THEN
+            # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+            Variables.ConvertJsonToCustomObject Json: Config_MaxErrorCountObject CustomObject=> Config_MaxErrorCountObject
+        END
     END
     IF Contains(Config_FlowObject, $'''Logger''', False) THEN
-        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['Logger'] CustomObject=> Config_LoggerObject
+        SET Config_LoggerObject TO Config_FlowObject['Logger']
+        IF Config_Type <> $'''JSON''' THEN
+            # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+            Variables.ConvertJsonToCustomObject Json: Config_LoggerObject CustomObject=> Config_LoggerObject
+        END
         IF NotContains(Config_LoggerObject, $'''LogLevels''', False) THEN
             SET ErrorMessage TO $'''Modules => %FlowName% => Logger => LogLevels'''
             GOTO 'Exit'
@@ -33,13 +41,21 @@ END
         SET Config_Environment TO Config_FlowObject['Environment']
     END
     IF Contains(Config_FlowObject, $'''Recipient''', False) THEN
-        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['Recipient'] CustomObject=> Config_RecipientObject
+        SET Config_RecipientObject TO Config_FlowObject['Recipient']
+        IF Config_Type <> $'''JSON''' THEN
+            # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+            Variables.ConvertJsonToCustomObject Json: Config_RecipientObject CustomObject=> Config_RecipientObject
+        END
     END
     IF Contains(Config_FlowObject, $'''ScreenshotsPath''', False) THEN
         SET Config_ScreenshotsPath TO Config_FlowObject['ScreenshotsPath']
     END
     IF Contains(Config_FlowObject, $'''URL''', False) THEN
-        Variables.ConvertJsonToCustomObject Json: Config_FlowObject['URL'] CustomObject=> Config_URLObject
+        SET Config_URLObject TO Config_FlowObject['URL']
+        IF Config_Type <> $'''JSON''' THEN
+            # Conversion needed in case the objects are stored as JSON strings in configs (e.g. Dataverse, Database, SharePoint, Excel)
+            Variables.ConvertJsonToCustomObject Json: Config_URLObject CustomObject=> Config_URLObject
+        END
     END
     IF Contains(Config_FlowObject, $'''HTMLTemplatePath''', False) THEN
         SET Config_HTMLTemplatePath TO Config_FlowObject['HTMLTemplatePath']
