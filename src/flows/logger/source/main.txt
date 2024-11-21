@@ -12,6 +12,8 @@ END
             CALL LogToDatabase
         CASE = $'''SharePoint List'''
             CALL LogToSharePoint
+        CASE = $'''Dataverse'''
+            CALL LogToDataverse
         DEFAULT
             SET Output_ErrorMessage TO $'''The log type \'%Input_LogType%\' is not supported by the Logger flow.'''
     END
