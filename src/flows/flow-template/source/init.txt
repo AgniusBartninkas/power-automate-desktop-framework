@@ -21,6 +21,15 @@ SET UserFriendlyProjectName TO $'''{ReplaceMe}'''
 # Directory can be adjusted if necessary as well. C:\RPA is just a suggestion.
 SET ProjectDirectory TO $'''C:\\RPA\\%ProjectName%'''
 **ENDREGION
+**REGION Directories
+/# These directories should be created as needed:
+- Logs for logging to files. Not needed for logging to SharePoint lists or databases
+- Flow for any files that may be temporarily stored by the flow, as well as screenshots, etc.
+- Config for external config files. Not needed when Configs are stored in databases.#/
+SET LogsDirectory TO $'''%ProjectDirectory%\\Logs'''
+SET FlowDirectory TO $'''%ProjectDirectory%\\Flow'''
+SET ConfigDirectory TO $'''%ProjectDirectory%\\Config'''
+**ENDREGION
 **REGION ConfigReader variables - adjust as necessary
 /# Config_Type is used by ConfigReader. Should be set to one of the following:
 - JSON
@@ -36,12 +45,12 @@ SET Config_Type TO $'''JSON'''
 - A file path for getting Config values from an Excel file#/
 SET Config_Address TO $'''%''%'''
 /# Config_Path is used by ConfigReader. Should contain:
-- File path for JSON files (set in the Config subflow)
+- File path for JSON files
 - Sheet name for Excel files
 - SQL stored procedure name for Databases
 - SharePoint list name for SharePoint
 - Table logical name for Dataverse#/
-SET Config_Path TO $'''%''%'''
+SET Config_Path TO $'''%ConfigDirectory%\\Config.json'''
 **ENDREGION
 **REGION Logger variables - adjust as necessary
 /# Log_Type is used by Logger. Should be set to one of the following:
@@ -59,13 +68,4 @@ SET Log_Address TO $'''%''%'''
 - Database table name or stored procedure for Databases
 - SharePoint list name for SharePoint#/
 SET Log_Path TO $'''%''%'''
-**ENDREGION
-**REGION Directories
-/# These directories should be created as needed:
-- Logs for logging to files. Not needed for logging to SharePoint lists or databases
-- Flow for any files that may be temporarily stored by the flow, as well as screenshots, etc.
-- Config for external config files. Not needed when Configs are stored in databases.#/
-SET LogsDirectory TO $'''%ProjectDirectory%\\Logs'''
-SET FlowDirectory TO $'''%ProjectDirectory%\\Flow'''
-SET ConfigDirectory TO $'''%ProjectDirectory%\\Config'''
 **ENDREGION

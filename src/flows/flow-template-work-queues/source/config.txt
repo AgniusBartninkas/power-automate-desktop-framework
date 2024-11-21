@@ -4,7 +4,6 @@ ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    SET ConfigFile TO $'''%ConfigDirectory%\\Config.json'''
     **REGION Base Logger
     # Creating base logger with all log levels enabled so we can actually log errors/information from Config if it fails.
     SET Config_LoggerObject TO {{ }}

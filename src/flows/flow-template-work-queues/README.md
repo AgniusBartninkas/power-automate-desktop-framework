@@ -7,7 +7,7 @@ The *WorkQueues* version of the Flow Template uses the Power Automate Work Queue
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.43.204.24107. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. 
 
 ## Inputs expected
