@@ -66,7 +66,7 @@ The flow produces several output variables that are returned to the parent flow 
 
             ![View of the parameters for the 'Input_FlowName' input variable in PAD](./assets/input-flow-name-variable-parameters.png)
 
-        1. Input_LogAddress (Data type - Text; Mark as sensitive - True; Mark as optional - True) 
+        1. Input_LogAddress (Data type - Text; Mark as sensitive - False; Mark as optional - False) 
         1. Input_LoggerObject (Data type - Custom object; Mark as sensitive - False; Mark as optional - False)
         1. Input_LogMessage (Data type - Text; Mark as sensitive - False; Mark as optional - False) 
         1. Input_LogPath (Data type - Text; Mark as sensitive - False; Mark as optional - False)
