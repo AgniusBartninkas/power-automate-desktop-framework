@@ -1,0 +1,32 @@
+IF IsEmpty(Input_LogAddress) THEN
+    SET ErrorMessage TO $'''Empty \'Input_LogAddress\' value provided. It is required when Log Type is \'%Input_LogType%\'.'''
+    EXIT FUNCTION
+END
+@@'item/statuscode': ''
+@@'InputSchema:item': '960538458'
+@@'OutputSchema:CreateRecordWithOrganizationResponse': '-1358192259'
+@@connectionDisplayName: 'PADFramework_Dataverse'
+External.InvokeCloudConnector Connection: '{ReplaceWithConnectionId}' ConnectorId: '/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps' OperationId: 'CreateRecordWithOrganization' @organization: Input_LogAddress @entityName: Input_LogPath @'item/def_flow': Input_FlowName @'item/def_level': Log_Level @'item/def_machine': Log_MachineName @'item/def_message': Log_Message @'item/def_project': Input_ProjectName @'item/def_subflow': Log_SubflowName @CreateRecordWithOrganizationResponse=> CreateRecordWithOrganizationResponse
+
+# [ControlRepository][PowerAutomateDesktop]
+
+{
+  "ControlRepositorySymbols": [],
+  "ImageRepositorySymbol": {
+    "Repository": "{\r\n  \"Folders\": [],\r\n  \"Images\": [],\r\n  \"Version\": 1\r\n}",
+    "ImportMetadata": {},
+    "Name": "imgrepo"
+  },
+  "ConnectionReferences": [
+    {
+      "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+      "DisplayName": "{ReplaceWithConnectionDisplayName}",
+      "InternalId": "{ReplaceWithConnectionId}",
+      "IsDisabled": false,
+      "LogicalName": "{ReplaceWithConnectionLogicalName}",
+      "IsEmbedded": false,
+      "ConnectionName": "{ReplaceWithConnectionName}",
+      "ConnectionDisplayName": "ab@robovirgin.com"
+    }
+  ]
+}
