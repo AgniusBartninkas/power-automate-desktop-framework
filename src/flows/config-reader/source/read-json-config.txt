@@ -1,2 +1,2 @@
-File.ReadTextFromFile.ReadText File: Input_Configpath Encoding: File.TextFileEncoding.UTF8 Content=> ConfigData
+File.ReadTextFromFile.ReadText File: Input_ConfigPath Encoding: File.TextFileEncoding.UTF8 Content=> ConfigData
 Variables.ConvertJsonToCustomObject Json: ConfigData CustomObject=> Output_ConfigObject
