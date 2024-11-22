@@ -109,6 +109,6 @@ In most organizations, you would normally not want to have different types of st
 
 ### Using other config types
 
-This flow only supports reading configs from SharePoint lists and Dataverse tables as these two types require setting up connection references to the cloud and also require Premium and require these two connectors being allowed in the environment, which can prevent the solution from being imported to some environments, even if the user has Premium. Other types of configs (JSON files, Excel and Databases are in a separate flow called **ConfigReaderLocalConnectors**).
+This flow only supports reading configs from SharePoint lists and Dataverse tables as these two types require setting up connection references to the cloud and also require Premium and require these two connectors being allowed in the environment, which can prevent the solution from being imported to some environments, even if the user has Premium. Other types of configs (JSON files, Excel and Databases) are in a separate flow called **ConfigReaderLocalConnectors**.
 
 It is recommended to only keep one of these utility flows, as configs should be stored universally within an organization anyway. So, pick your preferred way for storing configs and keep the one utility flow, while deleting the other one.

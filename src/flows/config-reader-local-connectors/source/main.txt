@@ -12,10 +12,6 @@ END
             CALL ReadExcelConfig
         CASE = $'''Database'''
             CALL ReadDatabaseConfig
-        CASE = $'''Dataverse'''
-            CALL ReadDataverseConfig
-        CASE = $'''SharePoint'''
-            CALL ReadSharePointConfig
         DEFAULT
             SET Output_Status TO 400
             SET Output_Message TO $'''Browser \'%Input_ConfigType%\' is not supported by the Config Reader flow.'''
