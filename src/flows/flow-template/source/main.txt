@@ -1,8 +1,8 @@
 CALL Init
 Text.ToNumber Text: $'''\'\''''
-    ON ERROR
-        CALL GetSubflowName
-    END
+ON ERROR
+    CALL GetSubflowName
+END
 DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
 ON ERROR
     GOTO Fatal

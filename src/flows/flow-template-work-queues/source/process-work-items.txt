@@ -11,7 +11,7 @@ ON BLOCK ERROR all
     CALL Logger
 END
     @@'InputSummaryValue:WORKQUEUE': 'WorkItem'
-LOOP WHILE (WorkQueues.ProcessWorkQueueItem WorkQueue: $'''4b22c5ab-fce5-ee11-904c-0022487f2c0b''' WorkQueueItem=> WorkQueueItem)
+LOOP WHILE (WorkQueues.ProcessWorkQueueItem.ProcessWorkQueueItem WorkQueue: $'''{ReplaceWithWorkQueueId}''' WorkQueueItem=> WorkQueueItem)
         CALL ResetVariables
         CALL GetWorkItem
         IF IsNotEmpty(ErrorMessage) THEN

@@ -12,7 +12,7 @@ ON BLOCK ERROR all
 END
     # Adjust priority, expiration and other parameters as necessary.
     @@'InputSummaryValue:WORKQUEUE': 'WorkItem'
-WorkQueues.EnqueueWorkQueueItem.WithoutUniqueId WorkQueue: $'''{ReplaceWithWorkItemQueueId}''' Status: WorkQueues.WorkQueueItemEnqueueStatus.Queued Priority: WorkQueues.WorkQueueItemPriority.Normal Name: WorkItem_Number Value: WorkItem_DataContent
+WorkQueues.EnqueueWorkQueueItem.WithoutUniqueId WorkQueue: $'''{ReplaceWithWorkQueueId}''' Status: WorkQueues.WorkQueueItemEnqueueStatus.Queued Priority: WorkQueues.WorkQueueItemPriority.Normal Name: WorkItem_Number Value: WorkItem_DataContent
 END
 LABEL 'Exit'
 SET Log_Message TO $'''INFO;;;End'''

@@ -8,7 +8,7 @@ It can also be used as a form of logs for storing some runtime data in the form 
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.42.317.24061. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. However, as this is a flow that should be called as a child flow by other flows, it should not matter. It should simply be created without enabling Power Fx.
 
 ## Inputs expected
