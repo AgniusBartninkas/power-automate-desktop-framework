@@ -8,8 +8,9 @@ END
         SET Log_Message TO $'''%Log_Message%;;;%ErrorMessage%'''
     END
     /# Adjust the parameters according to your logging needs.
-The current settings will log to a plain text .log file.#/
-    @@flowname: 'PADFramework: Logger'
+The current settings will log to a plain text .log file.
+When logging to SharePoint or Dataverse, be sure to change the logger flow appropriately as well. #/
+    @@flowname: 'PADFramework: LoggerLocalConnectors'
 External.RunFlow FlowId: '{ReplaceWithLoggerFlowId}' @Input_SubflowNamesList: List_SubflowNames @Input_LoggerObject: Config_LoggerObject @Input_LogPath: Log_Path @Input_LogMessage: Log_Message @Input_LogType: Log_Type @Input_ErrorMessageList: List_ErrorMessages @Input_FlowName: FlowName @Input_ProjectName: ProjectName @Input_LogAddress: Log_Address @Output_ErrorMessageList=> List_ErrorMessages @Output_ErrorMessage=> Output_Message
     IF IsNotEmpty(Output_Message) THEN
         # Not calling ThrowFatalError here to prevent logical recursion.

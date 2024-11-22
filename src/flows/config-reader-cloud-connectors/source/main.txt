@@ -6,12 +6,6 @@ ON BLOCK ERROR all
 
 END
     SWITCH Input_ConfigType
-        CASE = $'''JSON'''
-            CALL ReadJSONConfig
-        CASE = $'''Excel'''
-            CALL ReadExcelConfig
-        CASE = $'''Database'''
-            CALL ReadDatabaseConfig
         CASE = $'''Dataverse'''
             CALL ReadDataverseConfig
         CASE = $'''SharePoint'''
