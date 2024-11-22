@@ -14,7 +14,7 @@ It contains the following frequently used functionalities as components:
 * A template for custom subflows
 
 ## Version Compatibility
-A full exported unmanaged solution file is now available for importing to your enviroment if you have a Premium license of Power Automate. This file has been packaged with Power Automate Desktop version 2.46.163.24194. Power Automate will handle any updates needed to later versions as well. The flows may not be compatible with earlier versions and in cases like that - they will throw an error preventing them from being edited.
+A full exported unmanaged solution file is now available for importing to your enviroment if you have a Premium license of Power Automate. This file has been packaged with Power Automate Desktop version 2.50.125.24304. Power Automate will handle any updates needed to later versions as well. The flows may not be compatible with earlier versions and in cases like that - they will throw an error preventing them from being edited.
 
 If you do not have a Premium license or want to use this with an earlier version of PAD, you can try using the code snippets in `/src/flows/`.
 
@@ -35,17 +35,18 @@ Then create the actions that were not accepted manually by following the screens
 
 ## Minimal path to awesome
 1. If you have not prepared an environment for the framework yet:
-    1. Open the browser and navigate to [Power Automate cloud portal](https://make.powerautomate.com/)
+    1. Open the browser and navigate to the [Power Platform admin portal](https://admin.powerplatform.microsoft.com/)
     1. Create an dedicated environment for the Framework (DEV environments for other flows should contain a managed solution of the Framework - see a note on **Environments** below)
 1. Open the browser and navigate to [Power Automate cloud portal](https://make.powerautomate.com/)
-1. Navigate to Connections and create the connections needed for the solution:
-    1. Microsoft Dataverse
-    1. Office 365 Outlook
-    1. SharePoint
+1. If you want to use the base **PADFramework** solution that includes cloud connectors:
+    1. Navigate to Connections and create the connections needed for the solution:
+        1. Microsoft Dataverse
+        1. Office 365 Outlook
+        1. SharePoint
 1. Navigate to Solutions and press *Import solution*
-1. Follow the wizzard for importing solutions. When prompted to provide a solution file, select the zipped file in `/solution/`
-1. When prompted to review connection references, map the connections you created to the connection references in the solution
-1. Follow along with the wizzard and wait for the import to complete
+1. Follow the wizard for importing solutions. When prompted to provide a solution file, select the zipped file of choice in `/solution/`
+1. If prompted to review connection references, map the connections you created to the connection references in the solution
+1. Follow along with the wizard and wait for the import to complete
 1. Open Power Automate Desktop, select the environment you created for the framework and refresh the flows to see them
 
 ## Preparation needed
@@ -56,7 +57,7 @@ Some general preparation is recommended before attempting to implement any of th
 
 The Framework should have its own dedicated development environment. This is the only environment where the Framework should reside as an unmanaged solution. 
 
-It should be imported as a managed solution to all other environments where flows will use the framework, including normal DEV, TEST, UAT and other non-production environments. This is so that changes cannot be made to the framework outside of its own DEV environment, but it can be used by calling utility flows such as the **Logger** as child flows, as well as making copies of the template flows for new projects.
+It should be imported as a managed solution to all other environments where flows will use the framework, including normal DEV, TEST, UAT and other non-production environments. This is so that changes cannot be made to the framework outside of its own DEV environment, but it can be used by calling utility flows such as the **EmailSender** as child flows, as well as making copies of the template flows for new projects.
 
 ### Solution
 
