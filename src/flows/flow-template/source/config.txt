@@ -1,4 +1,8 @@
 SET ErrorMessage TO ''
+Text.ToNumber Text: $'''\'\''''
+    ON ERROR
+        CALL GetSubflowName
+    END
 BLOCK 
 ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
@@ -19,8 +23,10 @@ END
             SET Log_Path TO $'''%LogsDirectory%\\%DateStamp%_%FlowName%_%ComputerName%.csv'''
     END
     **ENDREGION
-    @@flowname: 'PADFramework: ConfigReader'
-External.RunFlow FlowId: 'c74ad727-5617-4d54-89a9-9d7b35187d34' @Input_ConfigType: Config_Type @Input_ConfigPath: Config_Path @Input_ConfigAddress: Config_Address @Input_ProjectName: ProjectName @Output_ConfigObject=> Config_Object @Output_Message=> Output_Message @Output_Status=> Output_Status
+    /# Adjust the parameters according to your external config store.
+When reading configs from a cloud-based store (SharePoint or Dataverse), be sure to change the flow appropriately as well. #/
+    @@flowname: 'PADFramework: ConfigReaderLocalConnectors'
+External.RunFlow FlowId: '{ReplaceWithConfigReaderFlowId}' @Input_ConfigType: Config_Type @Input_ConfigPath: Config_Path @Input_ConfigAddress: Config_Address @Input_ProjectName: ProjectName @Output_ConfigObject=> Config_Object @Output_Message=> Output_Message @Output_Status=> Output_Status
     IF Output_Status <> 200 THEN
         SET ErrorMessage TO Output_Message
         GOTO 'Exit'
