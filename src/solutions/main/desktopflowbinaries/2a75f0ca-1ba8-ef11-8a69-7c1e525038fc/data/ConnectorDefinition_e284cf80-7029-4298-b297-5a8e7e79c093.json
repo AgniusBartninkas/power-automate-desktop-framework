@@ -1,0 +1,278 @@
+{
+  "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+  "Definition": {
+    "Id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+    "Name": "shared_commondataserviceforapps",
+    "Properties": {
+      "IsCustomApi": false,
+      "Swagger": {
+        "basePath": "/apim/commondataserviceforapps",
+        "definitions": {
+          "Object": {
+            "additionalProperties": null,
+            "example": null,
+            "properties": {},
+            "type": "object",
+            "default": null
+          }
+        },
+        "host": "europe-002.azure-apim.net",
+        "info": {
+          "title": "Microsoft Dataverse",
+          "version": "1.0"
+        },
+        "parameters": {},
+        "paths": {
+          "/{connectionId}/api/data/v9.1.0/{entityName}": {
+            "get": {
+              "consumes": [],
+              "deprecated": false,
+              "description": "List rows from a table in a Power Platform environment.",
+              "externalDocs": {
+                "url": "https://docs.microsoft.com/connectors/commondataserviceforapps/#list-rows-from-selected-environment"
+              },
+              "operationId": "ListRecordsWithOrganization",
+              "x-ms-pageable": {
+                "nextLinkName": "@odata.nextLink"
+              },
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "connectionId",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "in": "header",
+                  "name": "prefer",
+                  "required": false,
+                  "type": "string",
+                  "default": "odata.include-annotations=*",
+                  "description": "The header parameter required to make Microsoft Dataverse return the created resource",
+                  "x-ms-summary": "Prefer",
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "in": "header",
+                  "name": "accept",
+                  "required": false,
+                  "type": "string",
+                  "default": "application/json;odata.metadata=full",
+                  "description": "The header parameter required to make Microsoft Dataverse return the odata id",
+                  "x-ms-summary": "Accept",
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemsPath": "value",
+                    "itemTitlePath": "FriendlyName",
+                    "itemValuePath": "Url",
+                    "operationId": "GetOrganizations",
+                    "parameters": {}
+                  },
+                  "in": "header",
+                  "name": "organization",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "description": "Choose an environment",
+                  "x-ms-summary": "Environment",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemsPath": "value",
+                    "itemTitlePath": "DisplayCollectionName/UserLocalizedLabel/Label",
+                    "itemValuePath": "EntitySetName",
+                    "operationId": "GetEntitiesWithOrganization",
+                    "parameters": {
+                      "organization": {
+                        "parameterReference": "organization",
+                        "value": null
+                      }
+                    }
+                  },
+                  "in": "path",
+                  "name": "entityName",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "description": "Choose a table",
+                  "x-ms-summary": "Table name",
+                  "x-ms-url-encoding": "double"
+                },
+                {
+                  "in": "query",
+                  "name": "$select",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Enter a comma-separated list of column unique names to limit which columns are listed",
+                  "x-ms-summary": "Select columns",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "in": "query",
+                  "name": "$filter",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Enter an OData style filter expression to limit which rows are listed",
+                  "x-ms-summary": "Filter rows",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "in": "query",
+                  "name": "$orderby",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Columns to sort by in OData orderBy style (excluding lookups)",
+                  "x-ms-summary": "Sort By",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "in": "query",
+                  "name": "$expand",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Enter an Odata style expand query to list related rows",
+                  "x-ms-summary": "Expand Query",
+                  "x-ms-visibility": "advanced"
+                },
+                {
+                  "in": "query",
+                  "name": "fetchXml",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Enter a Fetch XML query for advanced customization",
+                  "x-ms-summary": "Fetch Xml Query",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "in": "query",
+                  "name": "$top",
+                  "required": false,
+                  "type": "integer",
+                  "default": null,
+                  "description": "Enter the number of rows to be listed (default = 5000)",
+                  "format": "int32",
+                  "x-ms-summary": "Row count",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "in": "query",
+                  "name": "$skiptoken",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "Enter the skip token obtained from a previous run to list rows from the next page",
+                  "x-ms-summary": "Skip token",
+                  "x-ms-visibility": "advanced"
+                },
+                {
+                  "in": "query",
+                  "name": "partitionId",
+                  "required": false,
+                  "type": "string",
+                  "default": null,
+                  "description": "An option to specify the partitionId while retrieving data for NoSQL tables",
+                  "x-ms-summary": "Partition ID",
+                  "x-ms-visibility": "advanced"
+                }
+              ],
+              "produces": [
+                "application/json",
+                "text/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "additionalProperties": null,
+                    "example": null,
+                    "properties": {
+                      "value": {
+                        "additionalProperties": null,
+                        "example": null,
+                        "items": {
+                          "additionalProperties": {
+                            "$ref": "#/definitions/Object"
+                          },
+                          "x-ms-dynamic-properties": {
+                            "itemValuePath": "schema",
+                            "operationId": "GetMetadataForGetEntityWithOrganization",
+                            "parameters": {
+                              "organization": {
+                                "parameterReference": "organization",
+                                "value": null
+                              },
+                              "entityName": {
+                                "parameterReference": "entityName",
+                                "value": null
+                              },
+                              "selectedEntityAttributes": {
+                                "parameterReference": "$select",
+                                "value": null
+                              },
+                              "expandEntityAttributes": {
+                                "parameterReference": "$expand",
+                                "value": null
+                              }
+                            }
+                          },
+                          "example": null,
+                          "properties": {
+                            "dynamicProperties": {
+                              "additionalProperties": {
+                                "$ref": "#/definitions/Object"
+                              },
+                              "example": null,
+                              "type": "object",
+                              "default": null
+                            }
+                          },
+                          "type": "object",
+                          "default": null
+                        },
+                        "type": "array",
+                        "default": null
+                      },
+                      "@odata.nextLink": {
+                        "additionalProperties": null,
+                        "example": null,
+                        "type": "string",
+                        "default": null,
+                        "description": "The url to fetch next page data.",
+                        "x-ms-summary": "Next link",
+                        "x-ms-visibility": "advanced"
+                      }
+                    },
+                    "type": "object",
+                    "default": null
+                  }
+                },
+                "default": {
+                  "description": "Operation Failed."
+                }
+              },
+              "summary": "List rows from selected environment",
+              "x-ms-visibility": "important"
+            }
+          }
+        },
+        "responses": {},
+        "schemes": [
+          "https"
+        ],
+        "swagger": "2.0"
+      }
+    }
+  },
+  "DynamicSchemas": {},
+  "Locale": "en-US"
+}

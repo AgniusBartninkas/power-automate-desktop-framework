@@ -1,0 +1,756 @@
+{
+  "ConnectorId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+  "Definition": {
+    "Id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+    "Name": "shared_commondataserviceforapps",
+    "Properties": {
+      "IsCustomApi": false,
+      "Swagger": {
+        "basePath": "/apim/commondataserviceforapps",
+        "definitions": {},
+        "host": "europe-002.azure-apim.net",
+        "info": {
+          "title": "Microsoft Dataverse",
+          "version": "1.0"
+        },
+        "parameters": {},
+        "paths": {
+          "/{connectionId}/api/data/v9.1.0/{entityName}": {
+            "post": {
+              "consumes": [],
+              "deprecated": false,
+              "description": "Create a new row in a table in a Power Platform environment.",
+              "externalDocs": {
+                "url": "https://docs.microsoft.com/connectors/commondataserviceforapps/#add-a-new-row-to-selected-environment"
+              },
+              "operationId": "CreateRecordWithOrganization",
+              "parameters": [
+                {
+                  "in": "path",
+                  "name": "connectionId",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "in": "header",
+                  "name": "prefer",
+                  "required": true,
+                  "type": "string",
+                  "default": "return=representation,odata.include-annotations=*",
+                  "description": "The header parameter required to make Microsoft Dataverse return the created resource",
+                  "x-ms-summary": "Prefer",
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "in": "header",
+                  "name": "accept",
+                  "required": true,
+                  "type": "string",
+                  "default": "application/json;odata.metadata=full",
+                  "description": "The header parameter required to make Microsoft Dataverse return the odata id",
+                  "x-ms-summary": "Accept",
+                  "x-ms-visibility": "internal"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemsPath": "value",
+                    "itemTitlePath": "FriendlyName",
+                    "itemValuePath": "Url",
+                    "operationId": "GetOrganizations",
+                    "parameters": {}
+                  },
+                  "in": "header",
+                  "name": "organization",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "description": "Choose an environment",
+                  "x-ms-summary": "Environment",
+                  "x-ms-visibility": "important"
+                },
+                {
+                  "x-ms-dynamic-list": {
+                    "itemsPath": "value",
+                    "itemTitlePath": "DisplayCollectionName/UserLocalizedLabel/Label",
+                    "itemValuePath": "EntitySetName",
+                    "operationId": "GetEntitiesWithOrganization",
+                    "parameters": {
+                      "organization": {
+                        "parameterReference": "organization",
+                        "value": null
+                      }
+                    }
+                  },
+                  "in": "path",
+                  "name": "entityName",
+                  "required": true,
+                  "type": "string",
+                  "default": null,
+                  "description": "Choose a table",
+                  "x-ms-summary": "Table name",
+                  "x-ms-url-encoding": "double"
+                },
+                {
+                  "in": "body",
+                  "name": "item",
+                  "required": true,
+                  "schema": {
+                    "additionalProperties": null,
+                    "x-ms-dynamic-properties": {
+                      "itemValuePath": "schema",
+                      "operationId": "GetMetadataForPostEntityWithOrganization",
+                      "parameters": {
+                        "organization": {
+                          "parameterReference": "organization",
+                          "value": null
+                        },
+                        "entityName": {
+                          "parameterReference": "entityName",
+                          "value": null
+                        }
+                      }
+                    },
+                    "example": null,
+                    "type": "object",
+                    "default": null
+                  },
+                  "default": null,
+                  "description": "Row to create",
+                  "x-ms-summary": "Row Item"
+                }
+              ],
+              "produces": [
+                "application/json",
+                "text/json"
+              ],
+              "responses": {
+                "201": {
+                  "description": "Created",
+                  "schema": {
+                    "additionalProperties": null,
+                    "x-ms-dynamic-properties": {
+                      "itemValuePath": "schema",
+                      "operationId": "GetMetadataForGetEntityWithOrganization",
+                      "parameters": {
+                        "organization": {
+                          "parameterReference": "organization",
+                          "value": null
+                        },
+                        "entityName": {
+                          "parameterReference": "entityName",
+                          "value": null
+                        }
+                      }
+                    },
+                    "example": null,
+                    "type": "object",
+                    "default": null
+                  }
+                },
+                "default": {
+                  "description": "Operation Failed."
+                }
+              },
+              "summary": "Add a new row to selected environment",
+              "x-ms-visibility": "important"
+            }
+          }
+        },
+        "responses": {},
+        "schemes": [
+          "https"
+        ],
+        "swagger": "2.0"
+      }
+    }
+  },
+  "DynamicSchemas": {
+    "960538458": {
+      "ArgumentName": "item",
+      "IsInput": true,
+      "OperationId": "CreateRecordWithOrganization",
+      "Schema": {
+        "properties": {
+          "def_flow": {
+            "title": "Flow",
+            "type": "string",
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "item/def_flow"
+          },
+          "def_flowrunurl": {
+            "title": "FlowRunURL",
+            "type": "string",
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/def_flowrunurl"
+          },
+          "importsequencenumber": {
+            "title": "Import Sequence Number",
+            "type": "integer",
+            "description": "Sequence number of the import that created this record.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": -2147483648.0,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/importsequencenumber"
+          },
+          "def_level": {
+            "title": "Level",
+            "type": "string",
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "item/def_level"
+          },
+          "def_logmessagesid": {
+            "title": "Log Messages",
+            "type": "string",
+            "description": "Unique identifier for entity instances",
+            "format": "uuid",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/def_logmessagesid"
+          },
+          "def_machine": {
+            "title": "Machine",
+            "type": "string",
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/def_machine"
+          },
+          "def_message": {
+            "title": "Message",
+            "type": "string",
+            "description": "",
+            "maxLength": 2000,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "item/def_message"
+          },
+          "ownerid@odata.bind": {
+            "title": "Owner (Owners)",
+            "type": "string",
+            "description": "Owner Id",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/ownerid@odata.bind"
+          },
+          "def_project": {
+            "title": "Project",
+            "type": "string",
+            "description": "",
+            "maxLength": 850,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "item/def_project"
+          },
+          "overriddencreatedon": {
+            "title": "Record Created On",
+            "type": "string",
+            "description": "Date and time that the record was migrated.",
+            "format": "date-time",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/overriddencreatedon"
+          },
+          "statuscode": {
+            "x-ms-dynamic-list": {
+              "itemsPath": "value",
+              "itemTitlePath": "Label/UserLocalizedLabel/Label",
+              "itemValuePath": "value",
+              "operationId": "GetOptionSetMetadataWithEntitySetNameWithOrganization",
+              "parameters": {
+                "organization": {
+                  "parameterReference": "organization",
+                  "required": true
+                },
+                "body/entityName": {
+                  "parameterReference": "entityName",
+                  "required": true
+                },
+                "body/attributeMetadataId": {
+                  "value": "8c518121-eedd-47a2-bf7d-6d4018f6ecd3"
+                },
+                "body/type": {
+                  "value": "Status"
+                }
+              }
+            },
+            "title": "Status Reason",
+            "type": "integer",
+            "description": "Reason for the status of the Log Messages",
+            "format": "int32",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/statuscode"
+          },
+          "def_subflow": {
+            "title": "Subflow",
+            "type": "string",
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/def_subflow"
+          },
+          "timezoneruleversionnumber": {
+            "title": "Time Zone Rule Version Number",
+            "type": "integer",
+            "description": "For internal use only.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": -1.0,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/timezoneruleversionnumber"
+          },
+          "utcconversiontimezonecode": {
+            "title": "UTC Conversion Time Zone Code",
+            "type": "integer",
+            "description": "Time zone code that was in use when the record was created.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": -1.0,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "item/utcconversiontimezonecode"
+          }
+        },
+        "required": [
+          "def_flow",
+          "def_level",
+          "def_message",
+          "def_project"
+        ],
+        "type": "object"
+      },
+      "TypeId": "960538458"
+    },
+    "-1358192259": {
+      "ArgumentName": "CreateRecordWithOrganizationResponse",
+      "IsInput": false,
+      "OperationId": "CreateRecordWithOrganization",
+      "Schema": {
+        "additionalProperties": null,
+        "example": null,
+        "properties": {
+          "_createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Created By (Delegate) (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the delegate user who created the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_createdonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_createdonbehalfby_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Created By (Delegate) (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the delegate user who created the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_createdonbehalfby_value"
+          },
+          "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Created By (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the user who created the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_createdby_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Created By (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the user who created the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_createdby_value"
+          },
+          "createdon": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Created On",
+            "type": "string",
+            "default": null,
+            "description": "Date and time when the record was created.",
+            "format": "date-time",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "createdon"
+          },
+          "def_flow": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Flow",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "def_flow"
+          },
+          "def_flowrunurl": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "FlowRunURL",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "def_flowrunurl"
+          },
+          "importsequencenumber": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Import Sequence Number",
+            "type": "integer",
+            "default": null,
+            "description": "Sequence number of the import that created this record.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": -2147483648.0,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "importsequencenumber"
+          },
+          "def_level": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Level",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "def_level"
+          },
+          "def_logmessagesid": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Log Messages",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for entity instances",
+            "format": "uuid",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "def_logmessagesid"
+          },
+          "def_machine": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Machine",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "def_machine"
+          },
+          "def_message": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Message",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 2000,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "def_message"
+          },
+          "_modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Modified By (Delegate) (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the delegate user who modified the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_modifiedonbehalfby_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_modifiedonbehalfby_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Modified By (Delegate) (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the delegate user who modified the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_modifiedonbehalfby_value"
+          },
+          "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Modified By (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the user who modified the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_modifiedby_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Modified By (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier of the user who modified the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_modifiedby_value"
+          },
+          "modifiedon": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Modified On",
+            "type": "string",
+            "default": null,
+            "description": "Date and time when the record was modified.",
+            "format": "date-time",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "modifiedon"
+          },
+          "@odata.id": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "OData Id",
+            "type": "string",
+            "default": null,
+            "description": "OData row id",
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "@odata.id"
+          },
+          "_ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owner (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Owner Id",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_ownerid_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owner (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Owner Id",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_ownerid_value"
+          },
+          "_owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owning Business Unit (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for the business unit that owns the record",
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "_owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_owningbusinessunit_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owning Business Unit (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for the business unit that owns the record",
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "_owningbusinessunit_value"
+          },
+          "_owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owning Team (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for the team that owns the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_owningteam_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_owningteam_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owning Team (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for the team that owns the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_owningteam_value"
+          },
+          "_owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owning User (Type)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for the user that owns the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname"
+          },
+          "_owninguser_value": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Owning User (Value)",
+            "type": "string",
+            "default": null,
+            "description": "Unique identifier for the user that owns the record.",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "_owninguser_value"
+          },
+          "def_project": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Project",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 850,
+            "x-ms-visibility": "important",
+            "x-ms-property-name-alias": "def_project"
+          },
+          "overriddencreatedon": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Record Created On",
+            "type": "string",
+            "default": null,
+            "description": "Date and time that the record was migrated.",
+            "format": "date-time",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "overriddencreatedon"
+          },
+          "statecode": {
+            "additionalProperties": null,
+            "x-ms-dynamic-list": {
+              "itemsPath": "value",
+              "itemTitlePath": "Label/UserLocalizedLabel/Label",
+              "itemValuePath": "value",
+              "operationId": "GetOptionSetMetadataWithEntitySetNameWithOrganization",
+              "parameters": {
+                "organization": {
+                  "parameterReference": "organization",
+                  "required": true,
+                  "value": null
+                },
+                "body/entityName": {
+                  "parameterReference": "entityName",
+                  "required": true,
+                  "value": null
+                },
+                "body/attributeMetadataId": {
+                  "value": "1475b848-650b-41ba-b009-bea69a234536"
+                },
+                "body/type": {
+                  "value": "State"
+                }
+              }
+            },
+            "example": null,
+            "title": "Status",
+            "type": "integer",
+            "default": null,
+            "description": "Status of the Log Messages",
+            "format": "int32",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "statecode"
+          },
+          "statuscode": {
+            "additionalProperties": null,
+            "x-ms-dynamic-list": {
+              "itemsPath": "value",
+              "itemTitlePath": "Label/UserLocalizedLabel/Label",
+              "itemValuePath": "value",
+              "operationId": "GetOptionSetMetadataWithEntitySetNameWithOrganization",
+              "parameters": {
+                "organization": {
+                  "parameterReference": "organization",
+                  "required": true,
+                  "value": null
+                },
+                "body/entityName": {
+                  "parameterReference": "entityName",
+                  "required": true,
+                  "value": null
+                },
+                "body/attributeMetadataId": {
+                  "value": "8c518121-eedd-47a2-bf7d-6d4018f6ecd3"
+                },
+                "body/type": {
+                  "value": "Status"
+                }
+              }
+            },
+            "example": null,
+            "title": "Status Reason",
+            "type": "integer",
+            "default": null,
+            "description": "Reason for the status of the Log Messages",
+            "format": "int32",
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "statuscode"
+          },
+          "def_subflow": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Subflow",
+            "type": "string",
+            "default": null,
+            "description": "",
+            "maxLength": 100,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "def_subflow"
+          },
+          "timezoneruleversionnumber": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Time Zone Rule Version Number",
+            "type": "integer",
+            "default": null,
+            "description": "For internal use only.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": -1.0,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "timezoneruleversionnumber"
+          },
+          "utcconversiontimezonecode": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "UTC Conversion Time Zone Code",
+            "type": "integer",
+            "default": null,
+            "description": "Time zone code that was in use when the record was created.",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": -1.0,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "utcconversiontimezonecode"
+          },
+          "versionnumber": {
+            "additionalProperties": null,
+            "example": null,
+            "title": "Version Number",
+            "type": "integer",
+            "default": null,
+            "description": "Version Number",
+            "format": "int64",
+            "maximum": 9.2233720368547758E+18,
+            "minimum": -9.2233720368547758E+18,
+            "x-ms-visibility": "advanced",
+            "x-ms-property-name-alias": "versionnumber"
+          }
+        },
+        "required": [],
+        "type": "object",
+        "default": null
+      },
+      "TypeId": "-1358192259"
+    }
+  },
+  "Locale": "en-US"
+}

@@ -1,0 +1,14 @@
+<desktopflowbinary desktopflowbinaryid="34135fa6-5714-4794-9d4b-2554ebf0af0e">
+  <data mimetype="application/json">ManifestFile_34135fa6-5714-4794-9d4b-2554ebf0af0e.json</data>
+  <iscustomizable>1</iscustomizable>
+  <metadata>{}</metadata>
+  <mimetype>application/json</mimetype>
+  <name>Desktop flow manifest file</name>
+  <process>
+    <workflowid>582a1baf-a30a-ef11-9f89-000d3a24f839</workflowid>
+  </process>
+  <reference>flow.manifest</reference>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <type>ManifestFile</type>
+</desktopflowbinary>

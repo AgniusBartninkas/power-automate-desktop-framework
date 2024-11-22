@@ -44,7 +44,7 @@ Then create the actions that were not accepted manually by following the screens
         1. Office 365 Outlook
         1. SharePoint
 1. Navigate to Solutions and press *Import solution*
-1. Follow the wizard for importing solutions. When prompted to provide a solution file, select the zipped file of choice in `/solution/`
+1. Follow the wizard for importing solutions. When prompted to provide a solution file, select the zipped file of choice in `/solution/` (see **Solutions** below for more info)
 1. If prompted to review connection references, map the connections you created to the connection references in the solution
 1. Follow along with the wizard and wait for the import to complete
 1. Open Power Automate Desktop, select the environment you created for the framework and refresh the flows to see them
@@ -63,3 +63,11 @@ It should be imported as a managed solution to all other environments where flow
 
 All of the flows you want to implement in your tenant should be added into a single solution that should reside as unmanaged in the dedicated environment (see above), but exported as managed to any other environments.
 The recommended name of the solution is **PADFramework**.
+
+### Solutions
+
+Two separate solutions have now been published:
+1. **PADFramework** includes the entire thing, with all flows and the Dataverse tables for logging and configs
+1. **PADFramework_LocalConnectors** includes only the flows that DO NOT use cloud-based connectors. So, it excludes logging to SharePoint and Dataverse, reading configs from SharePoint and Dataverse, and sending emails via O365 Outlook. It also does not include the two Dataverse tables.
+
+Pick the one you prefer when importing.
