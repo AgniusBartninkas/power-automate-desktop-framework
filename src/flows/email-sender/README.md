@@ -9,7 +9,7 @@ It can include attachments if needed.
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.52.62.25009. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. However, as this is a flow that should be called as a child flow by other flows, it should not matter. It should simply be created without enabling Power Fx.
 
 ## Inputs expected
@@ -17,7 +17,7 @@ The code currently does not have a version for flows with Power Fx enabled. Howe
 There are several inputs required by this flow, and a couple that are optional (depending on other parameters):
 
 1. **Input_Attachments** - Should contain a list of files as attachments. Is optional - if the provided list is empty, the email will still be sent with no attachments.
-1. **Input_DisplayName** - Should contain the display name to be used for the sender.
+1. **Input_DisplayName** - Should contain the display name to be used for the sender. Is optional when mailbox type is Outlook.
 1. **Input_EmailAccount** - Should contain the email address to be used for sending the email. 
 1. **Input_EmailMessage** - Should contain the email message. It should be formatted as HTML, or else the entire body will be sent as a single paragraph. Should not include any parts of the email body that are already in the HTML template.
 1. **Input_EmailRecipient** - Should contain the email address(es) of the recipient(s). If more than one recipient is included, they should be separated by a semicolon. Should be marked as **sensitive**.
@@ -64,7 +64,7 @@ The flow produces several output variables that are returned to the parent flow 
 
             ![View of the parameters for the 'Input_Attachments' input variable in PAD](./assets/input-attachments-variable-parameters.png)
 
-        1. Input_DisplayName (Data type - Text; Mark as sensitive - False; Mark as optional - False)
+        1. Input_DisplayName (Data type - Text; Mark as sensitive - False; Mark as optional - True)
         1. Input_EmailAccount (Data type - Text; Mark as sensitive - False; Mark as optional - False)
         1. Input_EmailMessage (Data type - Text; Mark as sensitive - True; Mark as optional - False)
         1. Input_EmailRecipient (Data type - Text; Mark as sensitive - True; Mark as optional - False)

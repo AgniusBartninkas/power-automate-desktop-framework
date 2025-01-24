@@ -35,8 +35,8 @@ END
     SET Log_Message TO $'''INFO;;;Sending error messages to \"%ErrorLogRecipient%\"'''
     CALL Logger
     # Use either 'EmailSender' or 'EmailSenderO365Outlook' depending on the mailbox type you want to send the message from.
-    @@flowname: 'PADFramework: EmailSenderO365Outlook'
-External.RunFlow FlowId: '{ReplaceWithEmailSenderFlowId}' @Input_Attachments: List_Attachments @Input_EmailMessage: HTML_EmailMessage @Input_EmailRecipient: ErrorLogRecipient @Input_EmailRecipientCC: $'''%''%''' @Input_EmailSubject: $'''%ProjectName% error log''' @Input_HTMLTemplatePath: Config_HTMLTemplatePath @Output_Message=> Output_Message @Output_Status=> Output_Status
+    @@flowname: 'PADFramework: EmailSender'
+External.RunFlow FlowId: '{ReplaceWithEmailSenderFlowId}' WaitToComplete: True @Input_Attachments: List_Attachments @Input_EmailAccount: Config_EmailAccount @Input_EmailRecipient: ErrorLogRecipient @Input_EmailRecipientCC: $'''%''%''' @Input_EmailSubject: $'''%ProjectName% error log''' @Input_HTMLTemplatePath: Config_HTMLTemplatePath @Input_MailboxType: $'''Outlook''' @Input_EmailMessage: HTML_EmailMessage @Output_Message=> Output_Message @Output_Status=> Output_Status
 END
 LABEL 'Exit'
 SET Log_Message TO $'''INFO;;;End'''

@@ -60,6 +60,9 @@ END
     IF Contains(Config_FlowObject, $'''HTMLTemplatePath''', False) THEN
         SET Config_HTMLTemplatePath TO Config_FlowObject['HTMLTemplatePath']
     END
+    IF Contains(Config_FlowObject, $'''EmailAccount''', False) THEN
+        SET Config_EmailAccount TO Config_FlowObject['EmailAccount']
+    END
     SET Log_Message TO $'''INFO;;;Environment is %Config_Environment%'''
     CALL Logger
 END

@@ -14,7 +14,7 @@ It contains the following frequently used functionalities as components:
 * A template for custom subflows
 
 ## Version Compatibility
-A full exported unmanaged solution file is now available for importing to your enviroment if you have a Premium license of Power Automate. This file has been packaged with Power Automate Desktop version 2.50.125.24304. Power Automate will handle any updates needed to later versions as well. The flows may not be compatible with earlier versions and in cases like that - they will throw an error preventing them from being edited.
+A full exported unmanaged solution file is now available for importing to your enviroment if you have a Premium license of Power Automate. This file has been packaged with Power Automate Desktop version 2.52.62.25009. Power Automate will handle any updates needed to later versions as well. The flows may not be compatible with earlier versions and in cases like that - they will throw an error preventing them from being edited.
 
 If you do not have a Premium license or want to use this with an earlier version of PAD, you can try using the code snippets in `/src/flows/`.
 
