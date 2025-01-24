@@ -53,6 +53,9 @@ External.RunFlow FlowId: '{ReplaceWithConfigReaderFlowId}' @Input_ConfigType: Co
     IF Contains(Config_Object, $'''HTMLTemplatePath''', False) THEN
         SET Config_HTMLTemplatePath TO Config_Object['HTMLTemplatePath']
     END
+    IF Contains(Config_Object, $'''EmailAccount''', False) THEN
+        SET Config_EmailAccount TO Config_Object['EmailAccount']
+    END
     /# Environment values:
 - PROD
 - TEST
