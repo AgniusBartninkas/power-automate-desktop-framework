@@ -38,7 +38,7 @@ The flow produces several output variables that are returned to the parent flow 
 
 1. Create the following input and output variables (use the same names for "Variable name" and "External name" fields to avoid unneccessary confusion):
     1. Input:
-        1. Input_FilePath (Data type - Text; Mark as sensitive - False; Mark as optional - True)
+        1. Input_ExcelInstance (Data type - Instance; Data subtype - Excel; Mark as sensitive - False; Mark as optional - True)
 
             ![View of the parameters for the 'Input_ExcelInstance' input variable in PAD](./assets/input-excel-instance-variable-parameters.png)
 

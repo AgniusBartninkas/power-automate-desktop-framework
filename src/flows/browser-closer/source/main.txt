@@ -3,6 +3,22 @@ BLOCK
 ON BLOCK ERROR all
 
 END
+    /# The browser instance is a text value if is not instantiated and it does not have a .Handle property.
+Attempting to close with the happy path first.#/
+    IF IsNotEmpty(Input_BrowserInstance) THEN
+        IF Input_BrowserInstance['Handle'] <> (-1) THEN
+            WebAutomation.CloseWebBrowser BrowserInstance: Input_BrowserInstance
+            ON ERROR REPEAT 3 TIMES WAIT 3
+            ON ERROR
+
+            END
+            IF Input_BrowserInstance['IsAlive'] = False THEN
+                Text.AppendLine Text: Output_Message LineToAppend: $'''Successfully closed %Input_Browser%.''' Result=> Output_Message
+                GOTO 'Exit'
+            END
+        END
+    END
+    System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''USERNAME''' Value=> UserName
     SWITCH Input_Browser
         CASE = $'''Chrome'''
             CALL CloseChrome
