@@ -3,13 +3,15 @@ ON BLOCK ERROR all
 
 END
     CALL Init
-    SWITCH Input_LogType
-        CASE = $'''SharePoint List'''
-            CALL LogToSharePoint
-        CASE = $'''Dataverse'''
-            CALL LogToDataverse
-        DEFAULT
-            SET Output_ErrorMessage TO $'''The log type \'%Input_LogType%\' is not supported by the Logger flow.'''
+    IF Contains(Input_LoggerObject['LogLevels'], Log_Level, True) THEN
+        SWITCH Input_LogType
+            CASE = $'''SharePoint List'''
+                CALL LogToSharePoint
+            CASE = $'''Dataverse'''
+                CALL LogToDataverse
+            DEFAULT
+                SET Output_ErrorMessage TO $'''The log type \'%Input_LogType%\' is not supported by the Logger flow.'''
+        END
     END
     Variables.MergeLists FirstList: Input_ErrorMessageList SecondList: Output_ErrorMessageList OutputList=> Output_ErrorMessageList
     IF Contains(Input_LoggerObject['ErrorLogLevels'], Log_Level, True) THEN

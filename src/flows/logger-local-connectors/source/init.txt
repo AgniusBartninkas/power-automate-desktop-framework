@@ -1,4 +1,5 @@
 DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> CurrentDateTime
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-ddTHH:mm:ss.fff''' Result=> Log_Timestamp
 Text.SplitText.SplitWithDelimiter Text: Input_LogMessage CustomDelimiter: $''';;;''' IsRegEx: False Result=> Log_MessageList
 IF Log_MessageList.Count < 2 THEN
     SET Log_Level TO $'''WARN'''

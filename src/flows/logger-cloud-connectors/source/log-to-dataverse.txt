@@ -1,6 +1,5 @@
 IF IsEmpty(Input_LogAddress) THEN
-    SET ErrorMessage TO $'''Empty \'Input_LogAddress\' value provided. It is required when Log Type is \'%Input_LogType%\'.'''
-    EXIT FUNCTION
+    SET Input_LogAddress TO $'''current'''
 END
 @@'item/statuscode': ''
 @@'InputSchema:item': '960538458'

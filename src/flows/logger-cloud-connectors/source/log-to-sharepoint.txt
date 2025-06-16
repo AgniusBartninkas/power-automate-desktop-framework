@@ -2,7 +2,6 @@ IF IsEmpty(Input_LogAddress) THEN
     SET ErrorMessage TO $'''Empty \'Input_LogAddress\' value provided. It is required when Log Type is \'%Input_LogType%\'.'''
     EXIT FUNCTION
 END
-Text.ConvertDateTimeToText.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyy-MM-dd HH:mm:ss''' Result=> Log_Timestamp
 @@dataset: '%Input_LogAddress%'
 @@table: '%Input_LogPath%'
 @@view: ''
