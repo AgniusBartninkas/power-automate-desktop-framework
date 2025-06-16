@@ -3,38 +3,15 @@ Text.ToNumber Text: $'''\'\''''
     ON ERROR
         CALL GetSubflowName
     END
-SET Log_Message TO $'''INFO;;;Start'''
+SET Log_Message TO $'''DEBUG;;;Start'''
 CALL Logger
 BLOCK 
 ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    # Attempting to close with the happy path first before calling ExcelCloser.
-    IF IsNotEmpty(ExcelToClose) THEN
-        IF ExcelToClose.Handle <> 0 THEN
-            BLOCK 
-ON BLOCK ERROR all
-
-END
-                Excel.CloseExcel.Close Instance: ExcelToClose
-                WAIT (System.WaitForProcess.ProcessToStop ProcessName: $'''EXCEL''') FOR 10 
-                    ON ERROR TimeoutError
-
-                    END
-                IF (System.IfProcess.ProcessIsNotRunning ProcessName: $'''EXCEL''') THEN
-                    ON ERROR
-
-                    END
-                    GOTO 'Exit'
-                END
-            END
-        END
-    END
-    /# Will close all Excel instances by default.
-Provide a file path as an input parameter to close a specific file.#/
     @@flowname: 'PADFramework: ExcelCloser'
-External.RunFlow FlowId: '{ReplaceWithExcelCloserFlowId}' @Input_FilePath: $'''''' @Output_Message=> Output_Message @Output_Status=> Output_Status
+External.RunFlow FlowId: '{ReplaceWithExcelCloserFlowId}' WaitToComplete: True @Input_ExcelInstance: ExcelToClose @Output_Message=> Output_Message @Output_Status=> Output_Status
     IF Output_Status <> 200 THEN
         SET ErrorMessage TO Output_Message
         GOTO 'Exit'
@@ -47,6 +24,6 @@ External.RunFlow FlowId: '{ReplaceWithExcelCloserFlowId}' @Input_FilePath: $''''
     END
 END
 LABEL 'Exit'
-SET Log_Message TO $'''INFO;;;End'''
+SET Log_Message TO $'''DEBUG;;;End'''
 CALL Logger
 Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

@@ -20,14 +20,14 @@ IF IsNotEmpty(ErrorMessage) THEN
     CALL Logger
     GOTO Fatal
 END
-SET Log_Message TO $'''INFO;;;Start'''
+SET Log_Message TO $'''DEBUG;;;Start'''
 CALL Logger
 BLOCK 
 ON BLOCK ERROR all
     SET Log_Message TO $'''TRACE'''
     CALL Logger
 END
-    SET Log_Message TO $'''INFO;;;Starting flow \"%FlowName%\"'''
+    SET Log_Message TO $'''DEBUG;;;Starting flow \"%FlowName%\"'''
     CALL Logger
     CALL ExecuteMainFlow
     IF IsNotEmpty(ErrorMessage) THEN
@@ -36,7 +36,7 @@ END
         GOTO 'Exit'
     END
     SET Output_IsSuccess TO True
-    SET Log_Message TO $'''INFO;;;Finishing flow \"%FlowName%\"'''
+    SET Log_Message TO $'''DEBUG;;;Finishing flow \"%FlowName%\"'''
     CALL Logger
 END
 LABEL 'Exit'
@@ -46,7 +46,7 @@ IF (List_ErrorMessages.Count) > (0) THEN
         CALL StopFlow
     END
 END
-SET Log_Message TO $'''INFO;;;End'''
+SET Log_Message TO $'''DEBUG;;;End'''
 CALL Logger
 Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames
 EXIT Code: 0

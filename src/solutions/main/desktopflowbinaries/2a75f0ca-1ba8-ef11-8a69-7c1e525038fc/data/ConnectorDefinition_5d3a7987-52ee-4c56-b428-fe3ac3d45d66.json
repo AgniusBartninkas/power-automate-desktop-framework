@@ -159,7 +159,7 @@
                   "required": false,
                   "type": "integer",
                   "default": null,
-                  "description": "Enter the number of rows to be listed (default = 5000)",
+                  "description": "Enter rows to list. The default is 2000. Enable paging in settings for more rows.",
                   "format": "int32",
                   "x-ms-summary": "Row count",
                   "x-ms-visibility": "important"

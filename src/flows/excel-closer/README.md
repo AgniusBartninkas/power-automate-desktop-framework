@@ -9,14 +9,14 @@ Since an Excel instance is a special type of variable that cannot be passed in b
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.57.184.25154. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. However, as this is a flow that should be called as a child flow by other flows, it should not matter. It should simply be created without enabling Power Fx.
 
 ## Inputs expected
 
 There are several inputs required by this flow, and a couple that are optional (depending on other parameters):
 
-1. **Input_FilePath** - Should contain the file path for a specific Excel document instance to be closed. If no file path is provided, all running Excel instances will be closed. If a file path is provided, but an active instance for such a file is not found, an error will be thrown.
+1. **Input_ExcelInstance** - Should contain the Excel instance for the specific Excel document to be closed. If no instance is provided, or the instance is not alive, all running Excel instances will be closed. 
 
 ## Output produced
 
@@ -38,9 +38,9 @@ The flow produces several output variables that are returned to the parent flow 
 
 1. Create the following input and output variables (use the same names for "Variable name" and "External name" fields to avoid unneccessary confusion):
     1. Input:
-        1. Input_FilePath (Data type - Text; Mark as sensitive - False; Mark as optional - True)
+        1. Input_ExcelInstance (Data type - Instance; Data subtype - Excel; Mark as sensitive - False; Mark as optional - True)
 
-            ![View of the parameters for the 'Input_FilePath' input variable in PAD](./assets/input-file-path-variable-parameters.png)
+            ![View of the parameters for the 'Input_ExcelInstance' input variable in PAD](./assets/input-excel-instance-variable-parameters.png)
 
     1. Output:
         1. Output_Message (Data type: Text; Mark as sensitive - True)

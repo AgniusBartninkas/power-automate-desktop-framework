@@ -9,7 +9,7 @@ Since a browser instance is a special type of variable that cannot be passed in 
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.57.184.25154. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. However, as this is a flow that should be called as a child flow by other flows, it should not matter. It should simply be created without enabling Power Fx.
 
 ## Inputs expected
@@ -20,7 +20,7 @@ There are several inputs required by this flow, and a couple that are optional (
     1. Chrome
     1. Edge
     1. Firefox
-1. **Input_URL** - Should contain the URL for a specific browser tab to be closed. If no URL is provided, all browser tabs will be closed. If a URL is provided, but a tab with such a URL is not found, an error will be thrown.
+1. **Input_BrowserInstance** - Should contain the instance for a specific browser tab to be closed. If no instance is provided, all browser tabs will be closed. 
 
 ## Output produced
 
@@ -46,7 +46,7 @@ The flow produces several output variables that are returned to the parent flow 
 
             ![View of the parameters for the 'Input_Browser' input variable in PAD](./assets/input-browser-variable-parameters.png)
 
-        1. Input_URL (Data type - Text; Mark as sensitive - False; Mark as optional - True)
+        1. Input_BrowserInstance (Data type - Instance; Data subtype - Browser; Mark as sensitive - False; Mark as optional - True)
     1. Output:
         1. Output_Message (Data type: Text; Mark as sensitive - True)
 

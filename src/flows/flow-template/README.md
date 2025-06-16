@@ -8,7 +8,7 @@ For a template that uses the Power Automate Work Queues, see `\flow-template-wor
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.52.62.25009. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.57.184.25154. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. 
 
 ## Inputs expected
@@ -50,6 +50,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. **ExecuteWebflow**
     1. **GenerateWorkItems**
     1. **GetFlowSettings**
+    1. **GetSubflowName**
     1. **GetWorkItem**
     1. **HandleWorkItem**
     1. **Init**
@@ -79,6 +80,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. **execute-web-flow.txt** to **ExecuteWebFlow**
     1. **generate-work-items.txt** to **GenerateWorkItems**
     1. **get-flow-settings.txt** to **GetFlowSettings**
+    1. **get-subflow-name.txt** to **GetSubflowName**
     1. **get-work-item.txt** to **GetWorkItem**
     1. **handle-work-item.txt** to **HandleWorkItem**
     1. **init.txt** to **Init**

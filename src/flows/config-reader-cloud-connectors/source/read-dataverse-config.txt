@@ -1,9 +1,9 @@
-IF IsEmpty(Input_ConfigAddress) THEN
-    SET ErrorMessage TO $'''Empty Input_ConfigAddress parameter provided. It is required for config type %Input_ConfigType%.'''
-    GOTO 'Exit'
-ELSE IF IsEmpty(Input_ProjectName) THEN
+IF IsEmpty(Input_ProjectName) THEN
     SET ErrorMessage TO $'''Empty Input_ProjectName parameter provided. It is required for config type %Input_ConfigType%.'''
     GOTO 'Exit'
+END
+IF IsEmpty(Input_ConfigAddress) THEN
+    SET Input_ConfigAddress TO $'''current'''
 END
 # Getting the prefix from the table name, as it is also used in logical column names.
 Text.ParseText.RegexParseForFirstOccurrence Text: Input_ConfigPath TextToFind: $'''^[^_]+_''' StartingPosition: 0 IgnoreCase: False Match=> Prefix

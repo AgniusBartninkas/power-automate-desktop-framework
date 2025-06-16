@@ -1,29 +1,31 @@
-<ImportExportXml version="9.2.24111.164" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24111.164" OrganizationSchemaType="Standard" CRMServerServiceabilityVersion="9.2.24112.00170">
+<ImportExportXml version="9.2.25053.152" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.25053.152" OrganizationSchemaType="Standard" CRMServerServiceabilityVersion="9.2.25062.00146">
   <SolutionManifest>
     <UniqueName>PADFramework</UniqueName>
     <LocalizedNames>
       <LocalizedName description="PADFramework" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.1.02411.2210</Version>
+    <Version>1.2.02506.161</Version>
     <Managed>0</Managed>
     <Publisher>
       <UniqueName>Definra</UniqueName>
       <LocalizedNames>
         <LocalizedName description="Definra UAB" languagecode="1033" />
       </LocalizedNames>
-      <Descriptions />
-      <EMailAddress xsi:nil="true"></EMailAddress>
-      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <Descriptions>
+        <Description description="Definra provides high quality Power Platform consultancy, training, development, support and maintenance services." languagecode="1033" />
+      </Descriptions>
+      <EMailAddress>info@definra.lt</EMailAddress>
+      <SupportingWebsiteUrl>https://definra.lt</SupportingWebsiteUrl>
       <CustomizationPrefix>def</CustomizationPrefix>
       <CustomizationOptionValuePrefix>77557</CustomizationOptionValuePrefix>
       <Addresses>
         <Address>
           <AddressNumber>1</AddressNumber>
           <AddressTypeCode>1</AddressTypeCode>
-          <City xsi:nil="true"></City>
+          <City>Kaunas</City>
           <County xsi:nil="true"></County>
-          <Country xsi:nil="true"></Country>
+          <Country>Lithuania</Country>
           <Fax xsi:nil="true"></Fax>
           <FreightTermsCode xsi:nil="true"></FreightTermsCode>
           <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
@@ -38,7 +40,7 @@
           <PrimaryContactName xsi:nil="true"></PrimaryContactName>
           <ShippingMethodCode>1</ShippingMethodCode>
           <StateOrProvince xsi:nil="true"></StateOrProvince>
-          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone1>+37065481936</Telephone1>
           <Telephone2 xsi:nil="true"></Telephone2>
           <Telephone3 xsi:nil="true"></Telephone3>
           <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
