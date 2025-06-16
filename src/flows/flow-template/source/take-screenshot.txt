@@ -14,7 +14,8 @@ END
     @@flowname: 'PADFramework: ScreenshotMaker'
 External.RunFlow FlowId: '{ReplaceWithScreenshotMakerFlowId}' @Input_ScreenshotsDirectory: Config_ScreenshotsPath @Input_ScreenshotFileName: ScreenshotFileName @Output_Message=> Output_Message @Output_Status=> Output_Status @Output_ScreenshotFileName=> ScreenshotFileName
     IF Output_Status <> 200 THEN
-        SET ErrorMessage TO Output_Message
+        SET Log_Message TO $'''ERROR;;;Failed to take screenshot due to: %Output_Message%'''
+        CALL Logger
         GOTO 'Exit'
     END
     SET Log_Message TO $'''DEBUG;;;Successfully took screenshot `%ScreenshotFileName%`'''
