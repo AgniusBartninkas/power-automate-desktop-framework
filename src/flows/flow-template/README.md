@@ -50,6 +50,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. **ExecuteWebflow**
     1. **GenerateWorkItems**
     1. **GetFlowSettings**
+    1. **GetSubflowName**
     1. **GetWorkItem**
     1. **HandleWorkItem**
     1. **Init**
@@ -79,6 +80,7 @@ The flow produces several output variables that are returned to the parent flow 
     1. **execute-web-flow.txt** to **ExecuteWebFlow**
     1. **generate-work-items.txt** to **GenerateWorkItems**
     1. **get-flow-settings.txt** to **GetFlowSettings**
+    1. **get-subflow-name.txt** to **GetSubflowName**
     1. **get-work-item.txt** to **GetWorkItem**
     1. **handle-work-item.txt** to **HandleWorkItem**
     1. **init.txt** to **Init**
