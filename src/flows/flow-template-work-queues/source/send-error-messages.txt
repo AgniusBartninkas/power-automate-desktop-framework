@@ -3,7 +3,7 @@ Text.ToNumber Text: $'''\'\''''
     ON ERROR
         CALL GetSubflowName
     END
-SET Log_Message TO $'''INFO;;;Start'''
+SET Log_Message TO $'''DEBUG;;;Start'''
 CALL Logger
 BLOCK 
 ON BLOCK ERROR all
@@ -39,6 +39,6 @@ END
 External.RunFlow FlowId: '{ReplaceWithEmailSenderFlowId}' WaitToComplete: True @Input_Attachments: List_Attachments @Input_EmailAccount: Config_EmailAccount @Input_EmailRecipient: ErrorLogRecipient @Input_EmailRecipientCC: $'''%''%''' @Input_EmailSubject: $'''%ProjectName% error log''' @Input_HTMLTemplatePath: Config_HTMLTemplatePath @Input_MailboxType: $'''Outlook''' @Input_EmailMessage: HTML_EmailMessage @Output_Message=> Output_Message @Output_Status=> Output_Status
 END
 LABEL 'Exit'
-SET Log_Message TO $'''INFO;;;End'''
+SET Log_Message TO $'''DEBUG;;;End'''
 CALL Logger
 Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames

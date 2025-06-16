@@ -3,7 +3,7 @@ Text.ToNumber Text: $'''\'\''''
     ON ERROR
         CALL GetSubflowName
     END
-SET Log_Message TO $'''INFO;;;Start'''
+SET Log_Message TO $'''DEBUG;;;Start'''
 CALL Logger
 BLOCK 
 ON BLOCK ERROR all
@@ -20,6 +20,6 @@ Also set:
     Variables.ConvertCustomObjectToJson CustomObject: WorkItem_DataContent Json=> WorkItem_DataContent
 END
 LABEL 'Exit'
-SET Log_Message TO $'''INFO;;;End'''
+SET Log_Message TO $'''DEBUG;;;End'''
 CALL Logger
 Variables.RemoveItemFromList.RemoveItemFromListByIndex ItemIndex: List_SubflowNames.Count - 1 List: List_SubflowNames
