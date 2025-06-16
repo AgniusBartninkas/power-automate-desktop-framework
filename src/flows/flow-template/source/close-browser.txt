@@ -13,7 +13,7 @@ END
     /# Will close all browsers and all instances.
 Provide a browser name and/or instance (as variables) to close a specific browser and/or tab.#/
     @@flowname: 'PADFramework: BrowserCloser'
-External.RunFlow FlowId: 'a08238ca-5ec4-422d-8eaf-1766d05ec8fe' WaitToComplete: True @Input_BrowserInstance: BrowserToClose @Output_Message=> Output_Message @Output_Status=> Output_Status
+External.RunFlow FlowId: '{ReplaceWithBrowserCloserFlowId}' WaitToComplete: True @Input_BrowserInstance: BrowserToClose @Output_Message=> Output_Message @Output_Status=> Output_Status
     IF Output_Status <> 200 THEN
         SET ErrorMessage TO Output_Message
         GOTO 'Exit'

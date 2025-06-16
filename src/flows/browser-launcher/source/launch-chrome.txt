@@ -3,4 +3,4 @@ IF Input_IncognitoMode = True THEN
 END
 System.RunApplication.RunApplication ApplicationPath: $'''chrome''' CommandLineArguments: CommandLineArguments WindowStyle: System.ProcessWindowStyle.Maximized ProcessId=> AppProcessId
 WAIT (UIAutomation.WaitForWindow.ToOpenByTitleClass Title: $'''Google*''' Class: $'''Chrome_WidgetWin_1''' FocusWindow: True) FOR 30
-WebAutomation.LaunchChrome.AttachToChromeByTitle TabTitle: $'''Google''' AttachTimeout: 5 BrowserInstance=> BrowserInstance
+WebAutomation.LaunchChrome.AttachToChromeByTitle TabTitle: $'''Google''' AttachTimeout: 5 TargetDesktop: $'''{\"DisplayName\":\"Local computer\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Output_BrowserInstance

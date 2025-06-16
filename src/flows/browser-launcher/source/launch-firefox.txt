@@ -3,4 +3,4 @@ IF Input_IncognitoMode = True THEN
 END
 System.RunApplication.RunApplication ApplicationPath: $'''firefox''' CommandLineArguments: CommandLineArguments WindowStyle: System.ProcessWindowStyle.Maximized ProcessId=> AppProcessId
 WAIT (UIAutomation.WaitForWindow.ToOpenByTitleClass Title: $'''Google*''' Class: $'''MozillaWindowClass''' FocusWindow: True) FOR 30
-WebAutomation.LaunchFirefox.AttachToFirefoxByTitle TabTitle: $'''Google''' AttachTimeout: 5 BrowserInstance=> BrowserInstance
+WebAutomation.LaunchFirefox.AttachToFirefoxByTitle TabTitle: $'''Google''' AttachTimeout: 5 TargetDesktop: $'''{\"DisplayName\":\"Local computer\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Output_BrowserInstance

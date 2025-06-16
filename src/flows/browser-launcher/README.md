@@ -5,7 +5,7 @@ It is to be called as a child flow by other flows, and as such it should reside 
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.57.184.25154. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. However, as this is a flow that should be called as a child flow by other flows, it should not matter. It should simply be created without enabling Power Fx.
 
 ## Inputs expected
@@ -25,6 +25,7 @@ The flow produces several output variables that are returned to the parent flow 
 
 1. **Output_Message** - Contains the response of the flow. Can either return a success, or a failure response. Should be used by the parent flow for any logging after launching the browser (or failing to do so). Should be marked as **sensitive** in case the message may contain any sensitive data.
 1. **Output_Status** - Contains the status code for the response of the flow. Uses standard HTTP status codes. Can either return a success (200), or a failure status (4xx, 5xx). Should be checked by the parent flow to verify if launching the browser succeeded.
+1. **Output_BrowserInstance** - Contains the instance of the browser that has been launched.
 
 ## Minimal path to awesome
 
@@ -54,6 +55,7 @@ The flow produces several output variables that are returned to the parent flow 
             ![View of the parameters for the 'Output_Message' input variable in PAD](./assets/output-message-variable-parameters.png)
 
         1. Output_Status (Data type: Number; Mark as sensitive - False)
+        1. Output_BrowserInstance (Data type: Instance; Data subtype - Browser; Mark as sensitive - False)
 1. Create new subflows (see **Notes** below): 
     1. **LaunchChrome** 
     1. **LaunchEdge** 
@@ -68,7 +70,6 @@ The flow produces several output variables that are returned to the parent flow 
     ![View of the code in the Main subflow in PAD](./assets/main-subflow-example.png)
 
 1. Click **Save** in the flow designer
-1. In the parent flow, add a **Launch New {Browser}** action after running the browser launcher and make it attach to running instance using the URL you provided as inputs (see **Notes** below)
 1. Add the **PADFramework: BrowserLauncher** flow to the **PADFramework** solution for exporting it to other environments
 
     ![View of the menu path to add an existing desktop flow to a solution](./assets/adding-existing-desktop-flow-to-solution.png)
@@ -105,10 +106,3 @@ When you do that, if any flow calls the Browser Launcher with the request to lau
 
 Internet Explorer is not supported by Browser Launcher, as the browser itself is no longer supported by Microsoft since June 2022. In most cases, even attempting to launch IE will result in Edge being launched instead. 
 If you are using a system with Internet Explorer installed and need to use it for whatever reason, you can add an extra subflow to the Browser Launcher by copying **LaunchEdge** and modifying the parameters there.
-
-### Attaching to the browser in the parent flow
-
-A browser instance is a special type of variable and it cannot be returned as an output variable by the child flow.
-As such, in order to use the browser that was launched by Browser Launcher in the parent flow for further web automation tasks, you will need to attach to it. Use **Launch New {Browser}** action for the appropriate action after running the child flow, and make it attach to a running instance by providing the same URL that was used to launch the browser as a parameter. Here's an example for what that would look like for Chrome:
-
-![View of the 'Launch New Chrome' action in the parent flow](./assets/launch-new-chrome-in-parent-flow-example.png)
