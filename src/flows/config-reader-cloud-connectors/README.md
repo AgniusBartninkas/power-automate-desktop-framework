@@ -10,7 +10,7 @@ This utility flow is only required if you want to config data externally, and do
 
 ## Version compatibility
 
-The code is compatible with Power Automate Desktop version 2.50.125.24304. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
+The code is compatible with Power Automate Desktop version 2.57.184.25154. Compatibility with other versions is not guaranteed, but it might work with earlier versions, too.
 The code currently does not have a version for flows with Power Fx enabled. However, as this is a flow that should be called as a child flow by other flows, it should not matter. It should simply be created without enabling Power Fx.
 
 ## Inputs expected
@@ -19,7 +19,7 @@ There are several inputs required by this flow, and a couple that are optional (
 
 1. **Input_ConfigAddress** - Should contain the address for where the config resource is stored. The flow expects it to contain:
     - the site address when the type is 'SharePoint'
-    - the environment URL when the type is 'Dataverse' (can be found in the environment details in the PP admin center)
+    - the environment URL when the type is 'Dataverse' (can be found in the environment details in the PP admin center), or the literal value 'current' for the current environment
 1. **Input_ConfigPath** - Should contain the path to the config data. The flow expects it to contain:
     - a list name when the type is 'SharePoint' 
     - a table logical name when the type is 'Dataverse'
